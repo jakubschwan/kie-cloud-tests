@@ -17,6 +17,7 @@ package org.kie.cloud.openshift;
 
 import org.kie.cloud.api.DeploymentScenarioBuilderFactory;
 import org.kie.cloud.api.scenario.builder.ClusteredWorkbenchKieServerDatabasePersistentScenarioBuilder;
+import org.kie.cloud.api.scenario.builder.ClusteredWorkbenchKieServerPersistentScenarioBuilder;
 import org.kie.cloud.api.scenario.builder.ClusteredWorkbenchRuntimeSmartRouterTwoKieServersTwoDatabasesScenarioBuilder;
 import org.kie.cloud.api.scenario.builder.GenericScenarioBuilder;
 import org.kie.cloud.api.scenario.builder.KieServerWithDatabaseScenarioBuilder;
@@ -137,6 +138,11 @@ public class ApbDeploymentBuilderFactory implements DeploymentScenarioBuilderFac
 
     @Override
     public void deleteNamespace(String namespace) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public ClusteredWorkbenchKieServerPersistentScenarioBuilder getClusteredWorkbenchKieServerPersistentScenarioBuilder() {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 

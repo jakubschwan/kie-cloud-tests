@@ -26,16 +26,17 @@ import java.util.Map.Entry;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
-import cz.xtf.openshift.OpenShiftBinaryClient;
-import cz.xtf.openshift.OpenShiftUtil;
-import cz.xtf.openshift.builder.ImageStreamBuilder;
-import io.fabric8.kubernetes.api.model.KubernetesList;
-import io.fabric8.openshift.api.model.ImageStream;
 import org.kie.cloud.openshift.OpenShiftController;
 import org.kie.cloud.openshift.resource.Project;
 import org.kie.cloud.openshift.util.ProcessExecutor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import cz.xtf.openshift.OpenShiftBinaryClient;
+import cz.xtf.openshift.OpenShiftUtil;
+import cz.xtf.openshift.builder.ImageStreamBuilder;
+import io.fabric8.kubernetes.api.model.KubernetesList;
+import io.fabric8.openshift.api.model.ImageStream;
 
 public class ProjectImpl implements Project {
 
@@ -96,6 +97,47 @@ public class ProjectImpl implements Project {
             Thread.currentThread().interrupt();
             throw new RuntimeException("Interrupted while waiting for scenario to be initialized.", e);
         }
+    }
+
+    @Override
+    public synchronized void processApbRun(String image, Map<String, String> extraVars) {
+        String podName = projectName + "-apb-pod";
+
+        OpenShiftBinaryClient oc = OpenShiftBinaryClient.getInstance();
+        oc.project(projectName);
+        oc.executeCommand("Role binding failed.", "create", "rolebinding", "default", "--clusterrole=admin", "--serviceaccount=" + projectName + ":default");
+
+        List<String> args = new ArrayList<>();
+        args.add("run");
+        args.add(podName);
+        args.add("--namespace=" + projectName);
+        args.add("--image=" + image);
+        args.add("--restart=Never");
+        args.add("--attach=true");
+        args.add("--env=\"POD_NAME=" + podName + "\"");
+        args.add("--env=\"POD_NAMESPACE=" + projectName + "\"");
+        args.add("--");
+        args.add("provision");
+        args.add("--extra-vars");
+        args.add(formatExtraVars(extraVars));
+
+        oc.executeCommand("APB failed.", args.toArray(new String[args.size()]));
+    }
+
+    private String formatExtraVars(Map<String, String> extraVars) {
+        StringBuilder extraVarsArg = new StringBuilder("\'{ ");
+        extraVars.forEach((String key, String value) -> {
+            extraVarsArg.append("\"")
+                    .append(key)
+                    .append("\"")
+                    .append(": ")
+                    .append("\"")
+                    .append(value)
+                    .append("\"")
+                    .append(", ");
+        });
+        extraVarsArg.replace(extraVarsArg.length() - 2, extraVarsArg.length() - 1, " }\'");
+        return extraVarsArg.toString();
     }
 
     @Override

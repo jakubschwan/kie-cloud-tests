@@ -30,6 +30,7 @@ import org.kie.cloud.api.deployment.WorkbenchDeployment;
 import org.kie.cloud.api.deployment.constants.DeploymentConstants;
 import org.kie.cloud.api.scenario.WorkbenchKieServerPersistentScenario;
 import org.kie.cloud.common.provider.KieServerControllerClientProvider;
+import org.kie.cloud.openshift.constants.ApbConstants;
 import org.kie.cloud.openshift.constants.OpenShiftApbConstants;
 import org.kie.cloud.openshift.deployment.KieServerDeploymentImpl;
 import org.kie.cloud.openshift.deployment.WorkbenchDeploymentImpl;
@@ -70,7 +71,9 @@ public class WorkbenchKieServerPersistentScenarioApb extends OpenShiftScenario i
 //        logger.info("Processing template and creating resources from " + OpenShiftTemplate.WORKBENCH_KIE_SERVER_PERSISTENT.getTemplateUrl().toString());
 //        extraVars.put(OpenShiftTemplateConstants.IMAGE_STREAM_NAMESPACE, projectName);
 //        project.processTemplateAndCreateResources(OpenShiftTemplate.WORKBENCH_KIE_SERVER_PERSISTENT.getTemplateUrl(), extraVars);
-        logger.info("Processesin APB");
+        logger.info("Processesin APB image " + ApbConstants.Plans.AUTHORING);
+        extraVars.put(OpenShiftApbConstants.IMAGE_STREAM_NAMESPACE, projectName);
+        project.processApbRun("docker-registry.default.svc:5000/openshift/rhpam-apb", extraVars);
         // TODO
 
         workbenchDeployment = new WorkbenchDeploymentImpl(project);

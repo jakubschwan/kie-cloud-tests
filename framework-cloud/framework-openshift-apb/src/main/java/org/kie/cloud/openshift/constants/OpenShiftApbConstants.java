@@ -29,7 +29,8 @@ public class OpenShiftApbConstants {
     public static final String KIE_CONTROLLER_USER = "apb_controller_user";
     public static final String KIE_CONTROLLER_PWD = "apb_controller_pwd";
 
-    public static final String APB_BUSINESSCENTRAL_HOSTNAME = "apb_businesscentral_hostname";
+    public static final String BUSINESS_CENTRAL_HOSTNAME_HTTP = "apb_businesscentral_hostname";
+    public static final String BUSINESS_CENTRAL_HOSTNAME_HTTPS = "";
     public static final String APB_KIESERVER_HOSTNAME = "apb_kieserver_hostname";
     public static final String APB_KIESERVER_IMAGE_STREAM_NAME = "apb_kieserver_image_stream_name";
     public static final String APB_BUSINESSCENTRAL_SECRET_NAME = "apb_businesscentral_secret_name";
@@ -60,5 +61,9 @@ public class OpenShiftApbConstants {
     public static final String IMAGE_STREAM_NAMESPACE = "image_stream_namespace";
 
     public static final String NAMESPACE = "namespace";
+
+    public static final String BUSINESS_CENTRAL_MAVEN_USERNAME = "";
+    public static final String BUSINESS_CENTRAL_MAVEN_PASSWORD = "";
+    public static final String BUSINESS_CENTRAL_MAVEN_SERVICE = "";
 
 }
