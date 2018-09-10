@@ -194,6 +194,40 @@
       </build>
     </profile>
     <profile>
+      <id>apb</id>
+      <build>
+        <pluginManagement>
+          <plugins>
+            <plugin>
+              <artifactId>maven-failsafe-plugin</artifactId>
+              <configuration>
+                <systemProperties>
+                  <openshift.impl>openshift-apb</openshift.impl>
+                </systemProperties>
+              </configuration>
+            </plugin>
+          </plugins>
+        </pluginManagement>
+      </build>
+    </profile>
+    <profile>
+      <id>templates</id>
+      <build>
+        <pluginManagement>
+          <plugins>
+            <plugin>
+              <artifactId>maven-failsafe-plugin</artifactId>
+              <configuration>
+                <systemProperties>
+                  <openshift.impl>openshift-templates</openshift.impl>
+                </systemProperties>
+              </configuration>
+            </plugin>
+          </plugins>
+        </pluginManagement>
+      </build>
+    </profile>
+    <profile>
       <id>custom-parameters</id>
       <activation>
         <property>
