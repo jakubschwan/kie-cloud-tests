@@ -36,6 +36,7 @@ public class WorkbenchKieServerPersistentScenarioBuilderApb implements Workbench
     public WorkbenchKieServerPersistentScenarioBuilderApb() {
         extraVars.put(OpenShiftApbConstants.APB_PLAN_ID, ApbConstants.Plans.AUTHORING);
         extraVars.put(OpenShiftApbConstants.APB_KIESERVER_DB_TYPE, ApbConstants.DbType.H2);
+        extraVars.put(OpenShiftApbConstants.APB_IMAGE_STREAM_TAG, "1.2");
 
         extraVars.put(OpenShiftApbConstants.KIE_SERVER_USER, DeploymentConstants.getKieServerUser());
         extraVars.put(OpenShiftApbConstants.KIE_SERVER_PWD, DeploymentConstants.getKieServerPassword());
@@ -43,8 +44,8 @@ public class WorkbenchKieServerPersistentScenarioBuilderApb implements Workbench
         extraVars.put(OpenShiftApbConstants.KIE_ADMIN_PWD, DeploymentConstants.getWorkbenchPassword());
         extraVars.put(OpenShiftApbConstants.KIE_CONTROLLER_USER, DeploymentConstants.getControllerUser());
         extraVars.put(OpenShiftApbConstants.KIE_CONTROLLER_PWD, DeploymentConstants.getControllerPassword());
-        extraVars.put(propertyNames.workbenchMavenUserName(), DeploymentConstants.getWorkbenchMavenUser());
-        extraVars.put(propertyNames.workbenchMavenPassword(), DeploymentConstants.getWorkbenchMavenPassword());
+//        extraVars.put(propertyNames.workbenchMavenUserName(), DeploymentConstants.getWorkbenchMavenUser());
+//        extraVars.put(propertyNames.workbenchMavenPassword(), DeploymentConstants.getWorkbenchMavenPassword());
         extraVars.put(OpenShiftApbConstants.MAVEN_REPO_USER, DeploymentConstants.getWorkbenchUser());
         extraVars.put(OpenShiftApbConstants.MAVEN_REPO_PWD, DeploymentConstants.getWorkbenchPassword());
         extraVars.put(propertyNames.workbenchHttpsSecret(), OpenShiftConstants.getKieApplicationSecretName());

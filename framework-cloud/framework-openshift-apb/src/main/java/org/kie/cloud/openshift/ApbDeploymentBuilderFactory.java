@@ -32,7 +32,9 @@ import org.kie.cloud.api.settings.builder.LdapSettingsBuilder;
 import org.kie.cloud.api.settings.builder.SmartRouterSettingsBuilder;
 import org.kie.cloud.api.settings.builder.WorkbenchMonitoringSettingsBuilder;
 import org.kie.cloud.api.settings.builder.WorkbenchSettingsBuilder;
+import org.kie.cloud.openshift.scenario.builder.ClusteredWorkbenchRuntimeSmartRouterTwoKieServersTwoDatabasesScenarioBuilderApb;
 import org.kie.cloud.openshift.scenario.builder.WorkbenchKieServerPersistentScenarioBuilderApb;
+import org.kie.cloud.openshift.scenario.builder.WorkbenchKieServerScenarioBuilderApb;
 
 public class ApbDeploymentBuilderFactory implements DeploymentScenarioBuilderFactory {
 
@@ -48,7 +50,7 @@ public class ApbDeploymentBuilderFactory implements DeploymentScenarioBuilderFac
 
     @Override
     public WorkbenchKieServerScenarioBuilder getWorkbenchKieServerScenarioBuilder() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return new WorkbenchKieServerScenarioBuilderApb();
     }
 
     @Override
@@ -58,7 +60,7 @@ public class ApbDeploymentBuilderFactory implements DeploymentScenarioBuilderFac
 
     @Override
     public ClusteredWorkbenchRuntimeSmartRouterTwoKieServersTwoDatabasesScenarioBuilder getClusteredWorkbenchRuntimeSmartRouterTwoKieServersTwoDatabasesScenarioBuilder() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return new ClusteredWorkbenchRuntimeSmartRouterTwoKieServersTwoDatabasesScenarioBuilderApb();
     }
 
     @Override

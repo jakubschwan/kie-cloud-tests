@@ -66,4 +66,5 @@ public class OpenShiftApbConstants {
     public static final String BUSINESS_CENTRAL_MAVEN_PASSWORD = "";
     public static final String BUSINESS_CENTRAL_MAVEN_SERVICE = "";
 
+    public static final String DEFAULT_PASSWORD = "";
 }
