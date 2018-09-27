@@ -121,7 +121,13 @@ public class ProjectImpl implements Project {
         args.add("--extra-vars");
         args.add(formatExtraVars(extraVars));
 
+        logger.info("Executing command: oc " + getApbCommand(args));
         oc.executeCommand("APB failed.", args.toArray(new String[args.size()]));
+    }
+    private String getApbCommand(List<String> args) {
+        String out = "";
+        out = args.stream().map((arg) -> arg + " ").reduce(out, String::concat);
+        return out;
     }
 
     private String formatExtraVars(Map<String, String> extraVars) {
