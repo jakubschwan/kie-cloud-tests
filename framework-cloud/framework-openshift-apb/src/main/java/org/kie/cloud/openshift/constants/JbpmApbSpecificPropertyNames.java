@@ -39,7 +39,7 @@ public class JbpmApbSpecificPropertyNames implements ProjectApbSpecificPropertyN
 
     @Override
     public String workbenchHostnameHttp() {
-        return OpenShiftApbConstants.BUSINESS_CENTRAL_HOSTNAME_HTTP;//OpenShiftTemplateConstants.BUSINESS_CENTRAL_HOSTNAME_HTTP;
+        return OpenShiftApbConstants.BUSINESS_CENTRAL_HOSTNAME_HTTP;
     }
 
     @Override
@@ -49,11 +49,11 @@ public class JbpmApbSpecificPropertyNames implements ProjectApbSpecificPropertyN
 
     @Override
     public String workbenchSsoClient() {
-        return OpenShiftApbConstants.SSO_CLIENT;//OpenShiftTemplateConstants.BUSINESS_CENTRAL_SSO_CLIENT;
+        return OpenShiftApbConstants.SSO_CLIENT;
     }
 
     @Override
     public String workbenchSsoSecret() {
-        return OpenShiftApbConstants.SSO_CLIENT_SECRET;//OpenShiftTemplateConstants.BUSINESS_CENTRAL_SSO_SECRET;
+        return OpenShiftApbConstants.SSO_CLIENT_SECRET;
     }
 }

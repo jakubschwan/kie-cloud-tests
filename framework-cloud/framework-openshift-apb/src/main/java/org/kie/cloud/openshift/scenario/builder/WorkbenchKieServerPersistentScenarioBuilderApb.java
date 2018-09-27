@@ -44,8 +44,8 @@ public class WorkbenchKieServerPersistentScenarioBuilderApb implements Workbench
         extraVars.put(OpenShiftApbConstants.KIE_ADMIN_PWD, DeploymentConstants.getWorkbenchPassword());
         extraVars.put(OpenShiftApbConstants.KIE_CONTROLLER_USER, DeploymentConstants.getControllerUser());
         extraVars.put(OpenShiftApbConstants.KIE_CONTROLLER_PWD, DeploymentConstants.getControllerPassword());
-//        extraVars.put(propertyNames.workbenchMavenUserName(), DeploymentConstants.getWorkbenchMavenUser());
-//        extraVars.put(propertyNames.workbenchMavenPassword(), DeploymentConstants.getWorkbenchMavenPassword());
+        //extraVars.put(propertyNames.workbenchMavenUserName(), DeploymentConstants.getWorkbenchMavenUser());
+        //extraVars.put(propertyNames.workbenchMavenPassword(), DeploymentConstants.getWorkbenchMavenPassword());
         extraVars.put(OpenShiftApbConstants.MAVEN_REPO_USER, DeploymentConstants.getWorkbenchUser());
         extraVars.put(OpenShiftApbConstants.MAVEN_REPO_PWD, DeploymentConstants.getWorkbenchPassword());
         extraVars.put(propertyNames.workbenchHttpsSecret(), OpenShiftConstants.getKieApplicationSecretName());
@@ -82,9 +82,9 @@ public class WorkbenchKieServerPersistentScenarioBuilderApb implements Workbench
 
     @Override
     public WorkbenchKieServerPersistentScenarioBuilder withKieServerId(String kieServerId) {
+        throw new UnsupportedOperationException("Not supported yet.");
 //        extraVars.put(OpenShiftApbConstants.KIE_SERVER_ID, kieServerId);
-// TODO
-        return this;
+//        return this;
     }
 
     @Override
@@ -107,20 +107,21 @@ public class WorkbenchKieServerPersistentScenarioBuilderApb implements Workbench
 
     @Override
     public WorkbenchKieServerPersistentScenarioBuilder withHttpsKieServerHostname(String hostname) {
-        //extraVars.put(OpenShiftApbConstants.EXECUTION_SERVER_HOSTNAME_HTTP, hostname);
-        // TODO
-        return this;
+        throw new UnsupportedOperationException("Not supported yet.");
+//        extraVars.put(OpenShiftApbConstants.EXECUTION_SERVER_HOSTNAME_HTTP, hostname);
+//        return this;
     }
 
     @Override
     public WorkbenchKieServerPersistentScenarioBuilder withLdapSettings(LdapSettings ldapSettings) {
-        extraVars.putAll(ldapSettings.getEnvVariables());
-        return this;
+        throw new UnsupportedOperationException("Not supported yet.");
+//        extraVars.putAll(ldapSettings.getEnvVariables());
+//        return this;
     }
 
     @Override
     public WorkbenchKieServerPersistentScenarioBuilder withGitHooksDir(String dir) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        throw new UnsupportedOperationException("Not supported yet.");
     }
 
 }

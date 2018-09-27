@@ -56,7 +56,6 @@ public class WorkbenchKieServerScenarioApb extends OpenShiftScenario implements 
 
         logger.info("Processing template and creating resources from " + OpenShiftTemplate.WORKBENCH_KIE_SERVER.getTemplateUrl().toString());
         extraVars.put(OpenShiftApbConstants.IMAGE_STREAM_NAMESPACE, projectName);
-        //project.processTemplateAndCreateResources(OpenShiftTemplate.WORKBENCH_KIE_SERVER.getTemplateUrl(), extraVars);
         project.processApbRun("docker-registry.default.svc:5000/jschwan-test/rhpam-apb", extraVars);
 
         workbenchDeployment = new WorkbenchDeploymentImpl(project);

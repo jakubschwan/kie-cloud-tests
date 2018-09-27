@@ -65,7 +65,6 @@ public class ClusteredWorkbenchRuntimeSmartRouterTwoKieServersTwoDatabasesScenar
         logger.info("Processing template and creating resources from " + OpenShiftTemplate.CLUSTERED_CONSOLE_SMARTROUTER_TWO_KIE_SERVERS_TWO_DATABASES.getTemplateUrl().toString());
         extraVars.put(OpenShiftApbConstants.IMAGE_STREAM_NAMESPACE, projectName);
 //        extraVars.put(OpenShiftApbConstants.POSTGRESQL_IMAGE_STREAM_NAMESPACE, projectName);
-        //project.processTemplateAndCreateResources(OpenShiftTemplate.CLUSTERED_CONSOLE_SMARTROUTER_TWO_KIE_SERVERS_TWO_DATABASES.getTemplateUrl(), extraVars);
         project.processApbRun("docker-registry.default.svc:5000/jschwan-test/rhpam-apb", extraVars);
 
         workbenchRuntimeDeployment = createWorkbenchRuntimeDeployment(project);

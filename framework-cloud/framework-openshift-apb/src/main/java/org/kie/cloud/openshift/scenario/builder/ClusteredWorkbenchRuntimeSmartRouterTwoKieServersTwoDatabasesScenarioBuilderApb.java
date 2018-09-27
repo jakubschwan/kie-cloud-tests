@@ -61,13 +61,15 @@ public class ClusteredWorkbenchRuntimeSmartRouterTwoKieServersTwoDatabasesScenar
 
     @Override
     public ClusteredWorkbenchRuntimeSmartRouterTwoKieServersTwoDatabasesScenarioBuilder withSmartRouterId(String smartRouterId) {
-//        extraVars.put(OpenShiftApbConstants.KIE_SERVER_ROUTER_ID, smartRouterId);
-        return this;
+        throw new UnsupportedOperationException("Not supported yet.");
+        //extraVars.put(OpenShiftApbConstants.KIE_SERVER_ROUTER_ID, smartRouterId);
+        //return this;
     }
 
     @Override
     public ClusteredWorkbenchRuntimeSmartRouterTwoKieServersTwoDatabasesScenarioBuilder withTimerServiceDataStoreRefreshInterval(Duration timerServiceDataStoreRefreshInterval) {
-//        extraVars.put(OpenShiftApbConstants.TIMER_SERVICE_DATA_STORE_REFRESH_INTERVAL, Long.toString(timerServiceDataStoreRefreshInterval.toMillis()));
-        return this;
+        throw new UnsupportedOperationException("Not supported yet.");
+        //extraVars.put(OpenShiftApbConstants.TIMER_SERVICE_DATA_STORE_REFRESH_INTERVAL, Long.toString(timerServiceDataStoreRefreshInterval.toMillis()));
+        //return this;
     }
 }

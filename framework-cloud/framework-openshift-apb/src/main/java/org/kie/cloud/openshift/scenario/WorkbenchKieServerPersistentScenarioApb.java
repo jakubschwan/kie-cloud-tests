@@ -33,7 +33,6 @@ import org.kie.cloud.common.provider.KieServerControllerClientProvider;
 import org.kie.cloud.openshift.constants.OpenShiftApbConstants;
 import org.kie.cloud.openshift.deployment.KieServerDeploymentImpl;
 import org.kie.cloud.openshift.deployment.WorkbenchDeploymentImpl;
-//import org.kie.cloud.openshift.template.OpenShiftTemplate;
 import org.kie.cloud.openshift.util.SsoDeployer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -67,13 +66,9 @@ public class WorkbenchKieServerPersistentScenarioApb extends OpenShiftScenario i
             extraVars.put(OpenShiftApbConstants.SSO_CLIENT_SECRET, "kie--client-secret");
         }
 
-//        logger.info("Processing template and creating resources from " + OpenShiftTemplate.WORKBENCH_KIE_SERVER_PERSISTENT.getTemplateUrl().toString());
-//        extraVars.put(OpenShiftTemplateConstants.IMAGE_STREAM_NAMESPACE, projectName);
-//        project.processTemplateAndCreateResources(OpenShiftTemplate.WORKBENCH_KIE_SERVER_PERSISTENT.getTemplateUrl(), extraVars);
         logger.info("Processesin APB image plan: " + extraVars.get(OpenShiftApbConstants.APB_PLAN_ID));
         extraVars.put(OpenShiftApbConstants.IMAGE_STREAM_NAMESPACE, projectName);
         project.processApbRun("docker-registry.default.svc:5000/jschwan-test/rhpam-apb", extraVars);
-        // TODO
 
         workbenchDeployment = new WorkbenchDeploymentImpl(project);
         workbenchDeployment.setUsername(DeploymentConstants.getWorkbenchUser());

@@ -32,6 +32,8 @@ public class OpenShiftApbConstants {
     public static final String BUSINESS_CENTRAL_HOSTNAME_HTTP = "apb_businesscentral_hostname";
     public static final String BUSINESS_CENTRAL_HOSTNAME_HTTPS = "";
     public static final String APB_KIESERVER_HOSTNAME = "apb_kieserver_hostname";
+    public static final String APB_KIESERVER_HOSTNAME_HTTP = "";
+    public static final String APB_KIESERVER_HOSTNAME_HTTPS = "";
     public static final String APB_KIESERVER_IMAGE_STREAM_NAME = "apb_kieserver_image_stream_name";
     public static final String APB_BUSINESSCENTRAL_SECRET_NAME = "apb_businesscentral_secret_name";
     public static final String APB_KIESERVER_SECRET_NAME = "apb_kieserver_secret_name";
@@ -67,4 +69,8 @@ public class OpenShiftApbConstants {
     public static final String BUSINESS_CENTRAL_MAVEN_SERVICE = "";
 
     public static final String DEFAULT_PASSWORD = "";
+
+    public static final String KIE_SERVER_ID = "";
+    public static final String KIE_SERVER_ROUTER_ID = "";
+    public static final String TIMER_SERVICE_DATA_STORE_REFRESH_INTERVAL = ""; // ??
 }

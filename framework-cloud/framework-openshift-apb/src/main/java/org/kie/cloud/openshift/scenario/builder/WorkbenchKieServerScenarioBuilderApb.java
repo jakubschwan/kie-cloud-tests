@@ -54,7 +54,8 @@ public class WorkbenchKieServerScenarioBuilderApb implements WorkbenchKieServerS
 
     @Override
     public WorkbenchKieServerScenarioBuilder withKieServerId(String kieServerId) {
+        throw new UnsupportedOperationException("Not supported yet.");
 //        extraVars.put(OpenShiftApbConstants.KIE_SERVER_ID, kieServerId);
-        return this;
+//        return this;
     }
 }
