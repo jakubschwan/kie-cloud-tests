@@ -19,9 +19,9 @@ public class OpenShiftApbConstants {
 
     //extra-vars for APB image
     public static final String APB_PLAN_ID = "_apb_plan_id";
-    public static final String APB_IMAGE_STREAM_TAG = "apb_image_stream_tag";
     public static final String APB_KIESERVER_DB_TYPE = "apb_kieserver_db_type";
 
+    // Pre-provisioned users
     public static final String KIE_ADMIN_USER = "apb_kie_admin_user";
     public static final String KIE_ADMIN_PWD = "apb_kie_admin_pwd";
     public static final String KIE_SERVER_USER = "apb_kieserver_user";
@@ -29,11 +29,11 @@ public class OpenShiftApbConstants {
     public static final String KIE_CONTROLLER_USER = "apb_controller_user";
     public static final String KIE_CONTROLLER_PWD = "apb_controller_pwd";
 
-    public static final String BUSINESS_CENTRAL_HOSTNAME_HTTP = "apb_businesscentral_hostname";
-    public static final String BUSINESS_CENTRAL_HOSTNAME_HTTPS = "";
-    public static final String APB_KIESERVER_HOSTNAME = "apb_kieserver_hostname";
+    public static final String BUSINESS_CENTRAL_HOSTNAME_HTTP = "";
+    public static final String BUSINESS_CENTRAL_HOSTNAME_HTTPS = "apb_businesscentral_hostname";
+    public static final String APB_KIESERVER_HOSTNAME = "apb_kieserver_hostname"; // TODO remove this after added HTTP prop.
     public static final String APB_KIESERVER_HOSTNAME_HTTP = "";
-    public static final String APB_KIESERVER_HOSTNAME_HTTPS = "";
+    public static final String APB_KIESERVER_HOSTNAME_HTTPS = "apb_kieserver_hostname";
     public static final String APB_KIESERVER_IMAGE_STREAM_NAME = "apb_kieserver_image_stream_name";
     public static final String APB_BUSINESSCENTRAL_SECRET_NAME = "apb_businesscentral_secret_name";
     public static final String APB_KIESERVER_SECRET_NAME = "apb_kieserver_secret_name";
@@ -55,22 +55,42 @@ public class OpenShiftApbConstants {
     public static final String SSO_PWD = "apb_sso_pwd";
     public static final String SSO_DISABLE_SSL_CERT_VALIDATION = "apb_sso_disable_ssl_cert_validation";
 
-    //external maven repo
+    // Maven repositories
     public static final String MAVEN_REPO_URL = "apb_maven_repo_url";
     public static final String MAVEN_REPO_USER = "apb_maven_repo_user";
     public static final String MAVEN_REPO_PWD = "apb_maven_repo_pwd";
-
-    public static final String IMAGE_STREAM_NAMESPACE = "image_stream_namespace";
-
-    public static final String NAMESPACE = "namespace";
-
     public static final String BUSINESS_CENTRAL_MAVEN_USERNAME = "";
     public static final String BUSINESS_CENTRAL_MAVEN_PASSWORD = "";
     public static final String BUSINESS_CENTRAL_MAVEN_SERVICE = "";
+
+    // ImageStreams
+    public static final String IMAGE_STREAM_NAMESPACE = "image_stream_namespace"; // Need to hard replace this value
+    public static final String APB_IMAGE_STREAM_TAG = "apb_image_stream_tag";
 
     public static final String DEFAULT_PASSWORD = "";
 
     public static final String KIE_SERVER_ID = "";
     public static final String KIE_SERVER_ROUTER_ID = "";
     public static final String TIMER_SERVICE_DATA_STORE_REFRESH_INTERVAL = ""; // ??
+
+    // HA
+    public static final String APB_REPLICAS = "apb_replicas";
+
+    // External DB
+    public static final String APB_KIESERVER_EXTERNAL_DB_DRIVER="apb_kieserver_external_db_driver";
+    public static final String APB_KIESERVER_EXTERNAL_DB_DIALECT = "apb_kieserver_external_db_dialect";
+    public static final String APB_KIESERVER_EXTERNAL_DB_HOST = "apb_kieserver_external_db_host";
+    public static final String APB_KIESERVER_EXTERNAL_DB_PORT = "apb_kieserver_external_db_port";
+    public static final String APB_KIESERVER_EXTERNAL_DB_NAME = "apb_kieserver_external_db_name";
+    public static final String APB_KIESERVER_EXTERNAL_DB_URL = "apb_kieserver_external_db_url";
+
+    // SSO
+    public static final String APB_SSO_URL = "apb_sso_url";
+    public static final String APB_SSO_REALM = "apb_sso_realm";
+    public static final String APB_SSO_CLIENT = "apb_sso_client";
+    public static final String APB_SSO_CLIENT_SECRET = "apb_sso_client_secret";
+    public static final String APB_SSO_USER = "apb_sso_user";
+    public static final String APB_SSO_PWD = "apb_sso_pwd";
+    public static final String APB_SSO_DISABLE_SSL_CERT_VALIDATION = "apb_sso_disable_ssl_cert_validation";
+
 }
