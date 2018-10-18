@@ -105,21 +105,42 @@ public class ProjectImpl implements Project {
 
         OpenShiftBinaryClient oc = OpenShiftBinaryClient.getInstance();
         oc.project(projectName);
-        oc.executeCommand("Role binding failed.", "create", "rolebinding", "default", "--clusterrole=admin", "--serviceaccount=" + projectName + ":default");
+        oc.executeCommand("Creating serviceaccount failed.", "create", "serviceaccount", "apb");
+        oc.executeCommand("Role binding failed.", "create", "rolebinding", "apb", "--clusterrole=admin", "--serviceaccount=" + projectName + ":apb");
 
         List<String> args = new ArrayList<>();
         args.add("run");
         args.add(podName);
-        args.add("--namespace=" + projectName);
+        //args.add("--namespace=" + projectName);
+        args.add("--env=\"POD_NAME=" + podName + "\"");
+        args.add("--env=\"POD_NAMESPACE=" + projectName + "\"");
         args.add("--image=" + image);
         args.add("--restart=Never");
         args.add("--attach=true");
-        args.add("--env=\"POD_NAME=" + podName + "\"");
-        args.add("--env=\"POD_NAMESPACE=" + projectName + "\"");
+        args.add("--serviceaccount=apb");
         args.add("--");
         args.add("provision");
+        /*
+        extraVars.forEach((String key, String value) -> {
+            args.add("-e");
+            args.add(key+"="+value);
+        });
+        */
+        /*
+        args.add("-e");
+        args.add("namespace="+projectName);
+        args.add("-e");
+        args.add("cluster=openshift");
+        */
         args.add("--extra-vars");
         args.add(formatExtraVars(extraVars));
+
+        /*
+        TODO working cmd
+
+        oc run jschwan-cmd-apb-pod --env="POD_NAME=jschwan-cmd-apb-pod" --env="POD_NAMESPACE=jschwan-cmd" --image=docker-registry.default.svc:5000/openshift/jschwan-rhpam71-apb@sha256:46ac2bdc2698338347d65f0f2acce3b1e132a6a944aa147cb78c3972f56230a2 --restart=Never --attach=true --serviceaccount=apb -- provision --extra-vars '{ "apb_kie_admin_pwd": "adminUser1!", "_apb_plan_id": "authoring", "apb_kieserver_db_type": "H2", "apb_maven_repo_url": "http://nexus.project.openshiftdomain/repository/maven-snapshots", "apb_kieserver_user": "yoda", "apb_image_stream_tag": "1.0", "apb_maven_repo_pwd": "admin123", "apb_controller_user": "controllerUser", "apb_controller_pwd": "controllerUser1!", "apb_kieserver_pwd": "usetheforce123@", "apb_kie_admin_user": "adminUser", "apb_maven_repo_user": "admin", "namespace": "jschwan-cmd" }' 
+
+        */
 
         logger.info("Executing command: oc " + getApbCommand(args));
         oc.executeCommand("APB failed.", args.toArray(new String[args.size()]));

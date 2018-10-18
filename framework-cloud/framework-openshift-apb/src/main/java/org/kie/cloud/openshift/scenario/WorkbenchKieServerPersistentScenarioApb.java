@@ -67,8 +67,9 @@ public class WorkbenchKieServerPersistentScenarioApb extends OpenShiftScenario i
         }
 
         logger.info("Processesin APB image plan: " + extraVars.get(OpenShiftApbConstants.APB_PLAN_ID));
-        extraVars.put(OpenShiftApbConstants.IMAGE_STREAM_NAMESPACE, projectName);
-        project.processApbRun("docker-registry.default.svc:5000/jschwan-test/rhpam-apb", extraVars);
+        //extraVars.put(OpenShiftApbConstants.IMAGE_STREAM_NAMESPACE, projectName);
+        extraVars.put("namespace", projectName);
+        project.processApbRun("docker-registry.default.svc:5000/openshift/jschwan-rhpam71-apb@sha256:46ac2bdc2698338347d65f0f2acce3b1e132a6a944aa147cb78c3972f56230a2", extraVars);
 
         workbenchDeployment = new WorkbenchDeploymentImpl(project);
         workbenchDeployment.setUsername(DeploymentConstants.getWorkbenchUser());
