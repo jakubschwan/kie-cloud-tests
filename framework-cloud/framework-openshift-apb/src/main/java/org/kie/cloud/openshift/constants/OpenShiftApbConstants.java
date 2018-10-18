@@ -38,14 +38,6 @@ public class OpenShiftApbConstants {
     public static final String APB_BUSINESSCENTRAL_SECRET_NAME = "apb_businesscentral_secret_name";
     public static final String APB_KIESERVER_SECRET_NAME = "apb_kieserver_secret_name";
 
-    // Kie Server External Database
-    public static final String APB_KIESERVER_EXTERNAL_DB_DRIVER = "apb_kieserver_external_db_driver";
-    public static final String APB_KIESERVER_EXTERNAL_DB_DIALECT = "apb_kieserver_external_db_dialect";
-    public static final String APB_KIESERVER_EXTERNAL_DB_HOST = "apb_kieserver_external_db_host";
-    public static final String APB_KIESERVER_EXTERNAL_DB_PORT = "apb_kieserver_external_db_port";
-    public static final String APB_KIESERVER_EXTERNAL_DB_NAME = "apb_kieserver_external_db_name";
-    public static final String APB_KIESERVER_EXTERNAL_DB_URL = "apb_kieserver_external_db_url";
-
     // RH-SSO
     public static final String SSO_URL = "apb_sso_url";
     public static final String SSO_REALM = "apb_sso_realm";
