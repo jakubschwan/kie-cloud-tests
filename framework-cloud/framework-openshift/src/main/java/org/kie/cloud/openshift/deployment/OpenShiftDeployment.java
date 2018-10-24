@@ -42,8 +42,12 @@ import org.kie.cloud.api.protocol.Protocol;
 import org.kie.cloud.openshift.constants.OpenShiftConstants;
 import org.kie.cloud.openshift.resource.OpenShiftResourceConstants;
 import org.kie.cloud.openshift.resource.Project;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public abstract class OpenShiftDeployment implements Deployment {
+
+    private static final Logger logger = LoggerFactory.getLogger(OpenShiftDeployment.class);
 
     private OpenShiftUtil util;
     private Project project;
@@ -176,6 +180,13 @@ public abstract class OpenShiftDeployment implements Deployment {
     protected URL getHttpRouteUrl(String serviceName) {
         try {
             return getRouteUri(Protocol.http, serviceName).toURL();
+        } catch (RuntimeException e) {
+            if (e.getMessage().contains(Protocol.http+" route leading to service "+serviceName + " not found")) {
+                logger.debug("Http route not found. Try to find Https route instead.");
+                return getHttpsRouteUrl(serviceName);
+            } else {
+                throw new RuntimeException(e);
+            }
         } catch (MalformedURLException e) {
             throw new RuntimeException(e);
         }
