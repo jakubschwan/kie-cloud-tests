@@ -50,6 +50,13 @@ public class WorkbenchKieServerPersistentScenarioBuilderApb implements Workbench
         extraVars.put(OpenShiftApbConstants.MAVEN_REPO_PWD, DeploymentConstants.getWorkbenchPassword());
         //extraVars.put(propertyNames.workbenchHttpsSecret(), OpenShiftConstants.getKieApplicationSecretName());
         //extraVars.put(OpenShiftApbConstants.APB_KIESERVER_SECRET_NAME, OpenShiftConstants.getKieApplicationSecretName());
+
+        /*
+        Add extra var to enable HTTP routes for custom apb image
+        TODO: resolve do not work yet
+        */
+        //HTTP param
+        extraVars.put("apb_hostname_http_enable", "true");
     }
 
     @Override
