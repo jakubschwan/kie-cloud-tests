@@ -62,10 +62,11 @@ public class ClusteredWorkbenchRuntimeSmartRouterTwoKieServersTwoDatabasesScenar
     public void deploy() {
         super.deploy();
 
-        logger.info("Processing template and creating resources from " + OpenShiftTemplate.CLUSTERED_CONSOLE_SMARTROUTER_TWO_KIE_SERVERS_TWO_DATABASES.getTemplateUrl().toString());
-        extraVars.put(OpenShiftApbConstants.IMAGE_STREAM_NAMESPACE, projectName);
-//        extraVars.put(OpenShiftApbConstants.POSTGRESQL_IMAGE_STREAM_NAMESPACE, projectName);
-        project.processApbRun("docker-registry.default.svc:5000/jschwan-test/rhpam-apb", extraVars);
+        logger.info("Processesin APB image plan: " + extraVars.get(OpenShiftApbConstants.APB_PLAN_ID));
+        //extraVars.put(OpenShiftApbConstants.IMAGE_STREAM_NAMESPACE, projectName);
+        extraVars.put("namespace", projectName);
+        extraVars.put("cluster", "openshift");
+        project.processApbRun("docker-registry.default.svc:5000/openshift/rhpam71-apb", extraVars);
 
         workbenchRuntimeDeployment = createWorkbenchRuntimeDeployment(project);
         workbenchRuntimeDeployment.scale(1);

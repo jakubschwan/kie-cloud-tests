@@ -70,7 +70,7 @@ public class WorkbenchKieServerPersistentScenarioApb extends OpenShiftScenario i
         //extraVars.put(OpenShiftApbConstants.IMAGE_STREAM_NAMESPACE, projectName);
         extraVars.put("namespace", projectName);
         extraVars.put("cluster", "openshift");
-        project.processApbRun("docker-registry.default.svc:5000/openshift/qe-build-rhpam71-apb", extraVars);
+        project.processApbRun("docker-registry.default.svc:5000/openshift/rhpam71-apb", extraVars);
 
         workbenchDeployment = new WorkbenchDeploymentImpl(project);
         workbenchDeployment.setUsername(DeploymentConstants.getWorkbenchUser());
