@@ -85,4 +85,10 @@ public class OpenShiftApbConstants {
     public static final String APB_SSO_PWD = "apb_sso_pwd";
     public static final String APB_SSO_DISABLE_SSL_CERT_VALIDATION = "apb_sso_disable_ssl_cert_validation";
 
+    //Artifact source (S2I)
+    public static final String KIE_SERVER_CONTAINER_DEPLOYMENT = "apb_kieserver_container_deployment";
+    public static final String SOURCE_REPOSITORY_URL = "apb_kieserver_source_url";
+    public static final String SOURCE_REPOSITORY_REF = "apb_kieserver_source_ref";
+    public static final String CONTEXT_DIR = "apb_kieserver_source_context";
+    public static final String ARTIFACT_DIR = "apb_kieserver_artifact_dir";
 }
