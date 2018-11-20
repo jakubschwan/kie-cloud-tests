@@ -53,7 +53,7 @@ public abstract class AbstractCloudIntegrationTest {
     // Path relative to target/classes folder
     protected static final String PROJECT_SOURCE_FOLDER = "/kjars-sources";
 
-    protected static final DeploymentScenarioBuilderFactory deploymentScenarioFactory = DeploymentScenarioBuilderFactoryLoader.getInstance(System.getProperty("openshift.impl", "openshift-templates"));
+    protected static final DeploymentScenarioBuilderFactory deploymentScenarioFactory = DeploymentScenarioBuilderFactoryLoader.getInstance();
 
     protected static final GitProvider gitProvider = new GitProviderService().createGitProvider();
 }

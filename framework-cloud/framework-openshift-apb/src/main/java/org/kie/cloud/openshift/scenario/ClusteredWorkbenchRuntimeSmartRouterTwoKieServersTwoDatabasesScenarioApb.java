@@ -26,6 +26,7 @@ import org.kie.cloud.api.deployment.DatabaseDeployment;
 import org.kie.cloud.api.deployment.Deployment;
 import org.kie.cloud.api.deployment.KieServerDeployment;
 import org.kie.cloud.api.deployment.SmartRouterDeployment;
+import org.kie.cloud.api.deployment.SsoDeployment;
 import org.kie.cloud.api.deployment.WorkbenchDeployment;
 import org.kie.cloud.api.deployment.constants.DeploymentConstants;
 import org.kie.cloud.api.scenario.ClusteredWorkbenchRuntimeSmartRouterTwoKieServersTwoDatabasesScenario;
@@ -37,7 +38,6 @@ import org.kie.cloud.openshift.deployment.KieServerDeploymentImpl;
 import org.kie.cloud.openshift.deployment.SmartRouterDeploymentImpl;
 import org.kie.cloud.openshift.deployment.WorkbenchRuntimeDeploymentImpl;
 import org.kie.cloud.openshift.resource.Project;
-import org.kie.cloud.openshift.template.OpenShiftTemplate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -193,4 +193,9 @@ public class ClusteredWorkbenchRuntimeSmartRouterTwoKieServersTwoDatabasesScenar
     public List<ControllerDeployment> getControllerDeployments() {
         return Collections.emptyList();
     }
+
+    @Override
+    public SsoDeployment getSsoDeployment() {
+        throw new UnsupportedOperationException("Not supported yet.");
+	}
 }

@@ -21,6 +21,7 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
+
 import org.kie.cloud.api.deployment.ControllerDeployment;
 import org.kie.cloud.api.deployment.Deployment;
 import org.kie.cloud.api.deployment.KieServerDeployment;
@@ -58,7 +59,7 @@ public class WorkbenchKieServerPersistentScenarioApb extends OpenShiftScenario i
         super.deploy();
 
         if (deploySso) {
-            ssoDeployment = SsoDeployer.deploy(project, extraVars);
+            ssoDeployment = SsoDeployer.deploy(project);
 
             extraVars.put(OpenShiftApbConstants.SSO_URL, SsoDeployer.createSsoEnvVariable(ssoDeployment.getUrl().toString()));
             extraVars.put(OpenShiftApbConstants.SSO_REALM, DeploymentConstants.getSsoRealm());

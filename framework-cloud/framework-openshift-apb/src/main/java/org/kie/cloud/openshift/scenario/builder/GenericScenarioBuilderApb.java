@@ -22,6 +22,7 @@ import java.util.List;
 import org.kie.cloud.api.scenario.GenericScenario;
 import org.kie.cloud.api.scenario.builder.GenericScenarioBuilder;
 import org.kie.cloud.api.settings.DeploymentSettings;
+import org.kie.cloud.api.settings.LdapSettings;
 import org.kie.cloud.openshift.scenario.GenericScenarioApb;
 
 public class GenericScenarioBuilderApb implements GenericScenarioBuilder {
@@ -73,4 +74,14 @@ public class GenericScenarioBuilderApb implements GenericScenarioBuilder {
         controllerSettingsList.add(controllerSettings);
         return this;
     }
+
+    @Override
+    public GenericScenarioBuilder withSso() {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    @Override
+    public GenericScenarioBuilder withLdapSettings(LdapSettings ldapSettings) {
+        throw new UnsupportedOperationException("Not supported yet.");
+	}
 }

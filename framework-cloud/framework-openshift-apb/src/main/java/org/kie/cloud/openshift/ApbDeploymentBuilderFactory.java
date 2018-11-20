@@ -24,7 +24,6 @@ import org.kie.cloud.api.scenario.builder.KieServerWithDatabaseScenarioBuilder;
 import org.kie.cloud.api.scenario.builder.KieServerWithExternalDatabaseScenarioBuilder;
 import org.kie.cloud.api.scenario.builder.WorkbenchKieServerPersistentScenarioBuilder;
 import org.kie.cloud.api.scenario.builder.WorkbenchKieServerScenarioBuilder;
-import org.kie.cloud.api.scenario.builder.WorkbenchRuntimeSmartRouterTwoKieServersTwoDatabasesScenarioBuilder;
 import org.kie.cloud.api.settings.builder.ControllerSettingsBuilder;
 import org.kie.cloud.api.settings.builder.KieServerS2ISettingsBuilder;
 import org.kie.cloud.api.settings.builder.KieServerSettingsBuilder;
@@ -35,6 +34,8 @@ import org.kie.cloud.api.settings.builder.WorkbenchSettingsBuilder;
 import org.kie.cloud.openshift.scenario.builder.ClusteredWorkbenchRuntimeSmartRouterTwoKieServersTwoDatabasesScenarioBuilderApb;
 import org.kie.cloud.openshift.scenario.builder.WorkbenchKieServerPersistentScenarioBuilderApb;
 import org.kie.cloud.openshift.scenario.builder.WorkbenchKieServerScenarioBuilderApb;
+
+import cz.xtf.openshift.OpenShiftUtil;
 
 public class ApbDeploymentBuilderFactory implements DeploymentScenarioBuilderFactory {
 
@@ -61,11 +62,6 @@ public class ApbDeploymentBuilderFactory implements DeploymentScenarioBuilderFac
     @Override
     public ClusteredWorkbenchRuntimeSmartRouterTwoKieServersTwoDatabasesScenarioBuilder getClusteredWorkbenchRuntimeSmartRouterTwoKieServersTwoDatabasesScenarioBuilder() {
         return new ClusteredWorkbenchRuntimeSmartRouterTwoKieServersTwoDatabasesScenarioBuilderApb();
-    }
-
-    @Override
-    public WorkbenchRuntimeSmartRouterTwoKieServersTwoDatabasesScenarioBuilder getWorkbenchRuntimeSmartRouterTwoKieServersTwoDatabasesScenarioBuilder() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
@@ -140,7 +136,9 @@ public class ApbDeploymentBuilderFactory implements DeploymentScenarioBuilderFac
 
     @Override
     public void deleteNamespace(String namespace) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        try (OpenShiftUtil util = OpenShiftController.getOpenShiftUtil(namespace)) {
+            util.deleteProject();
+        }
     }
 
     @Override

@@ -21,19 +21,18 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
-import org.kie.cloud.api.deployment.ControllerDeployment;
 
+import org.kie.cloud.api.deployment.ControllerDeployment;
 import org.kie.cloud.api.deployment.Deployment;
 import org.kie.cloud.api.deployment.KieServerDeployment;
 import org.kie.cloud.api.deployment.SmartRouterDeployment;
 import org.kie.cloud.api.deployment.WorkbenchDeployment;
-import org.kie.cloud.api.deployment.constants.DeploymentConstants;
 import org.kie.cloud.api.scenario.WorkbenchKieServerScenario;
 import org.kie.cloud.common.provider.KieServerControllerClientProvider;
+import org.kie.cloud.openshift.constants.ApbConstants;
 import org.kie.cloud.openshift.constants.OpenShiftApbConstants;
 import org.kie.cloud.openshift.deployment.KieServerDeploymentImpl;
 import org.kie.cloud.openshift.deployment.WorkbenchDeploymentImpl;
-import org.kie.cloud.openshift.template.OpenShiftTemplate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -61,12 +60,12 @@ public class WorkbenchKieServerScenarioApb extends OpenShiftScenario implements 
         project.processApbRun("docker-registry.default.svc:5000/openshift/rhpam71-apb", extraVars);
 
         workbenchDeployment = new WorkbenchDeploymentImpl(project);
-        workbenchDeployment.setUsername(DeploymentConstants.getWorkbenchUser());
-        workbenchDeployment.setPassword(extraVars.get(OpenShiftApbConstants.DEFAULT_PASSWORD));
+        workbenchDeployment.setUsername(ApbConstants.DefaultUser.KIE_ADMIN);
+        workbenchDeployment.setPassword(ApbConstants.DefaultUser.PASSWORD);
 
         kieServerDeployment = new KieServerDeploymentImpl(project);
-        kieServerDeployment.setUsername(DeploymentConstants.getKieServerUser());
-        kieServerDeployment.setPassword(extraVars.get(OpenShiftApbConstants.DEFAULT_PASSWORD));
+        kieServerDeployment.setUsername(ApbConstants.DefaultUser.KIE_SERVER_USER);
+        kieServerDeployment.setPassword(ApbConstants.DefaultUser.PASSWORD);
 
         logger.info("Waiting for Workbench deployment to become ready.");
         workbenchDeployment.waitForScale();

@@ -17,13 +17,13 @@ package org.kie.cloud.openshift.scenario.builder;
 
 import java.util.HashMap;
 import java.util.Map;
+
 import org.kie.cloud.api.deployment.constants.DeploymentConstants;
 import org.kie.cloud.api.scenario.WorkbenchKieServerPersistentScenario;
 import org.kie.cloud.api.scenario.builder.WorkbenchKieServerPersistentScenarioBuilder;
 import org.kie.cloud.api.settings.LdapSettings;
 import org.kie.cloud.openshift.constants.ApbConstants;
 import org.kie.cloud.openshift.constants.OpenShiftApbConstants;
-import org.kie.cloud.openshift.constants.OpenShiftConstants;
 import org.kie.cloud.openshift.constants.ProjectApbSpecificPropertyNames;
 import org.kie.cloud.openshift.scenario.WorkbenchKieServerPersistentScenarioApb;
 

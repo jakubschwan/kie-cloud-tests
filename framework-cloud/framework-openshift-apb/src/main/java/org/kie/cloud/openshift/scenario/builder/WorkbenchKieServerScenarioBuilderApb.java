@@ -15,10 +15,10 @@
 
 package org.kie.cloud.openshift.scenario.builder;
 
+import java.time.Duration;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.kie.cloud.api.deployment.constants.DeploymentConstants;
 import org.kie.cloud.api.scenario.WorkbenchKieServerScenario;
 import org.kie.cloud.api.scenario.builder.WorkbenchKieServerScenarioBuilder;
 import org.kie.cloud.openshift.constants.ApbConstants;
@@ -31,12 +31,6 @@ public class WorkbenchKieServerScenarioBuilderApb implements WorkbenchKieServerS
 
     public WorkbenchKieServerScenarioBuilderApb() {
         extraVars.put(OpenShiftApbConstants.APB_PLAN_ID, ApbConstants.Plans.TRIAL);
-        extraVars.put(OpenShiftApbConstants.APB_KIESERVER_DB_TYPE, ApbConstants.DbType.H2);
-        
-        extraVars.put(OpenShiftApbConstants.KIE_SERVER_USER, DeploymentConstants.getKieServerUser());
-        extraVars.put(OpenShiftApbConstants.KIE_ADMIN_USER, DeploymentConstants.getWorkbenchUser());
-
-        extraVars.put(OpenShiftApbConstants.DEFAULT_PASSWORD, DeploymentConstants.getWorkbenchPassword());
     }
 
     @Override
@@ -56,6 +50,31 @@ public class WorkbenchKieServerScenarioBuilderApb implements WorkbenchKieServerS
     public WorkbenchKieServerScenarioBuilder withKieServerId(String kieServerId) {
         throw new UnsupportedOperationException("Not supported yet.");
 //        extraVars.put(OpenShiftApbConstants.KIE_SERVER_ID, kieServerId);
-//        return this;
+//   return this;
     }
+
+    @Override
+    public WorkbenchKieServerScenarioBuilder withAccessControlAllowOrigin(String url) {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    @Override
+    public WorkbenchKieServerScenarioBuilder withAccessControlAllowMethods(String... allowedMethods) {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    @Override
+    public WorkbenchKieServerScenarioBuilder withAccessControlAllowHeaders(String... allowedHeaders) {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    @Override
+    public WorkbenchKieServerScenarioBuilder withAccessControlAllowCredentials(boolean allowCredentials) {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    @Override
+    public WorkbenchKieServerScenarioBuilder withAccessControlMaxAge(Duration maxAge) {
+        throw new UnsupportedOperationException("Not supported yet.");
+	}
 }
