@@ -31,6 +31,8 @@ public class WorkbenchKieServerScenarioBuilderApb implements WorkbenchKieServerS
 
     public WorkbenchKieServerScenarioBuilderApb() {
         extraVars.put(OpenShiftApbConstants.APB_PLAN_ID, ApbConstants.Plans.TRIAL);
+        extraVars.put(OpenShiftApbConstants.APB_KIESERVER_DB_TYPE, ApbConstants.DbType.H2);
+        extraVars.put(OpenShiftApbConstants.APB_IMAGE_STREAM_TAG, "1.1");
     }
 
     @Override
@@ -40,10 +42,11 @@ public class WorkbenchKieServerScenarioBuilderApb implements WorkbenchKieServerS
 
     @Override
     public WorkbenchKieServerScenarioBuilder withExternalMavenRepo(String repoUrl, String repoUserName, String repoPassword) {
-        extraVars.put(OpenShiftApbConstants.MAVEN_REPO_URL, repoUrl);
-        extraVars.put(OpenShiftApbConstants.MAVEN_REPO_USER, repoUserName);
-        extraVars.put(OpenShiftApbConstants.MAVEN_REPO_PWD, repoPassword);
-        return this;
+        throw new UnsupportedOperationException("Not supported yet.");
+        //extraVars.put(OpenShiftApbConstants.MAVEN_REPO_URL, repoUrl);
+        //extraVars.put(OpenShiftApbConstants.MAVEN_REPO_USER, repoUserName);
+        //extraVars.put(OpenShiftApbConstants.MAVEN_REPO_PWD, repoPassword);
+        //return this;
     }
 
     @Override

@@ -35,6 +35,8 @@ public class ApbConstants {
     public class DefaultUser {
         public static final String KIE_ADMIN = "adminUser";
         public static final String KIE_SERVER_USER = "executionUser";
+        public static final String CONTROLLER_USER = "controllerUser";
+        public static final String MAVEN_USER = "mavenUser";
         public static final String PASSWORD = "RedHat";
     }
 }
