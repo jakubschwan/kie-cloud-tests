@@ -34,6 +34,7 @@ public class OpenShiftApbConstants {
     public static final String APB_KIESERVER_HOSTNAME = "apb_kieserver_hostname"; // TODO remove this after added HTTP prop.
     public static final String APB_KIESERVER_HOSTNAME_HTTP = "";
     public static final String APB_KIESERVER_HOSTNAME_HTTPS = "apb_kieserver_hostname";
+    public static final String APB_SMART_ROUTER_HOSTNAME_HTTPS = "apb_smartrouter_hostname";
     public static final String APB_KIESERVER_IMAGE_STREAM_NAME = "apb_kieserver_image_stream_name";
     public static final String APB_BUSINESSCENTRAL_SECRET_NAME = "apb_businesscentral_secret_name";
     public static final String APB_KIESERVER_SECRET_NAME = "apb_kieserver_secret_name";
@@ -51,8 +52,8 @@ public class OpenShiftApbConstants {
     public static final String MAVEN_REPO_URL = "apb_maven_repo_url";
     public static final String MAVEN_REPO_USER = "apb_maven_repo_user";
     public static final String MAVEN_REPO_PWD = "apb_maven_repo_pwd";
-    public static final String BUSINESS_CENTRAL_MAVEN_USERNAME = "";
-    public static final String BUSINESS_CENTRAL_MAVEN_PASSWORD = "";
+    public static final String BUSINESS_CENTRAL_MAVEN_USERNAME = "apb_businesscentral_maven_repo_user";
+    public static final String BUSINESS_CENTRAL_MAVEN_PASSWORD = "apb_businesscentral_maven_repo_pwd";
     public static final String BUSINESS_CENTRAL_MAVEN_SERVICE = "";
 
     // ImageStreams
@@ -67,6 +68,9 @@ public class OpenShiftApbConstants {
 
     // HA
     public static final String APB_REPLICAS = "apb_replicas";
+    public static final String APB_KIESERVER_SETS = "apb_kieserver_sets";
+    public static final String APB_KIESERVER_REPLICAS_STRING = "apb_kieserver_replicas";
+    public static final String APB_SMARTROUTER_REPLICAS_STRING = "apb_smartrouter_replicas";
 
     // External DB
     public static final String APB_KIESERVER_EXTERNAL_DB_DRIVER="apb_kieserver_external_db_driver";

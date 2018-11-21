@@ -25,7 +25,6 @@ import org.kie.cloud.api.scenario.builder.ClusteredWorkbenchRuntimeSmartRouterTw
 import org.kie.cloud.api.settings.LdapSettings;
 import org.kie.cloud.openshift.constants.ApbConstants;
 import org.kie.cloud.openshift.constants.OpenShiftApbConstants;
-import org.kie.cloud.openshift.constants.OpenShiftConstants;
 import org.kie.cloud.openshift.constants.ProjectApbSpecificPropertyNames;
 import org.kie.cloud.openshift.scenario.ClusteredWorkbenchRuntimeSmartRouterTwoKieServersTwoDatabasesScenarioApb;
 
@@ -36,15 +35,19 @@ public class ClusteredWorkbenchRuntimeSmartRouterTwoKieServersTwoDatabasesScenar
     public ClusteredWorkbenchRuntimeSmartRouterTwoKieServersTwoDatabasesScenarioBuilderApb() {
         extraVars.put(OpenShiftApbConstants.APB_PLAN_ID, ApbConstants.Plans.MANAGED);
         extraVars.put(OpenShiftApbConstants.APB_KIESERVER_DB_TYPE, ApbConstants.DbType.POSTGRE);
+        extraVars.put(OpenShiftApbConstants.APB_IMAGE_STREAM_TAG, "1.1");
         
         extraVars.put(OpenShiftApbConstants.KIE_SERVER_USER, DeploymentConstants.getKieServerUser());
         extraVars.put(OpenShiftApbConstants.KIE_SERVER_PWD, DeploymentConstants.getKieServerPassword());
         extraVars.put(OpenShiftApbConstants.KIE_ADMIN_USER, DeploymentConstants.getWorkbenchUser());
         extraVars.put(OpenShiftApbConstants.KIE_ADMIN_PWD, DeploymentConstants.getWorkbenchPassword());
-        extraVars.put(OpenShiftApbConstants.APB_KIESERVER_SECRET_NAME, OpenShiftConstants.getKieApplicationSecretName());
+        //extraVars.put(OpenShiftApbConstants.APB_KIESERVER_SECRET_NAME, OpenShiftConstants.getKieApplicationSecretName());
 
         ProjectApbSpecificPropertyNames propertyNames = ProjectApbSpecificPropertyNames.create();
-        extraVars.put(propertyNames.workbenchHttpsSecret(), OpenShiftConstants.getKieApplicationSecretName());
+        //extraVars.put(propertyNames.workbenchHttpsSecret(), OpenShiftConstants.getKieApplicationSecretName());
+
+        extraVars.put(OpenShiftApbConstants.APB_KIESERVER_SETS, "2");
+        extraVars.put(OpenShiftApbConstants.APB_KIESERVER_REPLICAS_STRING, "2");
     }
 
     @Override
@@ -86,7 +89,9 @@ public class ClusteredWorkbenchRuntimeSmartRouterTwoKieServersTwoDatabasesScenar
 
     @Override
     public ClusteredWorkbenchRuntimeSmartRouterTwoKieServersTwoDatabasesScenarioBuilder withBusinessCentralMavenUser(String user, String password) {
-                throw new UnsupportedOperationException("Not supported yet.");
+        extraVars.put(OpenShiftApbConstants.BUSINESS_CENTRAL_MAVEN_USERNAME, user);
+        extraVars.put(OpenShiftApbConstants.BUSINESS_CENTRAL_MAVEN_PASSWORD, password);
+        return this;
     }
 
     @Override
@@ -96,30 +101,27 @@ public class ClusteredWorkbenchRuntimeSmartRouterTwoKieServersTwoDatabasesScenar
 
     @Override
     public ClusteredWorkbenchRuntimeSmartRouterTwoKieServersTwoDatabasesScenarioBuilder withHttpsWorkbenchHostname(String hostname) {
+        extraVars.put(OpenShiftApbConstants.BUSINESS_CENTRAL_HOSTNAME_HTTPS, hostname);
+        return this;
+    }
+
+    @Override
+    public ClusteredWorkbenchRuntimeSmartRouterTwoKieServersTwoDatabasesScenarioBuilder withHttpKieServer1Hostname(String hostname) {
         throw new UnsupportedOperationException("Not supported yet.");
     }
 
     @Override
-    public ClusteredWorkbenchRuntimeSmartRouterTwoKieServersTwoDatabasesScenarioBuilder withHttpKieServer1Hostname(
-            String hostname) {
-                throw new UnsupportedOperationException("Not supported yet.");
+    public ClusteredWorkbenchRuntimeSmartRouterTwoKieServersTwoDatabasesScenarioBuilder withHttpsKieServer1Hostname(String hostname) {
+        throw new UnsupportedOperationException("Not supported yet.");
     }
 
     @Override
-    public ClusteredWorkbenchRuntimeSmartRouterTwoKieServersTwoDatabasesScenarioBuilder withHttpsKieServer1Hostname(
-            String hostname) {
-                throw new UnsupportedOperationException("Not supported yet.");
+    public ClusteredWorkbenchRuntimeSmartRouterTwoKieServersTwoDatabasesScenarioBuilder withHttpKieServer2Hostname(String hostname) {
+        throw new UnsupportedOperationException("Not supported yet.");
     }
 
     @Override
-    public ClusteredWorkbenchRuntimeSmartRouterTwoKieServersTwoDatabasesScenarioBuilder withHttpKieServer2Hostname(
-            String hostname) {
-                throw new UnsupportedOperationException("Not supported yet.");
-    }
-
-    @Override
-    public ClusteredWorkbenchRuntimeSmartRouterTwoKieServersTwoDatabasesScenarioBuilder withHttpsKieServer2Hostname(
-            String hostname) {
-                throw new UnsupportedOperationException("Not supported yet.");
+    public ClusteredWorkbenchRuntimeSmartRouterTwoKieServersTwoDatabasesScenarioBuilder withHttpsKieServer2Hostname(String hostname) {
+        throw new UnsupportedOperationException("Not supported yet.");
 	}
 }
