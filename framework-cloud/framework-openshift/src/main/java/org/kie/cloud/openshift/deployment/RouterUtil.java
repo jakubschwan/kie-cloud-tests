@@ -23,10 +23,7 @@ import org.apache.commons.io.IOUtils;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
-import org.apache.http.conn.ssl.SSLConnectionSocketFactory;
-import org.apache.http.conn.ssl.TrustSelfSignedStrategy;
-import org.apache.http.impl.client.HttpClients;
-import org.apache.http.ssl.SSLContextBuilder;
+import org.apache.http.impl.client.HttpClientBuilder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -47,17 +44,7 @@ public class RouterUtil {
         while (Instant.now().isBefore(endTime)) {
             try {
                 HttpGet request = new HttpGet(url.toString());
-
-                // TODO add if for https url if needed
-                /* Old HttpClient
                 HttpClient client = HttpClientBuilder.create().build();
-                if(url.toString().startsWith("https://")) {}
-                */
-                SSLContextBuilder builder = new SSLContextBuilder();
-                builder.loadTrustMaterial(null, TrustSelfSignedStrategy.INSTANCE);
-                SSLConnectionSocketFactory sslsf = new SSLConnectionSocketFactory(builder.build());
-                HttpClient client = HttpClients.custom().setSSLSocketFactory(sslsf).build();
-
                 HttpResponse response = client.execute(request);
 
                 if (response.getStatusLine().getStatusCode() != ROUTER_CODE) {

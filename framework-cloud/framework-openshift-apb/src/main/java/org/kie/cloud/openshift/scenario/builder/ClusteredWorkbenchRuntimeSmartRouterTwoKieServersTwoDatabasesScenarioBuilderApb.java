@@ -31,6 +31,7 @@ import org.kie.cloud.openshift.scenario.ClusteredWorkbenchRuntimeSmartRouterTwoK
 public class ClusteredWorkbenchRuntimeSmartRouterTwoKieServersTwoDatabasesScenarioBuilderApb implements ClusteredWorkbenchRuntimeSmartRouterTwoKieServersTwoDatabasesScenarioBuilder {
 
     private final Map<String, String> extraVars = new HashMap<>();
+    private final ProjectApbSpecificPropertyNames propertyNames = ProjectApbSpecificPropertyNames.create();
 
     public ClusteredWorkbenchRuntimeSmartRouterTwoKieServersTwoDatabasesScenarioBuilderApb() {
         extraVars.put(OpenShiftApbConstants.APB_PLAN_ID, ApbConstants.Plans.MANAGED);
@@ -43,11 +44,10 @@ public class ClusteredWorkbenchRuntimeSmartRouterTwoKieServersTwoDatabasesScenar
         extraVars.put(OpenShiftApbConstants.KIE_ADMIN_PWD, DeploymentConstants.getWorkbenchPassword());
         //extraVars.put(OpenShiftApbConstants.APB_KIESERVER_SECRET_NAME, OpenShiftConstants.getKieApplicationSecretName());
 
-        ProjectApbSpecificPropertyNames propertyNames = ProjectApbSpecificPropertyNames.create();
         //extraVars.put(propertyNames.workbenchHttpsSecret(), OpenShiftConstants.getKieApplicationSecretName());
 
         extraVars.put(OpenShiftApbConstants.APB_KIESERVER_SETS, "2");
-        extraVars.put(OpenShiftApbConstants.APB_KIESERVER_REPLICAS_STRING, "2");
+        extraVars.put(OpenShiftApbConstants.APB_KIESERVER_REPLICAS, "2");
     }
 
     @Override

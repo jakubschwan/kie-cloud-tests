@@ -42,21 +42,22 @@ public class WorkbenchKieServerPersistentScenarioBuilderApb implements Workbench
         extraVars.put(OpenShiftApbConstants.KIE_SERVER_PWD, DeploymentConstants.getKieServerPassword());
         extraVars.put(OpenShiftApbConstants.KIE_ADMIN_USER, DeploymentConstants.getWorkbenchUser());
         extraVars.put(OpenShiftApbConstants.KIE_ADMIN_PWD, DeploymentConstants.getWorkbenchPassword());
-        //extraVars.put(OpenShiftApbConstants.KIE_CONTROLLER_USER, DeploymentConstants.getControllerUser());
-        //extraVars.put(OpenShiftApbConstants.KIE_CONTROLLER_PWD, DeploymentConstants.getControllerPassword());
-        //extraVars.put(propertyNames.workbenchMavenUserName(), DeploymentConstants.getWorkbenchMavenUser());
-        //extraVars.put(propertyNames.workbenchMavenPassword(), DeploymentConstants.getWorkbenchMavenPassword());
-        extraVars.put(OpenShiftApbConstants.MAVEN_REPO_USER, DeploymentConstants.getWorkbenchUser());
-        extraVars.put(OpenShiftApbConstants.MAVEN_REPO_PWD, DeploymentConstants.getWorkbenchPassword());
+        extraVars.put(OpenShiftApbConstants.KIE_CONTROLLER_USER, DeploymentConstants.getControllerUser());
+        extraVars.put(OpenShiftApbConstants.KIE_CONTROLLER_PWD, DeploymentConstants.getControllerPassword());
+        extraVars.put(propertyNames.workbenchMavenUserName(), DeploymentConstants.getWorkbenchMavenUser());
+        extraVars.put(propertyNames.workbenchMavenPassword(), DeploymentConstants.getWorkbenchMavenPassword());
         //extraVars.put(propertyNames.workbenchHttpsSecret(), OpenShiftConstants.getKieApplicationSecretName());
         //extraVars.put(OpenShiftApbConstants.APB_KIESERVER_SECRET_NAME, OpenShiftConstants.getKieApplicationSecretName());
 
         /*
         Add extra var to enable HTTP routes for custom apb image
         TODO: resolve do not work yet
+
+        TODO: can't be configured workbench maven user
+        
         */
         //HTTP param
-        extraVars.put("apb_hostname_http_enable", "true");
+        //extraVars.put("apb_hostname_http_enable", "true");
     }
 
     @Override

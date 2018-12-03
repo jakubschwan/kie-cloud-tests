@@ -134,6 +134,10 @@
       <id>openshift-apb</id>
       <properties>
         <skipTests>false</skipTests>
+        <custom.trusted.app.secret>file://${project.build.testOutputDirectory}/secret/rhpam-certs.secret.yaml</custom.trusted.app.secret>
+        <custom.trusted.secret.name>rhpam-certs</custom.trusted.secret.name>
+        <custom.trusted.keystore.alias>jboss</custom.trusted.keystore.alias>
+        <custom.trusted.keystore.pwd>test</custom.trusted.keystore.pwd>
       </properties>
       <dependencies>
         <dependency>

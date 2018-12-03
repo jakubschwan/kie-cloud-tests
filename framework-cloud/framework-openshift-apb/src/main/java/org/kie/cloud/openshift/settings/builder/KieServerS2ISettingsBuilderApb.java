@@ -17,11 +17,11 @@ package org.kie.cloud.openshift.settings.builder;
 
 import java.util.HashMap;
 import java.util.Map;
+
 import org.kie.cloud.api.deployment.constants.DeploymentConstants;
 import org.kie.cloud.api.protocol.Protocol;
 import org.kie.cloud.api.settings.DeploymentSettings;
 import org.kie.cloud.api.settings.builder.KieServerS2ISettingsBuilder;
-import org.kie.cloud.openshift.constants.OpenShiftConstants;
 import org.kie.cloud.openshift.constants.ApbConstants;
 import org.kie.cloud.openshift.constants.OpenShiftApbConstants;
 import org.kie.cloud.openshift.settings.DeploymentSettingsApb;

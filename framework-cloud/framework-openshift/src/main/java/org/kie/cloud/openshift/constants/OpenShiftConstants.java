@@ -48,6 +48,10 @@ public class OpenShiftConstants implements Constants {
      * URL pointing to OpenShift resource file containing keystore for HTTPS communication.
      */
     public static final String KIE_APP_SECRET = "kie.app.secret";
+    /**
+     * URL pointing to OpenShift resource file containing keystore for HTTPS communication.
+     */
+    public static final String CUSTOM_TRUSTED_APP_SECRET = "custom.trusted.app.secret";
 
     /**
      * URL pointing to OpenShift resource file containing image streams with all available images.
@@ -184,6 +188,10 @@ public class OpenShiftConstants implements Constants {
 
     public static String getKieAppSecret() {
         return System.getProperty(KIE_APP_SECRET);
+    }
+
+    public static String getCustomTrustedAppSecret() {
+        return System.getProperty(CUSTOM_TRUSTED_APP_SECRET);
     }
 
     public static String getKieImageStreams() {

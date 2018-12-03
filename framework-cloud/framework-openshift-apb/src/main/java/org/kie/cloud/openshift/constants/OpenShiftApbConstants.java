@@ -69,8 +69,8 @@ public class OpenShiftApbConstants {
     // HA
     public static final String APB_REPLICAS = "apb_replicas";
     public static final String APB_KIESERVER_SETS = "apb_kieserver_sets";
-    public static final String APB_KIESERVER_REPLICAS_STRING = "apb_kieserver_replicas";
-    public static final String APB_SMARTROUTER_REPLICAS_STRING = "apb_smartrouter_replicas";
+    public static final String APB_KIESERVER_REPLICAS = "apb_kieserver_replicas";
+    public static final String APB_SMARTROUTER_REPLICAS = "apb_smartrouter_replicas";
 
     // External DB
     public static final String APB_KIESERVER_EXTERNAL_DB_DRIVER="apb_kieserver_external_db_driver";
@@ -80,14 +80,16 @@ public class OpenShiftApbConstants {
     public static final String APB_KIESERVER_EXTERNAL_DB_NAME = "apb_kieserver_external_db_name";
     public static final String APB_KIESERVER_EXTERNAL_DB_URL = "apb_kieserver_external_db_url";
 
-    // SSO
-    public static final String APB_SSO_URL = "apb_sso_url";
-    public static final String APB_SSO_REALM = "apb_sso_realm";
-    public static final String APB_SSO_CLIENT = "apb_sso_client";
-    public static final String APB_SSO_CLIENT_SECRET = "apb_sso_client_secret";
-    public static final String APB_SSO_USER = "apb_sso_user";
-    public static final String APB_SSO_PWD = "apb_sso_pwd";
-    public static final String APB_SSO_DISABLE_SSL_CERT_VALIDATION = "apb_sso_disable_ssl_cert_validation";
+    // Generic Keystore parameters
+    //public static final String APB_SECRET_NAME = "apb_secret_name";
+    //public static final String APB_KEYSTORE_ALIAS = "apb_keystore_alias";
+    //public static final String APB_KEYSTORE_PWD = "apb_keystore_pwd";
+    public static final String BUSINESSCENTRAL_SECRET_NAME = "apb_businesscentral_secret_name";
+    public static final String BUSINESSCENTRAL_KEYSTORE_ALIAS = "apb_businesscentral_keystore_alias";
+    public static final String BUSINESSCENTRAL_KEYSTORE_PWD = "apb_businesscentral_keystore_pwd";
+    public static final String KIESERVER_SECRET_NAME = "apb_kieserver_secret_name";
+    public static final String KIESERVER_KEYSTORE_ALIAS = "apb_kieserver_keystore_alias";
+    public static final String KIESERVER_KEYSTORE_PWD = "apb_kieserver_keystore_pwd";
 
     //Artifact source (S2I)
     public static final String KIE_SERVER_CONTAINER_DEPLOYMENT = "apb_kieserver_container_deployment";
