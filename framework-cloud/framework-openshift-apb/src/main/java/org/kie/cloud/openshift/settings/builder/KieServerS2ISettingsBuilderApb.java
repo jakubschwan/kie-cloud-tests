@@ -26,9 +26,12 @@ import org.kie.cloud.openshift.constants.ApbConstants;
 import org.kie.cloud.openshift.constants.OpenShiftApbConstants;
 import org.kie.cloud.openshift.settings.DeploymentSettingsApb;
 import org.kie.cloud.openshift.template.OpenShiftTemplate;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class KieServerS2ISettingsBuilderApb implements KieServerS2ISettingsBuilder {
 
+    private static final Logger logger = LoggerFactory.getLogger(KieServerS2ISettingsBuilderApb.class);
     private final OpenShiftTemplate appTemplate = OpenShiftTemplate.KIE_SERVER_HTTPS_S2I;
     private Map<String, String> extraVars;
 
@@ -40,7 +43,18 @@ public class KieServerS2ISettingsBuilderApb implements KieServerS2ISettingsBuild
 
         extraVars.put(OpenShiftApbConstants.KIE_SERVER_USER, DeploymentConstants.getKieServerUser());
         extraVars.put(OpenShiftApbConstants.KIE_SERVER_PWD, DeploymentConstants.getKieServerPassword());
+        extraVars.put(OpenShiftApbConstants.KIE_ADMIN_USER, DeploymentConstants.getWorkbenchUser());
+        extraVars.put(OpenShiftApbConstants.KIE_ADMIN_PWD, DeploymentConstants.getWorkbenchPassword());
+
+        extraVars.put(OpenShiftApbConstants.APB_IMAGE_STREAM_TAG, "1.1");
+        extraVars.put(OpenShiftApbConstants.APB_KIESERVER_DB_TYPE, ApbConstants.DbType.POSTGRE);
+
         //extraVars.put(OpenShiftApbConstants.KIE_SERVER_HTTPS_SECRET, OpenShiftConstants.getKieApplicationSecretName());
+
+        // Just for now set cert properties here.
+        extraVars.put(OpenShiftApbConstants.KIESERVER_SECRET_NAME, DeploymentConstants.getCustomTrustedSecretName());
+        extraVars.put(OpenShiftApbConstants.KIESERVER_KEYSTORE_ALIAS, DeploymentConstants.getCustomTrustedKeystoreAlias());
+        extraVars.put(OpenShiftApbConstants.KIESERVER_KEYSTORE_PWD, DeploymentConstants.getCustomTrustedKeystorePwd());
     }
 
     @Override
@@ -71,39 +85,34 @@ public class KieServerS2ISettingsBuilderApb implements KieServerS2ISettingsBuild
 
     @Override
     public KieServerS2ISettingsBuilder withControllerProtocol(Protocol protocol) {
-        throw new UnsupportedOperationException("Not supported yet.");
-        //extraVars.put(OpenShiftApbConstants.KIE_SERVER_CONTROLLER_PROTOCOL, protocol.name());
-        //return this;
+        extraVars.put(OpenShiftApbConstants.APB_CONTROLLER_PROTOCOL, protocol.name());
+        return this;
     }
 
     @Override
     public KieServerS2ISettingsBuilder withControllerConnection(String serviceName) {
-        throw new UnsupportedOperationException("Not supported yet.");
-        //extraVars.put(OpenShiftApbConstants.KIE_SERVER_CONTROLLER_SERVICE, serviceName);
-        //return this;
+        extraVars.put(OpenShiftApbConstants.APB_CONTROLLER_SERVICE, serviceName);
+        return this;
     }
 
     @Override
     public KieServerS2ISettingsBuilder withControllerConnection(String url, String port) {
-        throw new UnsupportedOperationException("Not supported yet.");
-        //extraVars.put(OpenShiftApbConstants.KIE_SERVER_CONTROLLER_HOST, url);
-        //extraVars.put(OpenShiftApbConstants.KIE_SERVER_CONTROLLER_PORT, port);
-        //return this;
+        extraVars.put(OpenShiftApbConstants.APB_CONTROLLER_HOST, url);
+        extraVars.put(OpenShiftApbConstants.APB_CONTROLLER_PORT, port);
+        return this;
     }
 
     @Override
     public KieServerS2ISettingsBuilder withSmartRouterConnection(String url, String port) {
-        throw new UnsupportedOperationException("Not supported yet.");
-        //extraVars.put(OpenShiftApbConstants.KIE_SERVER_ROUTER_HOST, url);
-        //extraVars.put(OpenShiftApbConstants.KIE_SERVER_ROUTER_PORT, port);
-        //return this;
+        extraVars.put(OpenShiftApbConstants.APB_ROUTER_HOST, url);
+        extraVars.put(OpenShiftApbConstants.APB_ROUTER_PORT, port);
+        return this;
     }
 
     @Override
     public KieServerS2ISettingsBuilder withSmartRouterConnection(String serviceName) {
-        throw new UnsupportedOperationException("Not supported yet.");
-        //extraVars.put(OpenShiftApbConstants.KIE_SERVER_ROUTER_SERVICE, serviceName);
-        //return this;
+        extraVars.put(OpenShiftApbConstants.APB_ROUTER_SERVICE, serviceName);
+        return this;
     }
 
     @Override
@@ -151,16 +160,15 @@ public class KieServerS2ISettingsBuilderApb implements KieServerS2ISettingsBuild
 
     @Override
     public KieServerS2ISettingsBuilder withHostame(String http) {
-        throw new UnsupportedOperationException("Not supported yet.");
-        //extraVars.put(OpenShiftApbConstants.KIE_SERVER_HOSTNAME_HTTP, http);
-        //return this;
+        logger.warn("Http route " + http + " can't be set to APB scenario. Please configure HTTPS route instead.");
+        logger.info("Configuration skipped.");
+        return this;
     }
 
     @Override
     public KieServerS2ISettingsBuilder withSecuredHostame(String https) {
-        throw new UnsupportedOperationException("Not supported yet.");
-        //extraVars.put(OpenShiftApbConstants.KIE_SERVER_HOSTNAME_HTTPS, https);
-        //return this;
+        extraVars.put(OpenShiftApbConstants.APB_KIESERVER_HOSTNAME_HTTPS, https);
+        return this;
     }
 
     @Override

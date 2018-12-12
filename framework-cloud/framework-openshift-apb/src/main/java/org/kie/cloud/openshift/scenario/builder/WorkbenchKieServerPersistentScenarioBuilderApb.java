@@ -26,9 +26,12 @@ import org.kie.cloud.openshift.constants.ApbConstants;
 import org.kie.cloud.openshift.constants.OpenShiftApbConstants;
 import org.kie.cloud.openshift.constants.ProjectApbSpecificPropertyNames;
 import org.kie.cloud.openshift.scenario.WorkbenchKieServerPersistentScenarioApb;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class WorkbenchKieServerPersistentScenarioBuilderApb implements WorkbenchKieServerPersistentScenarioBuilder {
 
+    private static final Logger logger = LoggerFactory.getLogger(WorkbenchKieServerPersistentScenarioBuilderApb.class);
     private final Map<String, String> extraVars = new HashMap<>();
     private boolean deploySSO = false;
     private final ProjectApbSpecificPropertyNames propertyNames = ProjectApbSpecificPropertyNames.create();
@@ -97,7 +100,8 @@ public class WorkbenchKieServerPersistentScenarioBuilderApb implements Workbench
 
     @Override
     public WorkbenchKieServerPersistentScenarioBuilder withHttpWorkbenchHostname(String hostname) {
-        extraVars.put(propertyNames.workbenchHostnameHttp(), hostname);
+        logger.warn("Http route " + hostname + " can't be set to APB scenario. Please configure HTTPS route instead.");
+        logger.info("Configuration skipped.");
         return this;
     }
 
@@ -109,27 +113,27 @@ public class WorkbenchKieServerPersistentScenarioBuilderApb implements Workbench
 
     @Override
     public WorkbenchKieServerPersistentScenarioBuilder withHttpKieServerHostname(String hostname) {
-        extraVars.put(OpenShiftApbConstants.APB_KIESERVER_HOSTNAME, hostname);
+        logger.warn("Http route " + hostname + " can't be set to APB scenario. Please configure HTTPS route instead.");
+        logger.info("Configuration skipped.");
         return this;
     }
 
     @Override
     public WorkbenchKieServerPersistentScenarioBuilder withHttpsKieServerHostname(String hostname) {
-        throw new UnsupportedOperationException("Not supported yet.");
-//        extraVars.put(OpenShiftApbConstants.EXECUTION_SERVER_HOSTNAME_HTTP, hostname);
-//        return this;
+        extraVars.put(OpenShiftApbConstants.APB_KIESERVER_HOSTNAME_HTTPS, hostname);
+        return this;
     }
 
     @Override
     public WorkbenchKieServerPersistentScenarioBuilder withLdapSettings(LdapSettings ldapSettings) {
-        throw new UnsupportedOperationException("Not supported yet.");
-//        extraVars.putAll(ldapSettings.getEnvVariables());
-//        return this;
+        extraVars.putAll(ldapSettings.getEnvVariables());
+        return this;
     }
 
     @Override
     public WorkbenchKieServerPersistentScenarioBuilder withGitHooksDir(String dir) {
-        throw new UnsupportedOperationException("Not supported yet.");
+        extraVars.put(OpenShiftApbConstants.GIT_HOOKS_DIR, dir);
+        return this;
     }
 
 }

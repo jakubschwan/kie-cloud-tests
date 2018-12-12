@@ -39,7 +39,7 @@ public class JbpmApbSpecificPropertyNames implements ProjectApbSpecificPropertyN
 
     @Override
     public String workbenchHostnameHttp() {
-        return OpenShiftApbConstants.BUSINESS_CENTRAL_HOSTNAME_HTTP;
+        throw new RuntimeException("HTTP routes can't be configured for APB");
     }
 
     @Override
@@ -49,11 +49,11 @@ public class JbpmApbSpecificPropertyNames implements ProjectApbSpecificPropertyN
 
     @Override
     public String workbenchSsoClient() {
-        return OpenShiftApbConstants.SSO_CLIENT;
+        return OpenShiftApbConstants.BUSINESS_CENTRAL_SSO_CLIENT;
     }
 
     @Override
     public String workbenchSsoSecret() {
-        return OpenShiftApbConstants.SSO_CLIENT_SECRET;
+        return OpenShiftApbConstants.BUSINESS_CENTRAL_SSO_SECRET;
     }
 }

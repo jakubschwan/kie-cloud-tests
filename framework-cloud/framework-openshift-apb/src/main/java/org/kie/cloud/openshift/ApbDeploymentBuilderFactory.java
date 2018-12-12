@@ -32,8 +32,12 @@ import org.kie.cloud.api.settings.builder.SmartRouterSettingsBuilder;
 import org.kie.cloud.api.settings.builder.WorkbenchMonitoringSettingsBuilder;
 import org.kie.cloud.api.settings.builder.WorkbenchSettingsBuilder;
 import org.kie.cloud.openshift.scenario.builder.ClusteredWorkbenchRuntimeSmartRouterTwoKieServersTwoDatabasesScenarioBuilderApb;
+import org.kie.cloud.openshift.scenario.builder.GenericScenarioBuilderApb;
 import org.kie.cloud.openshift.scenario.builder.WorkbenchKieServerPersistentScenarioBuilderApb;
 import org.kie.cloud.openshift.scenario.builder.WorkbenchKieServerScenarioBuilderApb;
+import org.kie.cloud.openshift.settings.builder.KieServerS2ISettingsBuilderApb;
+import org.kie.cloud.openshift.settings.builder.LdapSettingsBuilderImpl;
+import org.kie.cloud.openshift.settings.builder.WorkbenchMonitoringSettingsBuilderApb;
 
 import cz.xtf.openshift.OpenShiftUtil;
 
@@ -66,72 +70,72 @@ public class ApbDeploymentBuilderFactory implements DeploymentScenarioBuilderFac
 
     @Override
     public KieServerWithExternalDatabaseScenarioBuilder getKieServerWithExternalDatabaseScenarioBuilder() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        throw new UnsupportedOperationException("Not supported yet.");
     }
 
     @Override
     public KieServerWithDatabaseScenarioBuilder getKieServerWithMySqlScenarioBuilder() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        throw new UnsupportedOperationException("Not supported yet.");
     }
 
     @Override
     public KieServerWithDatabaseScenarioBuilder getKieServerWithPostgreSqlScenarioBuilder() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        throw new UnsupportedOperationException("Not supported yet.");
     }
 
     @Override
     public ClusteredWorkbenchKieServerDatabasePersistentScenarioBuilder getClusteredWorkbenchKieServerDatabasePersistentScenarioBuilder() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        throw new UnsupportedOperationException("Not supported yet.");
     }
 
     @Override
     public GenericScenarioBuilder getGenericScenarioBuilder() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return new GenericScenarioBuilderApb();
     }
 
     @Override
     public ControllerSettingsBuilder getControllerSettingsBuilder() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        throw new UnsupportedOperationException("Not supported yet.");
     }
 
     @Override
     public KieServerSettingsBuilder getKieServerSettingsBuilder() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        throw new UnsupportedOperationException("Not supported yet.");
     }
 
     @Override
     public KieServerSettingsBuilder getKieServerMySqlSettingsBuilder() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        throw new UnsupportedOperationException("Not supported yet.");
     }
 
     @Override
     public KieServerSettingsBuilder getKieServerPostgreSqlSettingsBuilder() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        throw new UnsupportedOperationException("Not supported yet.");
     }
 
     @Override
     public KieServerS2ISettingsBuilder getKieServerHttpsS2ISettingsBuilder() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return new KieServerS2ISettingsBuilderApb();
     }
 
     @Override
     public WorkbenchSettingsBuilder getWorkbenchSettingsBuilder() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        throw new UnsupportedOperationException("Not supported yet.");
     }
 
     @Override
     public WorkbenchMonitoringSettingsBuilder getWorkbenchMonitoringSettingsBuilder() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return new WorkbenchMonitoringSettingsBuilderApb();
     }
 
     @Override
     public SmartRouterSettingsBuilder getSmartRouterSettingsBuilder() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        throw new UnsupportedOperationException("Not supported yet.");
     }
 
     @Override
     public LdapSettingsBuilder getLdapSettingsBuilder() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return new LdapSettingsBuilderImpl();
     }
 
     @Override
@@ -143,7 +147,7 @@ public class ApbDeploymentBuilderFactory implements DeploymentScenarioBuilderFac
 
     @Override
     public ClusteredWorkbenchKieServerPersistentScenarioBuilder getClusteredWorkbenchKieServerPersistentScenarioBuilder() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        throw new UnsupportedOperationException("Not supported yet.");
     }
 
 }

@@ -64,8 +64,13 @@ public class WorkbenchKieServerPersistentScenarioApb extends OpenShiftScenario i
 
             extraVars.put(OpenShiftApbConstants.SSO_URL, SsoDeployer.createSsoEnvVariable(ssoDeployment.getUrl().toString()));
             extraVars.put(OpenShiftApbConstants.SSO_REALM, DeploymentConstants.getSsoRealm());
-            extraVars.put(OpenShiftApbConstants.SSO_CLIENT, "kie-client");
-            extraVars.put(OpenShiftApbConstants.SSO_CLIENT_SECRET, "kie--client-secret");
+
+            extraVars.put(OpenShiftApbConstants.BUSINESS_CENTRAL_SSO_CLIENT, "business-central-client");
+            extraVars.put(OpenShiftApbConstants.BUSINESS_CENTRAL_SSO_SECRET, "business-central-secret");
+            extraVars.put(OpenShiftApbConstants.KIE_SERVER_SSO_CLIENT, "kie-server-client");
+            extraVars.put(OpenShiftApbConstants.KIE_SERVER_SSO_SECRET, "kie-server-secret");
+
+            extraVars.put("apb_sso_principal_attribute", "preferred_username");
         }
 
         logger.info("Creating trusted secret");
@@ -108,11 +113,7 @@ public class WorkbenchKieServerPersistentScenarioApb extends OpenShiftScenario i
     private void deployCustomTrustedSecret() {
         project.processTemplateAndCreateResources(OpenShiftTemplate.CUSTOM_TRUSTED_SECRET.getTemplateUrl(),
                 Collections.emptyMap());
-        // new URL("file:///home/jschwan/ns/test-cert/rhpam-certs.secret.yaml")
 
-        // extraVars.put(OpenShiftApbConstants.APB_SECRET_NAME,"rhpam-certs");
-        // extraVars.put(OpenShiftApbConstants.APB_KEYSTORE_ALIAS,"jboss");
-        // extraVars.put(OpenShiftApbConstants.APB_KEYSTORE_PWD, "test");
         extraVars.put(OpenShiftApbConstants.BUSINESSCENTRAL_SECRET_NAME,
                 DeploymentConstants.getCustomTrustedSecretName());
         extraVars.put(OpenShiftApbConstants.BUSINESSCENTRAL_KEYSTORE_ALIAS,

@@ -25,13 +25,14 @@ import org.kie.cloud.api.scenario.builder.ClusteredWorkbenchRuntimeSmartRouterTw
 import org.kie.cloud.api.settings.LdapSettings;
 import org.kie.cloud.openshift.constants.ApbConstants;
 import org.kie.cloud.openshift.constants.OpenShiftApbConstants;
-import org.kie.cloud.openshift.constants.ProjectApbSpecificPropertyNames;
 import org.kie.cloud.openshift.scenario.ClusteredWorkbenchRuntimeSmartRouterTwoKieServersTwoDatabasesScenarioApb;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class ClusteredWorkbenchRuntimeSmartRouterTwoKieServersTwoDatabasesScenarioBuilderApb implements ClusteredWorkbenchRuntimeSmartRouterTwoKieServersTwoDatabasesScenarioBuilder {
 
+    private static final Logger logger = LoggerFactory.getLogger(ClusteredWorkbenchRuntimeSmartRouterTwoKieServersTwoDatabasesScenarioBuilderApb.class);
     private final Map<String, String> extraVars = new HashMap<>();
-    private final ProjectApbSpecificPropertyNames propertyNames = ProjectApbSpecificPropertyNames.create();
 
     public ClusteredWorkbenchRuntimeSmartRouterTwoKieServersTwoDatabasesScenarioBuilderApb() {
         extraVars.put(OpenShiftApbConstants.APB_PLAN_ID, ApbConstants.Plans.MANAGED);
@@ -42,12 +43,15 @@ public class ClusteredWorkbenchRuntimeSmartRouterTwoKieServersTwoDatabasesScenar
         extraVars.put(OpenShiftApbConstants.KIE_SERVER_PWD, DeploymentConstants.getKieServerPassword());
         extraVars.put(OpenShiftApbConstants.KIE_ADMIN_USER, DeploymentConstants.getWorkbenchUser());
         extraVars.put(OpenShiftApbConstants.KIE_ADMIN_PWD, DeploymentConstants.getWorkbenchPassword());
+        extraVars.put(OpenShiftApbConstants.KIE_CONTROLLER_USER, DeploymentConstants.getControllerUser());
+        extraVars.put(OpenShiftApbConstants.KIE_CONTROLLER_PWD, DeploymentConstants.getControllerPassword());
         //extraVars.put(OpenShiftApbConstants.APB_KIESERVER_SECRET_NAME, OpenShiftConstants.getKieApplicationSecretName());
 
         //extraVars.put(propertyNames.workbenchHttpsSecret(), OpenShiftConstants.getKieApplicationSecretName());
 
         extraVars.put(OpenShiftApbConstants.APB_KIESERVER_SETS, "2");
         extraVars.put(OpenShiftApbConstants.APB_KIESERVER_REPLICAS, "2");
+        extraVars.put(OpenShiftApbConstants.APB_BUSINESSCENTRAL_REPLICAS, "1"); //RHPAM-1662
     }
 
     @Override
@@ -66,6 +70,7 @@ public class ClusteredWorkbenchRuntimeSmartRouterTwoKieServersTwoDatabasesScenar
     @Override
     public ClusteredWorkbenchRuntimeSmartRouterTwoKieServersTwoDatabasesScenarioBuilder withSmartRouterId(String smartRouterId) {
         throw new UnsupportedOperationException("Not supported yet.");
+        // default not configureable value kie-server-router
         //extraVars.put(OpenShiftApbConstants.KIE_SERVER_ROUTER_ID, smartRouterId);
         //return this;
     }
@@ -80,11 +85,18 @@ public class ClusteredWorkbenchRuntimeSmartRouterTwoKieServersTwoDatabasesScenar
     @Override
     public ClusteredWorkbenchRuntimeSmartRouterTwoKieServersTwoDatabasesScenarioBuilder deploySso() {
         throw new UnsupportedOperationException("Not supported yet.");
+        /*
+        deploySSO = true;
+        extraVars.put(OpenShiftApbConstants.SSO_USER, DeploymentConstants.getSsoServiceUser());
+        extraVars.put(OpenShiftApbConstants.SSO_PWD, DeploymentConstants.getSsoServicePassword());
+        return this;
+        */
     }
 
     @Override
     public ClusteredWorkbenchRuntimeSmartRouterTwoKieServersTwoDatabasesScenarioBuilder withLdapSettings(LdapSettings ldapSettings) {
-        throw new UnsupportedOperationException("Not supported yet.");
+        extraVars.putAll(ldapSettings.getEnvVariables());
+        return this;
     }
 
     @Override
@@ -96,7 +108,9 @@ public class ClusteredWorkbenchRuntimeSmartRouterTwoKieServersTwoDatabasesScenar
 
     @Override
     public ClusteredWorkbenchRuntimeSmartRouterTwoKieServersTwoDatabasesScenarioBuilder withHttpWorkbenchHostname(String hostname) {
-        throw new UnsupportedOperationException("Not supported yet.");
+        logger.warn("Http route " + hostname + " can't be set to APB scenario. Please configure HTTPS route instead.");
+        logger.info("Configuration skipped.");
+        return this;
     }
 
     @Override
@@ -107,7 +121,9 @@ public class ClusteredWorkbenchRuntimeSmartRouterTwoKieServersTwoDatabasesScenar
 
     @Override
     public ClusteredWorkbenchRuntimeSmartRouterTwoKieServersTwoDatabasesScenarioBuilder withHttpKieServer1Hostname(String hostname) {
-        throw new UnsupportedOperationException("Not supported yet.");
+        logger.warn("Http route " + hostname + " can't be set to APB scenario. Please configure HTTPS route instead.");
+        logger.info("Configuration skipped.");
+        return this;
     }
 
     @Override
@@ -117,7 +133,9 @@ public class ClusteredWorkbenchRuntimeSmartRouterTwoKieServersTwoDatabasesScenar
 
     @Override
     public ClusteredWorkbenchRuntimeSmartRouterTwoKieServersTwoDatabasesScenarioBuilder withHttpKieServer2Hostname(String hostname) {
-        throw new UnsupportedOperationException("Not supported yet.");
+        logger.warn("Http route " + hostname + " can't be set to APB scenario. Please configure HTTPS route instead.");
+        logger.info("Configuration skipped.");
+        return this;
     }
 
     @Override

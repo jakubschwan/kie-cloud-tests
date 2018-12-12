@@ -30,14 +30,13 @@ import org.kie.cloud.api.deployment.SsoDeployment;
 import org.kie.cloud.api.deployment.WorkbenchDeployment;
 import org.kie.cloud.api.deployment.constants.DeploymentConstants;
 import org.kie.cloud.api.scenario.ClusteredWorkbenchRuntimeSmartRouterTwoKieServersTwoDatabasesScenario;
-import org.kie.cloud.common.provider.KieServerControllerClientProvider;
 import org.kie.cloud.openshift.constants.OpenShiftApbConstants;
-import org.kie.cloud.openshift.constants.OpenShiftConstants;
 import org.kie.cloud.openshift.deployment.DatabaseDeploymentImpl;
 import org.kie.cloud.openshift.deployment.KieServerDeploymentImpl;
 import org.kie.cloud.openshift.deployment.SmartRouterDeploymentImpl;
 import org.kie.cloud.openshift.deployment.WorkbenchRuntimeDeploymentImpl;
 import org.kie.cloud.openshift.resource.Project;
+import org.kie.cloud.openshift.template.OpenShiftTemplate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -62,6 +61,9 @@ public class ClusteredWorkbenchRuntimeSmartRouterTwoKieServersTwoDatabasesScenar
     public void deploy() {
         super.deploy();
 
+        logger.info("Creating trusted secret");
+        deployCustomTrustedSecret();
+
         logger.info("Processesin APB image plan: " + extraVars.get(OpenShiftApbConstants.APB_PLAN_ID));
         //extraVars.put(OpenShiftApbConstants.IMAGE_STREAM_NAMESPACE, projectName);
         extraVars.put("namespace", projectName);
@@ -69,19 +71,16 @@ public class ClusteredWorkbenchRuntimeSmartRouterTwoKieServersTwoDatabasesScenar
         project.processApbRun("docker-registry.default.svc:5000/openshift/rhpam71-apb", extraVars);
 
         workbenchRuntimeDeployment = createWorkbenchRuntimeDeployment(project);
-        workbenchRuntimeDeployment.scale(1);
 
         smartRouterDeployment = createSmartRouterDeployment(project);
-        smartRouterDeployment.scale(1);
+        //TODO: smart router use web sockets for connection to BC
 
+        //TODO: Kie Servers has same Kie Server ID !!! fix in APB
         kieServerOneDeployment = createKieServerDeployment(project, "1");
-        kieServerOneDeployment.scale(1);
-
         kieServerTwoDeployment = createKieServerDeployment(project, "2");
-        kieServerTwoDeployment.scale(1);
 
-        databaseOneDeployment = createDatabaseDeployment(project, "1");
-        databaseTwoDeployment = createDatabaseDeployment(project, "2");
+        databaseOneDeployment = createDatabaseDeployment(project, "1"); //TODO suffix number is not last, in APB put db name before number
+        databaseTwoDeployment = createDatabaseDeployment(project, "2"); //TODO suffix number is not last, in APB put db name before number
 
         logger.info("Waiting for Workbench deployment to become ready.");
         workbenchRuntimeDeployment.waitForScale();
@@ -102,9 +101,29 @@ public class ClusteredWorkbenchRuntimeSmartRouterTwoKieServersTwoDatabasesScenar
         databaseTwoDeployment.waitForScale();
 
         logger.info("Waiting for Kie servers and Smart router to register itself to the Workbench.");
-        KieServerControllerClientProvider.waitForServerTemplateCreation(workbenchRuntimeDeployment, 3);
+        //KieServerControllerClientProvider.waitForServerTemplateCreation(workbenchRuntimeDeployment, 3);
+        //TODO: check this wait !!
 
         logNodeNameOfAllInstances();
+
+        //throw new RuntimeException("Just kill the deploy to leave clean env...");
+    }
+
+
+    private void deployCustomTrustedSecret() {
+        project.processTemplateAndCreateResources(OpenShiftTemplate.CUSTOM_TRUSTED_SECRET.getTemplateUrl(),
+                Collections.emptyMap());
+
+        extraVars.put(OpenShiftApbConstants.BUSINESSCENTRAL_SECRET_NAME,
+                DeploymentConstants.getCustomTrustedSecretName());
+        extraVars.put(OpenShiftApbConstants.BUSINESSCENTRAL_KEYSTORE_ALIAS,
+                DeploymentConstants.getCustomTrustedKeystoreAlias());
+        extraVars.put(OpenShiftApbConstants.BUSINESSCENTRAL_KEYSTORE_PWD,
+                DeploymentConstants.getCustomTrustedKeystorePwd());
+        extraVars.put(OpenShiftApbConstants.KIESERVER_SECRET_NAME, DeploymentConstants.getCustomTrustedSecretName());
+        extraVars.put(OpenShiftApbConstants.KIESERVER_KEYSTORE_ALIAS,
+                DeploymentConstants.getCustomTrustedKeystoreAlias());
+        extraVars.put(OpenShiftApbConstants.KIESERVER_KEYSTORE_PWD, DeploymentConstants.getCustomTrustedKeystorePwd());
     }
 
     @Override
@@ -154,7 +173,8 @@ public class ClusteredWorkbenchRuntimeSmartRouterTwoKieServersTwoDatabasesScenar
 
     private SmartRouterDeployment createSmartRouterDeployment(Project project) {
         SmartRouterDeploymentImpl smartRouterDeployment = new SmartRouterDeploymentImpl(project);
-        smartRouterDeployment.setServiceName(OpenShiftConstants.getKieApplicationName());
+        //smartRouterDeployment.setServiceName("rhpam-managed");
+        //smartRouterDeployment.setServiceName(OpenShiftConstants.getKieApplicationName());
 
         return smartRouterDeployment;
     }

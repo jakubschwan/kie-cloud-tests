@@ -16,10 +16,12 @@
 package org.kie.cloud.openshift.scenario;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.kie.cloud.api.deployment.ControllerDeployment;
 import org.kie.cloud.api.deployment.Deployment;
 import org.kie.cloud.api.deployment.KieServerDeployment;
 import org.kie.cloud.api.deployment.SmartRouterDeployment;
@@ -27,17 +29,14 @@ import org.kie.cloud.api.deployment.WorkbenchDeployment;
 import org.kie.cloud.api.deployment.constants.DeploymentConstants;
 import org.kie.cloud.api.scenario.GenericScenario;
 import org.kie.cloud.api.settings.DeploymentSettings;
-import org.kie.cloud.openshift.constants.OpenShiftConstants;
 import org.kie.cloud.openshift.constants.OpenShiftApbConstants;
 import org.kie.cloud.openshift.deployment.KieServerDeploymentImpl;
-import org.kie.cloud.openshift.deployment.SmartRouterDeploymentImpl;
 import org.kie.cloud.openshift.deployment.WorkbenchDeploymentImpl;
 import org.kie.cloud.openshift.deployment.WorkbenchRuntimeDeploymentImpl;
 import org.kie.cloud.openshift.resource.Project;
+import org.kie.cloud.openshift.template.OpenShiftTemplate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.kie.cloud.api.deployment.ControllerDeployment;
-import org.kie.cloud.openshift.deployment.ControllerDeploymentImpl;
 
 public class GenericScenarioApb extends OpenShiftScenario implements GenericScenario {
 
@@ -95,6 +94,10 @@ public class GenericScenarioApb extends OpenShiftScenario implements GenericScen
     @Override
     public void deploy() {
         super.deploy();
+
+        logger.info("Deploy custom trusted certifcate.");
+        project.processTemplateAndCreateResources(OpenShiftTemplate.CUSTOM_TRUSTED_SECRET.getTemplateUrl(), Collections.emptyMap());
+        // extra vars for custom secret are set in settings builder
 
         workbenchDeployments.clear();
         controllerDeployments.clear();
@@ -166,7 +169,6 @@ public class GenericScenarioApb extends OpenShiftScenario implements GenericScen
         KieServerDeploymentImpl kieServerDeployment = new KieServerDeploymentImpl(project);
         kieServerDeployment.setUsername(deploymentSettings.getEnvVariables().getOrDefault(OpenShiftApbConstants.KIE_SERVER_USER, DeploymentConstants.getKieServerUser()));
         kieServerDeployment.setPassword(deploymentSettings.getEnvVariables().getOrDefault(OpenShiftApbConstants.KIE_SERVER_PWD, DeploymentConstants.getKieServerPassword()));
-        kieServerDeployment.scale(1);
 
         return kieServerDeployment;
     }
@@ -187,7 +189,6 @@ public class GenericScenarioApb extends OpenShiftScenario implements GenericScen
         WorkbenchRuntimeDeploymentImpl monitoringDeployment = new WorkbenchRuntimeDeploymentImpl(project);
         monitoringDeployment.setUsername(deploymentSettings.getEnvVariables().getOrDefault(OpenShiftApbConstants.KIE_ADMIN_USER, DeploymentConstants.getWorkbenchUser()));
         monitoringDeployment.setPassword(deploymentSettings.getEnvVariables().getOrDefault(OpenShiftApbConstants.KIE_ADMIN_PWD, DeploymentConstants.getWorkbenchPassword()));
-        monitoringDeployment.scale(1);
 
         return monitoringDeployment;
     }
