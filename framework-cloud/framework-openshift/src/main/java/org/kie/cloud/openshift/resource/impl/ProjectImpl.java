@@ -23,6 +23,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
@@ -101,12 +102,14 @@ public class ProjectImpl implements Project {
 
     @Override
     public synchronized void processApbRun(String image, Map<String, String> extraVars) {
-        String podName = projectName + "-apb-pod";
+        String podName = "apb-pod-" + UUID.randomUUID().toString().substring(0, 4);
 
         OpenShiftBinaryClient oc = OpenShiftBinaryClient.getInstance();
         oc.project(projectName);
-        oc.executeCommand("Creating serviceaccount failed.", "create", "serviceaccount", "apb");
-        oc.executeCommand("Role binding failed.", "create", "rolebinding", "apb", "--clusterrole=admin", "--serviceaccount=" + projectName + ":apb");
+        if(util.getServiceAccount("apb") == null) {
+            oc.executeCommand("Creating serviceaccount failed.", "create", "serviceaccount", "apb");
+            oc.executeCommand("Role binding failed.", "create", "rolebinding", "apb", "--clusterrole=admin", "--serviceaccount=" + projectName + ":apb");
+        }
 
         List<String> args = new ArrayList<>();
         args.add("run");
