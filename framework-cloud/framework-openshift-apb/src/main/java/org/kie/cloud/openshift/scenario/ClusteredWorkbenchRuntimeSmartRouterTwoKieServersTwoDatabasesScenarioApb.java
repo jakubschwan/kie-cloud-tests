@@ -37,6 +37,7 @@ import org.kie.cloud.openshift.deployment.SmartRouterDeploymentImpl;
 import org.kie.cloud.openshift.deployment.WorkbenchRuntimeDeploymentImpl;
 import org.kie.cloud.openshift.resource.Project;
 import org.kie.cloud.openshift.template.OpenShiftTemplate;
+import org.kie.cloud.openshift.util.SsoDeployer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -48,18 +49,37 @@ public class ClusteredWorkbenchRuntimeSmartRouterTwoKieServersTwoDatabasesScenar
     private KieServerDeploymentImpl kieServerTwoDeployment;
     private DatabaseDeploymentImpl databaseOneDeployment;
     private DatabaseDeploymentImpl databaseTwoDeployment;
+    private SsoDeployment ssoDeployment;
 
     private Map<String, String> extraVars;
 
+    private boolean deploySso;
+
     private static final Logger logger = LoggerFactory.getLogger(ClusteredWorkbenchRuntimeSmartRouterTwoKieServersTwoDatabasesScenarioApb.class);
 
-    public ClusteredWorkbenchRuntimeSmartRouterTwoKieServersTwoDatabasesScenarioApb(Map<String, String> extraVars) {
+    public ClusteredWorkbenchRuntimeSmartRouterTwoKieServersTwoDatabasesScenarioApb(Map<String, String> extraVars, boolean deploySso) {
         this.extraVars = extraVars;
+        this.deploySso = deploySso;
     }
 
     @Override
     public void deploy() {
         super.deploy();
+
+        if (deploySso) {
+            ssoDeployment = SsoDeployer.deploy(project);
+
+            extraVars.put(OpenShiftApbConstants.SSO_URL, SsoDeployer.createSsoEnvVariable(ssoDeployment.getUrl().toString()));
+            extraVars.put(OpenShiftApbConstants.SSO_REALM, DeploymentConstants.getSsoRealm());
+
+            extraVars.put(OpenShiftApbConstants.BUSINESS_CENTRAL_SSO_CLIENT, "business-central-client");
+            extraVars.put(OpenShiftApbConstants.BUSINESS_CENTRAL_SSO_SECRET, "business-central-secret");
+            // TODO check all Kie Server clients!
+            extraVars.put(OpenShiftApbConstants.KIE_SERVER_SSO_CLIENT, "kie-server-client");
+            extraVars.put(OpenShiftApbConstants.KIE_SERVER_SSO_SECRET, "kie-server-secret");
+
+            extraVars.put(OpenShiftApbConstants.SSO_PRINCIPAL_ATTRIBUTE, "preferred_username");
+        }
 
         logger.info("Creating trusted secret");
         deployCustomTrustedSecret();
@@ -68,7 +88,7 @@ public class ClusteredWorkbenchRuntimeSmartRouterTwoKieServersTwoDatabasesScenar
         //extraVars.put(OpenShiftApbConstants.IMAGE_STREAM_NAMESPACE, projectName);
         extraVars.put("namespace", projectName);
         extraVars.put("cluster", "openshift");
-        project.processApbRun("docker-registry.default.svc:5000/openshift/rhpam71-apb", extraVars);
+        project.processApbRun("docker-registry.default.svc:5000/openshift/rhpam72-apb", extraVars);
 
         workbenchRuntimeDeployment = createWorkbenchRuntimeDeployment(project);
 
@@ -76,11 +96,11 @@ public class ClusteredWorkbenchRuntimeSmartRouterTwoKieServersTwoDatabasesScenar
         //TODO: smart router use web sockets for connection to BC
 
         //TODO: Kie Servers has same Kie Server ID !!! fix in APB
-        kieServerOneDeployment = createKieServerDeployment(project, "1");
-        kieServerTwoDeployment = createKieServerDeployment(project, "2");
+        kieServerOneDeployment = createKieServerDeployment(project, "0");
+        kieServerTwoDeployment = createKieServerDeployment(project, "1");
 
-        databaseOneDeployment = createDatabaseDeployment(project, "1"); //TODO suffix number is not last, in APB put db name before number
-        databaseTwoDeployment = createDatabaseDeployment(project, "2"); //TODO suffix number is not last, in APB put db name before number
+        databaseOneDeployment = createDatabaseDeployment(project, "0"); //TODO suffix number is not last, in APB put db name before number
+        databaseTwoDeployment = createDatabaseDeployment(project, "1"); //TODO suffix number is not last, in APB put db name before number
 
         logger.info("Waiting for Workbench deployment to become ready.");
         workbenchRuntimeDeployment.waitForScale();

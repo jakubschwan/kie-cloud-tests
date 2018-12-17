@@ -33,30 +33,38 @@ public class ClusteredWorkbenchRuntimeSmartRouterTwoKieServersTwoDatabasesScenar
 
     private static final Logger logger = LoggerFactory.getLogger(ClusteredWorkbenchRuntimeSmartRouterTwoKieServersTwoDatabasesScenarioBuilderApb.class);
     private final Map<String, String> extraVars = new HashMap<>();
+    
+    private boolean deploySSO = false;
 
     public ClusteredWorkbenchRuntimeSmartRouterTwoKieServersTwoDatabasesScenarioBuilderApb() {
+        // Required values to create persitence values.
         extraVars.put(OpenShiftApbConstants.APB_PLAN_ID, ApbConstants.Plans.MANAGED);
-        extraVars.put(OpenShiftApbConstants.APB_KIESERVER_DB_TYPE, ApbConstants.DbType.POSTGRE);
-        extraVars.put(OpenShiftApbConstants.APB_IMAGE_STREAM_TAG, "1.1");
+        extraVars.put(OpenShiftApbConstants.APB_KIESERVER_DB_TYPE, ApbConstants.DbType.POSTGRE); // DB storage volume??
+        extraVars.put(OpenShiftApbConstants.APB_IMAGE_STREAM_TAG, "1.0");
+        extraVars.put(OpenShiftApbConstants.APB_KIESERVER_SETS, "2");
+        extraVars.put(OpenShiftApbConstants.APB_KIESERVER_REPLICAS, "2");
+        extraVars.put(OpenShiftApbConstants.APB_BUSINESSCENTRAL_REPLICAS, "1"); //RHPAM-1662
+        // external repository
+        extraVars.put(OpenShiftApbConstants.SMARTROUTER_VOLUME_SIZE, "64Mi");
+        extraVars.put(OpenShiftApbConstants.BUSINESSCENTRAL_VOLUME_SIZE, "64Mi");
+        // secret (set later in scneario impl)
+        //apb_kieserver_image_stream_name -- can be also required, has default value (now rhpam72-kieserver-openshift)
+
+        //extraVars.put(OpenShiftApbConstants.APB_CONTROLLER_PROTOCOL, "https");
+        //extraVars.put(OpenShiftApbConstants.APB_CONTROLLER_PORT, "8443");
         
+        // Users
         extraVars.put(OpenShiftApbConstants.KIE_SERVER_USER, DeploymentConstants.getKieServerUser());
         extraVars.put(OpenShiftApbConstants.KIE_SERVER_PWD, DeploymentConstants.getKieServerPassword());
         extraVars.put(OpenShiftApbConstants.KIE_ADMIN_USER, DeploymentConstants.getWorkbenchUser());
         extraVars.put(OpenShiftApbConstants.KIE_ADMIN_PWD, DeploymentConstants.getWorkbenchPassword());
         extraVars.put(OpenShiftApbConstants.KIE_CONTROLLER_USER, DeploymentConstants.getControllerUser());
         extraVars.put(OpenShiftApbConstants.KIE_CONTROLLER_PWD, DeploymentConstants.getControllerPassword());
-        //extraVars.put(OpenShiftApbConstants.APB_KIESERVER_SECRET_NAME, OpenShiftConstants.getKieApplicationSecretName());
-
-        //extraVars.put(propertyNames.workbenchHttpsSecret(), OpenShiftConstants.getKieApplicationSecretName());
-
-        extraVars.put(OpenShiftApbConstants.APB_KIESERVER_SETS, "2");
-        extraVars.put(OpenShiftApbConstants.APB_KIESERVER_REPLICAS, "2");
-        extraVars.put(OpenShiftApbConstants.APB_BUSINESSCENTRAL_REPLICAS, "1"); //RHPAM-1662
     }
 
     @Override
     public ClusteredWorkbenchRuntimeSmartRouterTwoKieServersTwoDatabasesScenario build() {
-        return new ClusteredWorkbenchRuntimeSmartRouterTwoKieServersTwoDatabasesScenarioApb(extraVars);
+        return new ClusteredWorkbenchRuntimeSmartRouterTwoKieServersTwoDatabasesScenarioApb(extraVars,deploySSO);
     }
 
     @Override
@@ -84,13 +92,10 @@ public class ClusteredWorkbenchRuntimeSmartRouterTwoKieServersTwoDatabasesScenar
 
     @Override
     public ClusteredWorkbenchRuntimeSmartRouterTwoKieServersTwoDatabasesScenarioBuilder deploySso() {
-        throw new UnsupportedOperationException("Not supported yet.");
-        /*
         deploySSO = true;
         extraVars.put(OpenShiftApbConstants.SSO_USER, DeploymentConstants.getSsoServiceUser());
         extraVars.put(OpenShiftApbConstants.SSO_PWD, DeploymentConstants.getSsoServicePassword());
         return this;
-        */
     }
 
     @Override

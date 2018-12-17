@@ -32,7 +32,7 @@ public class WorkbenchKieServerScenarioBuilderApb implements WorkbenchKieServerS
     public WorkbenchKieServerScenarioBuilderApb() {
         extraVars.put(OpenShiftApbConstants.APB_PLAN_ID, ApbConstants.Plans.TRIAL);
         extraVars.put(OpenShiftApbConstants.APB_KIESERVER_DB_TYPE, ApbConstants.DbType.H2);
-        extraVars.put(OpenShiftApbConstants.APB_IMAGE_STREAM_TAG, "1.1");
+        extraVars.put(OpenShiftApbConstants.APB_IMAGE_STREAM_TAG, "1.0");
     }
 
     @Override

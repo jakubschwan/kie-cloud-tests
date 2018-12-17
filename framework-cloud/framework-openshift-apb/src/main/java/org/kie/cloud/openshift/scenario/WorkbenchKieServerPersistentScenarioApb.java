@@ -70,7 +70,7 @@ public class WorkbenchKieServerPersistentScenarioApb extends OpenShiftScenario i
             extraVars.put(OpenShiftApbConstants.KIE_SERVER_SSO_CLIENT, "kie-server-client");
             extraVars.put(OpenShiftApbConstants.KIE_SERVER_SSO_SECRET, "kie-server-secret");
 
-            extraVars.put("apb_sso_principal_attribute", "preferred_username");
+            extraVars.put(OpenShiftApbConstants.SSO_PRINCIPAL_ATTRIBUTE, "preferred_username");
         }
 
         logger.info("Creating trusted secret");
@@ -80,13 +80,14 @@ public class WorkbenchKieServerPersistentScenarioApb extends OpenShiftScenario i
         //extraVars.put(OpenShiftApbConstants.IMAGE_STREAM_NAMESPACE, projectName);
         extraVars.put("namespace", projectName);
         extraVars.put("cluster", "openshift");
-        project.processApbRun("docker-registry.default.svc:5000/openshift/rhpam71-apb", extraVars);
+        project.processApbRun("docker-registry.default.svc:5000/openshift/rhpam72-apb", extraVars);
 
         workbenchDeployment = new WorkbenchDeploymentImpl(project);
         workbenchDeployment.setUsername(DeploymentConstants.getWorkbenchUser());
         workbenchDeployment.setPassword(DeploymentConstants.getWorkbenchPassword());
 
         kieServerDeployment = new KieServerDeploymentImpl(project);
+        kieServerDeployment.setServiceSuffix("-0");
         kieServerDeployment.setUsername(DeploymentConstants.getKieServerUser());
         kieServerDeployment.setPassword(DeploymentConstants.getKieServerPassword());
 

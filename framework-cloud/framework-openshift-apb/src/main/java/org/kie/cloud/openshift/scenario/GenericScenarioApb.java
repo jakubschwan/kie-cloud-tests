@@ -31,6 +31,7 @@ import org.kie.cloud.api.scenario.GenericScenario;
 import org.kie.cloud.api.settings.DeploymentSettings;
 import org.kie.cloud.openshift.constants.OpenShiftApbConstants;
 import org.kie.cloud.openshift.deployment.KieServerDeploymentImpl;
+import org.kie.cloud.openshift.deployment.SmartRouterDeploymentImpl;
 import org.kie.cloud.openshift.deployment.WorkbenchDeploymentImpl;
 import org.kie.cloud.openshift.deployment.WorkbenchRuntimeDeploymentImpl;
 import org.kie.cloud.openshift.resource.Project;
@@ -112,6 +113,9 @@ public class GenericScenarioApb extends OpenShiftScenario implements GenericScen
         for (DeploymentSettings monitoringSettings : monitoringSettingsList) {
             deployApbWithSettings(project, monitoringSettings);
             workbenchDeployments.add(createWorkbenchMonitoringDeployment(project, monitoringSettings));
+
+            // In APB is smartrouter added with monitoring...
+            smartRouterDeployments.add(createSmartRouterDeployment(project, monitoringSettings));
         }
 
         for (DeploymentSettings controllerSettings : controllerSettingsList) {
@@ -124,9 +128,11 @@ public class GenericScenarioApb extends OpenShiftScenario implements GenericScen
             smartRouterDeployments.add(createSmartRouterDeployment(project, smartRouterSettings));
         }
 
+        int kieServerSuffixCounter = 0;
         for (DeploymentSettings kieServerSettings : kieServerSettingsList) {
             deployApbWithSettings(project, kieServerSettings);
-            kieServerDeployments.add(createKieServerDeployment(project, kieServerSettings));
+            kieServerDeployments.add(createKieServerDeployment(project, kieServerSettings, kieServerSuffixCounter));
+            kieServerSuffixCounter++;
         }
 
         logger.info("Waiting for Workbench deployment to become ready.");
@@ -152,7 +158,7 @@ public class GenericScenarioApb extends OpenShiftScenario implements GenericScen
         //extraVars.put(OpenShiftApbConstants.IMAGE_STREAM_NAMESPACE, projectName);
         extraVars.put("namespace", projectName);
         extraVars.put("cluster", "openshift");
-        project.processApbRun("docker-registry.default.svc:5000/openshift/rhpam71-apb", extraVars);
+        project.processApbRun("docker-registry.default.svc:5000/openshift/rhpam72-apb", extraVars);
     }
 
     @Override
@@ -169,6 +175,15 @@ public class GenericScenarioApb extends OpenShiftScenario implements GenericScen
         KieServerDeploymentImpl kieServerDeployment = new KieServerDeploymentImpl(project);
         kieServerDeployment.setUsername(deploymentSettings.getEnvVariables().getOrDefault(OpenShiftApbConstants.KIE_SERVER_USER, DeploymentConstants.getKieServerUser()));
         kieServerDeployment.setPassword(deploymentSettings.getEnvVariables().getOrDefault(OpenShiftApbConstants.KIE_SERVER_PWD, DeploymentConstants.getKieServerPassword()));
+
+        return kieServerDeployment;
+    }
+
+    private KieServerDeploymentImpl createKieServerDeployment(Project project, DeploymentSettings deploymentSettings, int suffix) {
+        KieServerDeploymentImpl kieServerDeployment = new KieServerDeploymentImpl(project);
+        kieServerDeployment.setUsername(deploymentSettings.getEnvVariables().getOrDefault(OpenShiftApbConstants.KIE_SERVER_USER, DeploymentConstants.getKieServerUser()));
+        kieServerDeployment.setPassword(deploymentSettings.getEnvVariables().getOrDefault(OpenShiftApbConstants.KIE_SERVER_PWD, DeploymentConstants.getKieServerPassword()));
+        kieServerDeployment.setServiceSuffix("-" + suffix);
 
         return kieServerDeployment;
     }
@@ -194,14 +209,9 @@ public class GenericScenarioApb extends OpenShiftScenario implements GenericScen
     }
 
     private SmartRouterDeployment createSmartRouterDeployment(Project project, DeploymentSettings deploymentSettings) {
-        throw new UnsupportedOperationException("Not supported yet.");
-        /*
         SmartRouterDeploymentImpl smartRouterDeployment = new SmartRouterDeploymentImpl(project);
-        smartRouterDeployment.setServiceName(deploymentSettings.getEnvVariables().getOrDefault(OpenShiftApbConstants.APPLICATION_NAME, OpenShiftConstants.getKieApplicationName()));
-        smartRouterDeployment.scale(1);
 
         return smartRouterDeployment;
-        */
     }
 
     private ControllerDeployment createControllerDeployment(Project project, DeploymentSettings deploymentSettings) {

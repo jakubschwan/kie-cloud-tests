@@ -34,9 +34,20 @@ public class WorkbenchMonitoringSettingsBuilderApb implements WorkbenchMonitorin
     public WorkbenchMonitoringSettingsBuilderApb() {
         extraVars = new HashMap<>();
 
+        // Required values to create persitence values.
         extraVars.put(OpenShiftApbConstants.APB_PLAN_ID, ApbConstants.Plans.IMMUTABLE_MON);
-        extraVars.put(OpenShiftApbConstants.APB_IMAGE_STREAM_TAG, "1.1");
+        extraVars.put(OpenShiftApbConstants.APB_IMAGE_STREAM_TAG, "1.0");
+        extraVars.put(OpenShiftApbConstants.SMARTROUTER_VOLUME_SIZE, "64Mi");
+        extraVars.put(OpenShiftApbConstants.BUSINESSCENTRAL_VOLUME_SIZE, "64Mi");
+        extraVars.put(OpenShiftApbConstants.APB_BUSINESSCENTRAL_REPLICAS, "1");
+        extraVars.put(OpenShiftApbConstants.APB_SMARTROUTER_REPLICAS, "2");
+        // external maven repository URL
+        // Just for now set cert properties here.
+        extraVars.put(OpenShiftApbConstants.BUSINESSCENTRAL_SECRET_NAME, DeploymentConstants.getCustomTrustedSecretName());
+        extraVars.put(OpenShiftApbConstants.BUSINESSCENTRAL_KEYSTORE_ALIAS, DeploymentConstants.getCustomTrustedKeystoreAlias());
+        extraVars.put(OpenShiftApbConstants.BUSINESSCENTRAL_KEYSTORE_PWD, DeploymentConstants.getCustomTrustedKeystorePwd());
 
+        // Default Users
         extraVars.put(OpenShiftApbConstants.KIE_ADMIN_USER, DeploymentConstants.getWorkbenchUser());
         extraVars.put(OpenShiftApbConstants.KIE_ADMIN_PWD, DeploymentConstants.getWorkbenchPassword());
         extraVars.put(OpenShiftApbConstants.KIE_CONTROLLER_USER, DeploymentConstants.getControllerUser());
@@ -44,12 +55,6 @@ public class WorkbenchMonitoringSettingsBuilderApb implements WorkbenchMonitorin
         extraVars.put(OpenShiftApbConstants.KIE_SERVER_USER, DeploymentConstants.getKieServerUser());
         extraVars.put(OpenShiftApbConstants.KIE_SERVER_PWD, DeploymentConstants.getKieServerPassword());
 
-        extraVars.put(OpenShiftApbConstants.APB_BUSINESSCENTRAL_REPLICAS, "1");
-
-        // Just for now set cert properties here.
-        extraVars.put(OpenShiftApbConstants.BUSINESSCENTRAL_SECRET_NAME, DeploymentConstants.getCustomTrustedSecretName());
-        extraVars.put(OpenShiftApbConstants.BUSINESSCENTRAL_KEYSTORE_ALIAS, DeploymentConstants.getCustomTrustedKeystoreAlias());
-        extraVars.put(OpenShiftApbConstants.BUSINESSCENTRAL_KEYSTORE_PWD, DeploymentConstants.getCustomTrustedKeystorePwd());
     }
 
     @Override

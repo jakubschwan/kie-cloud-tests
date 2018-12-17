@@ -48,6 +48,7 @@ public class OpenShiftApbConstants {
     public static final String SSO_USER = "apb_sso_user";
     public static final String SSO_PWD = "apb_sso_pwd";
     public static final String SSO_DISABLE_SSL_CERT_VALIDATION = "apb_sso_disable_ssl_cert_validation";
+    public static final String SSO_PRINCIPAL_ATTRIBUTE = "apb_sso_principal_attribute";
 
     // Maven repositories
     public static final String MAVEN_REPO_URL = "apb_maven_repo_url";
@@ -110,11 +111,14 @@ public class OpenShiftApbConstants {
     public static final String APB_ROUTER_PROTOCOL = "apb_router_protocol";
 
     // Controller integration
-
     public static final String APB_CONTROLLER_SERVICE = "apb_controller_svc";
     public static final String APB_CONTROLLER_HOST = "apb_controller_host";
     public static final String APB_CONTROLLER_PORT = "apb_controller_port";
     public static final String APB_CONTROLLER_PROTOCOL = "apb_controller_protocol";
+
+    // Volume size (Required parameters)
+    public static final String SMARTROUTER_VOLUME_SIZE = "apb_smartrouter_volume_size";
+    public static final String BUSINESSCENTRAL_VOLUME_SIZE = "apb_businesscentral_volume_size";
 
     // LDAP
     public static final String AUTH_LDAP_URL = "apb_auth_ldap_url";
