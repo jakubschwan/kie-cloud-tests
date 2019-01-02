@@ -75,14 +75,6 @@ public class OpenShiftApbConstants {
     public static final String APB_SMARTROUTER_REPLICAS = "apb_smartrouter_replicas";
     public static final String APB_BUSINESSCENTRAL_REPLICAS = "apb_businesscentral_replicas";
 
-    // External DB
-    public static final String APB_KIESERVER_EXTERNAL_DB_DRIVER="apb_kieserver_external_db_driver";
-    public static final String APB_KIESERVER_EXTERNAL_DB_DIALECT = "apb_kieserver_external_db_dialect";
-    public static final String APB_KIESERVER_EXTERNAL_DB_HOST = "apb_kieserver_external_db_host";
-    public static final String APB_KIESERVER_EXTERNAL_DB_PORT = "apb_kieserver_external_db_port";
-    public static final String APB_KIESERVER_EXTERNAL_DB_NAME = "apb_kieserver_external_db_name";
-    public static final String APB_KIESERVER_EXTERNAL_DB_URL = "apb_kieserver_external_db_url";
-
     // Generic Keystore parameters
     //public static final String APB_SECRET_NAME = "apb_secret_name";
     //public static final String APB_KEYSTORE_ALIAS = "apb_keystore_alias";
@@ -143,4 +135,15 @@ public class OpenShiftApbConstants {
     public static final String AUTH_LDAP_ROLE_ATTRIBUTE_IS_DN = "apb_auth_ldap_role_attribute_is_dn";
     public static final String AUTH_LDAP_REFERRAL_USER_ATTRIBUTE_ID_TO_CHECK = "apb_auth_ldap_referral_user_attribute_id_to_check";
 
+    // External Database
+    public static final String KIE_SERVER_EXTERNALDB_DRIVER = "apb_kieserver_external_db_driver";
+    public static final String KIE_SERVER_EXTERNALDB_HOST = "apb_kieserver_external_db_host";
+    public static final String KIE_SERVER_EXTERNALDB_PORT = "apb_kieserver_external_db_port";
+    public static final String KIE_SERVER_EXTERNALDB_DB = "apb_kieserver_external_db_name";
+    public static final String KIE_SERVER_EXTERNALDB_USER = "";
+    public static final String KIE_SERVER_EXTERNALDB_PWD = "";
+    public static final String KIE_SERVER_EXTERNALDB_DIALECT = "apb_kieserver_external_db_dialect";
+    public static final String KIE_SERVER_EXTERNALDB_URL = "apb_kieserver_external_db_url";
+
+    public static final String KIE_SERVER_IMAGE_STREAM_NAME = "apb_kieserver_image_stream_name";
 }
