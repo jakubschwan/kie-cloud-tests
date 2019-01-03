@@ -15,7 +15,8 @@
  */
 package org.kie.cloud.integrationtests.persistence;
 
-import cz.xtf.openshift.OpenShiftBinaryClient;
+import static org.assertj.core.api.Assertions.assertThat;
+
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -25,8 +26,6 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
-
-import static org.assertj.core.api.Assertions.assertThat;
 
 import org.guvnor.rest.client.ProjectResponse;
 import org.guvnor.rest.client.Space;
@@ -39,7 +38,6 @@ import org.kie.cloud.api.DeploymentScenarioBuilderFactoryLoader;
 import org.kie.cloud.api.deployment.Deployment;
 import org.kie.cloud.api.deployment.Instance;
 import org.kie.cloud.api.deployment.WorkbenchDeployment;
-import org.kie.cloud.api.scenario.ClusteredWorkbenchKieServerDatabasePersistentScenario;
 import org.kie.cloud.api.scenario.DeploymentScenario;
 import org.kie.cloud.api.scenario.WorkbenchKieServerPersistentScenario;
 import org.kie.cloud.common.provider.WorkbenchClientProvider;
@@ -47,6 +45,8 @@ import org.kie.cloud.integrationtests.AbstractMethodIsolatedCloudIntegrationTest
 import org.kie.wb.test.rest.client.WorkbenchClient;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import cz.xtf.openshift.OpenShiftBinaryClient;
 
 @RunWith(Parameterized.class)
 public class WorkbenchGitHooksPersistenceIntegrationTest extends AbstractMethodIsolatedCloudIntegrationTest<DeploymentScenario> {
@@ -73,13 +73,16 @@ public class WorkbenchGitHooksPersistenceIntegrationTest extends AbstractMethodI
                 .withGitHooksDir(GIT_HOOKS_REMOTE_DIR)
                 .build();
 
+        //TODO: how to skip this?
+        /*
         ClusteredWorkbenchKieServerDatabasePersistentScenario clusteredWorkbenchKieServerDatabasePersistentScenario = deploymentScenarioFactory.getClusteredWorkbenchKieServerDatabasePersistentScenarioBuilder()
                 .withGitHooksDir(GIT_HOOKS_REMOTE_DIR)
                 .build();
-
+        */
         return Arrays.asList(new Object[][]{
             {"Workbench + KIE Server - Persistent", workbenchKieServerPersistentScenario},
-            {"Clustered Workbench + KIE Server + Database - Persistent", clusteredWorkbenchKieServerDatabasePersistentScenario},});
+        //    {"Clustered Workbench + KIE Server + Database - Persistent", clusteredWorkbenchKieServerDatabasePersistentScenario}
+        });
     }
 
     @Override
