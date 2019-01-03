@@ -64,9 +64,7 @@ public class KieServerS2ISettingsBuilderApb implements KieServerS2ISettingsBuild
 
     @Override
     public KieServerS2ISettingsBuilder withApplicationName(String name) {
-        throw new UnsupportedOperationException("Not supported yet.");
-        //extraVars.put(OpenShiftApbConstants.APPLICATION_NAME, name);
-        //return this;
+        throw new UnsupportedOperationException("Not supported for apb.");
     }
 
     @Override

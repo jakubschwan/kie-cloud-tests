@@ -71,9 +71,7 @@ public class WorkbenchMonitoringSettingsBuilderApb implements WorkbenchMonitorin
 
     @Override
     public WorkbenchMonitoringSettingsBuilder withApplicationName(String name) {
-        throw new UnsupportedOperationException("Not supported yet.");
-        //extraVars.put(OpenShiftApbConstants.APPLICATION_NAME, name);
-        //return this;
+        throw new UnsupportedOperationException("Not supported for apb.");
     }
 
     @Override

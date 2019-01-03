@@ -171,14 +171,6 @@ public class GenericScenarioApb extends OpenShiftScenario implements GenericScen
         return deployments;
     }
 
-    private KieServerDeploymentImpl createKieServerDeployment(Project project, DeploymentSettings deploymentSettings) {
-        KieServerDeploymentImpl kieServerDeployment = new KieServerDeploymentImpl(project);
-        kieServerDeployment.setUsername(deploymentSettings.getEnvVariables().getOrDefault(OpenShiftApbConstants.KIE_SERVER_USER, DeploymentConstants.getKieServerUser()));
-        kieServerDeployment.setPassword(deploymentSettings.getEnvVariables().getOrDefault(OpenShiftApbConstants.KIE_SERVER_PWD, DeploymentConstants.getKieServerPassword()));
-
-        return kieServerDeployment;
-    }
-
     private KieServerDeploymentImpl createKieServerDeployment(Project project, DeploymentSettings deploymentSettings, int suffix) {
         KieServerDeploymentImpl kieServerDeployment = new KieServerDeploymentImpl(project);
         kieServerDeployment.setUsername(deploymentSettings.getEnvVariables().getOrDefault(OpenShiftApbConstants.KIE_SERVER_USER, DeploymentConstants.getKieServerUser()));
@@ -189,15 +181,7 @@ public class GenericScenarioApb extends OpenShiftScenario implements GenericScen
     }
 
     private WorkbenchDeploymentImpl createWorkbenchDeployment(Project project, DeploymentSettings deploymentSettings) {
-        throw new UnsupportedOperationException("Not supported yet.");
-        /*
-        WorkbenchDeploymentImpl workbenchDeployment = new WorkbenchDeploymentImpl(project);
-        workbenchDeployment.setUsername(deploymentSettings.getEnvVariables().getOrDefault(OpenShiftApbConstants.KIE_ADMIN_USER, DeploymentConstants.getWorkbenchUser()));
-        workbenchDeployment.setPassword(deploymentSettings.getEnvVariables().getOrDefault(OpenShiftApbConstants.KIE_ADMIN_PWD, DeploymentConstants.getWorkbenchPassword()));
-        workbenchDeployment.scale(1);
-
-        return workbenchDeployment;
-        */
+        throw new UnsupportedOperationException("Not supported for apb.");
     }
 
     private WorkbenchDeployment createWorkbenchMonitoringDeployment(Project project, DeploymentSettings deploymentSettings) {
@@ -215,15 +199,7 @@ public class GenericScenarioApb extends OpenShiftScenario implements GenericScen
     }
 
     private ControllerDeployment createControllerDeployment(Project project, DeploymentSettings deploymentSettings) {
-        throw new UnsupportedOperationException("Not supported yet.");
-        /*
-        ControllerDeploymentImpl controllerDeployment = new ControllerDeploymentImpl(project);
-        controllerDeployment.setUsername(deploymentSettings.getEnvVariables().getOrDefault(OpenShiftApbConstants.KIE_CONTROLLER_USER, DeploymentConstants.getControllerUser()));
-        controllerDeployment.setPassword(deploymentSettings.getEnvVariables().getOrDefault(OpenShiftApbConstants.KIE_CONTROLLER_PWD, DeploymentConstants.getControllerPassword()));
-        controllerDeployment.scale(1);
-
-        return controllerDeployment;
-        */
+        throw new UnsupportedOperationException("Not supported for apb.");
     }
 
 }

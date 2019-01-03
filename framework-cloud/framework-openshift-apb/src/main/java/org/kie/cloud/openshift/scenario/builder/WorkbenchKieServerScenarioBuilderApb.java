@@ -42,42 +42,40 @@ public class WorkbenchKieServerScenarioBuilderApb implements WorkbenchKieServerS
 
     @Override
     public WorkbenchKieServerScenarioBuilder withExternalMavenRepo(String repoUrl, String repoUserName, String repoPassword) {
-        throw new UnsupportedOperationException("Not supported yet.");
-        //extraVars.put(OpenShiftApbConstants.MAVEN_REPO_URL, repoUrl);
-        //extraVars.put(OpenShiftApbConstants.MAVEN_REPO_USER, repoUserName);
-        //extraVars.put(OpenShiftApbConstants.MAVEN_REPO_PWD, repoPassword);
-        //return this;
+        extraVars.put(OpenShiftApbConstants.MAVEN_REPO_URL, repoUrl);
+        extraVars.put(OpenShiftApbConstants.MAVEN_REPO_USER, repoUserName);
+        extraVars.put(OpenShiftApbConstants.MAVEN_REPO_PWD, repoPassword);
+        return this;
+        //throw new UnsupportedOperationException("Not supported for APB.");
     }
 
     @Override
     public WorkbenchKieServerScenarioBuilder withKieServerId(String kieServerId) {
-        throw new UnsupportedOperationException("Not supported yet.");
-//        extraVars.put(OpenShiftApbConstants.KIE_SERVER_ID, kieServerId);
-//   return this;
+        throw new UnsupportedOperationException("Not supported for APB.");
     }
 
     @Override
     public WorkbenchKieServerScenarioBuilder withAccessControlAllowOrigin(String url) {
-        throw new UnsupportedOperationException("Not supported yet.");
+        throw new UnsupportedOperationException("Not supported for APB.");
     }
 
     @Override
     public WorkbenchKieServerScenarioBuilder withAccessControlAllowMethods(String... allowedMethods) {
-        throw new UnsupportedOperationException("Not supported yet.");
+        throw new UnsupportedOperationException("Not supported for APB.");
     }
 
     @Override
     public WorkbenchKieServerScenarioBuilder withAccessControlAllowHeaders(String... allowedHeaders) {
-        throw new UnsupportedOperationException("Not supported yet.");
+        throw new UnsupportedOperationException("Not supported for APB.");
     }
 
     @Override
     public WorkbenchKieServerScenarioBuilder withAccessControlAllowCredentials(boolean allowCredentials) {
-        throw new UnsupportedOperationException("Not supported yet.");
+        throw new UnsupportedOperationException("Not supported for APB.");
     }
 
     @Override
     public WorkbenchKieServerScenarioBuilder withAccessControlMaxAge(Duration maxAge) {
-        throw new UnsupportedOperationException("Not supported yet.");
+        throw new UnsupportedOperationException("Not supported for APB.");
 	}
 }

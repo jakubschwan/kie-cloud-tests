@@ -50,18 +50,13 @@ public class WorkbenchKieServerPersistentScenarioBuilderApb implements Workbench
         extraVars.put(OpenShiftApbConstants.KIE_CONTROLLER_PWD, DeploymentConstants.getControllerPassword());
         extraVars.put(propertyNames.workbenchMavenUserName(), DeploymentConstants.getWorkbenchMavenUser());
         extraVars.put(propertyNames.workbenchMavenPassword(), DeploymentConstants.getWorkbenchMavenPassword());
-        //extraVars.put(propertyNames.workbenchHttpsSecret(), OpenShiftConstants.getKieApplicationSecretName());
-        //extraVars.put(OpenShiftApbConstants.APB_KIESERVER_SECRET_NAME, OpenShiftConstants.getKieApplicationSecretName());
 
         /*
         Add extra var to enable HTTP routes for custom apb image
-        TODO: resolve do not work yet
 
         TODO: can't be configured workbench maven user
         
         */
-        //HTTP param
-        //extraVars.put("apb_hostname_http_enable", "true");
     }
 
     @Override
@@ -94,9 +89,7 @@ public class WorkbenchKieServerPersistentScenarioBuilderApb implements Workbench
 
     @Override
     public WorkbenchKieServerPersistentScenarioBuilder withKieServerId(String kieServerId) {
-        throw new UnsupportedOperationException("Not supported yet.");
-//        extraVars.put(OpenShiftApbConstants.KIE_SERVER_ID, kieServerId);
-//        return this;
+        throw new UnsupportedOperationException("Not supported for APB.");
     }
 
     @Override
@@ -122,6 +115,8 @@ public class WorkbenchKieServerPersistentScenarioBuilderApb implements Workbench
     @Override
     public WorkbenchKieServerPersistentScenarioBuilder withHttpsKieServerHostname(String hostname) {
         extraVars.put(OpenShiftApbConstants.APB_KIESERVER_HOSTNAME_HTTPS, hostname);
+        //need to set protocol and port
+        //extraVars.put(OpenShiftApbConstants, hostname)
         return this;
     }
 

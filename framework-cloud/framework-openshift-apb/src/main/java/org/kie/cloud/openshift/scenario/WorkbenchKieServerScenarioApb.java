@@ -27,12 +27,14 @@ import org.kie.cloud.api.deployment.Deployment;
 import org.kie.cloud.api.deployment.KieServerDeployment;
 import org.kie.cloud.api.deployment.SmartRouterDeployment;
 import org.kie.cloud.api.deployment.WorkbenchDeployment;
+import org.kie.cloud.api.deployment.constants.DeploymentConstants;
 import org.kie.cloud.api.scenario.WorkbenchKieServerScenario;
 import org.kie.cloud.common.provider.KieServerControllerClientProvider;
 import org.kie.cloud.openshift.constants.ApbConstants;
 import org.kie.cloud.openshift.constants.OpenShiftApbConstants;
 import org.kie.cloud.openshift.deployment.KieServerDeploymentImpl;
 import org.kie.cloud.openshift.deployment.WorkbenchDeploymentImpl;
+import org.kie.cloud.openshift.template.OpenShiftTemplate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -53,17 +55,21 @@ public class WorkbenchKieServerScenarioApb extends OpenShiftScenario implements 
     public void deploy() {
         super.deploy();
 
+        logger.info("Creating trusted secret");
+        deployCustomTrustedSecret();
+
         logger.info("Processesin APB image plan: " + extraVars.get(OpenShiftApbConstants.APB_PLAN_ID));
         //extraVars.put(OpenShiftApbConstants.IMAGE_STREAM_NAMESPACE, projectName);
         extraVars.put("namespace", projectName);
         extraVars.put("cluster", "openshift");
-        project.processApbRun("docker-registry.default.svc:5000/openshift/rhpam71-apb", extraVars);
+        project.processApbRun("docker-registry.default.svc:5000/openshift/rhpam72-apb", extraVars);
 
         workbenchDeployment = new WorkbenchDeploymentImpl(project);
         workbenchDeployment.setUsername(ApbConstants.DefaultUser.KIE_ADMIN);
         workbenchDeployment.setPassword(ApbConstants.DefaultUser.PASSWORD);
 
         kieServerDeployment = new KieServerDeploymentImpl(project);
+        kieServerDeployment.setServiceSuffix("-0");
         kieServerDeployment.setUsername(ApbConstants.DefaultUser.KIE_SERVER_USER);
         kieServerDeployment.setPassword(ApbConstants.DefaultUser.PASSWORD);
 
@@ -80,6 +86,22 @@ public class WorkbenchKieServerScenarioApb extends OpenShiftScenario implements 
 
         // Used to track persistent volume content due to issues with volume cleanup
         storeProjectInfoToPersistentVolume(workbenchDeployment, "/opt/eap/standalone/data/kie");
+    }
+
+    private void deployCustomTrustedSecret() {
+        project.processTemplateAndCreateResources(OpenShiftTemplate.CUSTOM_TRUSTED_SECRET.getTemplateUrl(),
+                Collections.emptyMap());
+
+        extraVars.put(OpenShiftApbConstants.BUSINESSCENTRAL_SECRET_NAME,
+                DeploymentConstants.getCustomTrustedSecretName());
+        extraVars.put(OpenShiftApbConstants.BUSINESSCENTRAL_KEYSTORE_ALIAS,
+                DeploymentConstants.getCustomTrustedKeystoreAlias());
+        extraVars.put(OpenShiftApbConstants.BUSINESSCENTRAL_KEYSTORE_PWD,
+                DeploymentConstants.getCustomTrustedKeystorePwd());
+        extraVars.put(OpenShiftApbConstants.KIESERVER_SECRET_NAME, DeploymentConstants.getCustomTrustedSecretName());
+        extraVars.put(OpenShiftApbConstants.KIESERVER_KEYSTORE_ALIAS,
+                DeploymentConstants.getCustomTrustedKeystoreAlias());
+        extraVars.put(OpenShiftApbConstants.KIESERVER_KEYSTORE_PWD, DeploymentConstants.getCustomTrustedKeystorePwd());
     }
 
     @Override

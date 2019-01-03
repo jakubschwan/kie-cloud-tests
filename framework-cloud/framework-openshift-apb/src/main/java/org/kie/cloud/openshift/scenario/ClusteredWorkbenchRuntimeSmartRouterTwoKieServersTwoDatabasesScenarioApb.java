@@ -30,6 +30,7 @@ import org.kie.cloud.api.deployment.SsoDeployment;
 import org.kie.cloud.api.deployment.WorkbenchDeployment;
 import org.kie.cloud.api.deployment.constants.DeploymentConstants;
 import org.kie.cloud.api.scenario.ClusteredWorkbenchRuntimeSmartRouterTwoKieServersTwoDatabasesScenario;
+import org.kie.cloud.common.provider.KieServerControllerClientProvider;
 import org.kie.cloud.openshift.constants.OpenShiftApbConstants;
 import org.kie.cloud.openshift.deployment.DatabaseDeploymentImpl;
 import org.kie.cloud.openshift.deployment.KieServerDeploymentImpl;
@@ -74,7 +75,7 @@ public class ClusteredWorkbenchRuntimeSmartRouterTwoKieServersTwoDatabasesScenar
 
             extraVars.put(OpenShiftApbConstants.BUSINESS_CENTRAL_SSO_CLIENT, "business-central-client");
             extraVars.put(OpenShiftApbConstants.BUSINESS_CENTRAL_SSO_SECRET, "business-central-secret");
-            // TODO check all Kie Server clients!
+            // TODO check all Kie Server clients! - because SSO, not all KS are registred to SSO
             extraVars.put(OpenShiftApbConstants.KIE_SERVER_SSO_CLIENT, "kie-server-client");
             extraVars.put(OpenShiftApbConstants.KIE_SERVER_SSO_SECRET, "kie-server-secret");
 
@@ -93,14 +94,12 @@ public class ClusteredWorkbenchRuntimeSmartRouterTwoKieServersTwoDatabasesScenar
         workbenchRuntimeDeployment = createWorkbenchRuntimeDeployment(project);
 
         smartRouterDeployment = createSmartRouterDeployment(project);
-        //TODO: smart router use web sockets for connection to BC
 
-        //TODO: Kie Servers has same Kie Server ID !!! fix in APB
         kieServerOneDeployment = createKieServerDeployment(project, "0");
         kieServerTwoDeployment = createKieServerDeployment(project, "1");
 
-        databaseOneDeployment = createDatabaseDeployment(project, "0"); //TODO suffix number is not last, in APB put db name before number
-        databaseTwoDeployment = createDatabaseDeployment(project, "1"); //TODO suffix number is not last, in APB put db name before number
+        databaseOneDeployment = createDatabaseDeployment(project, "0");
+        databaseTwoDeployment = createDatabaseDeployment(project, "1");
 
         logger.info("Waiting for Workbench deployment to become ready.");
         workbenchRuntimeDeployment.waitForScale();
@@ -121,12 +120,9 @@ public class ClusteredWorkbenchRuntimeSmartRouterTwoKieServersTwoDatabasesScenar
         databaseTwoDeployment.waitForScale();
 
         logger.info("Waiting for Kie servers and Smart router to register itself to the Workbench.");
-        //KieServerControllerClientProvider.waitForServerTemplateCreation(workbenchRuntimeDeployment, 3);
-        //TODO: check this wait !!
+        KieServerControllerClientProvider.waitForServerTemplateCreation(workbenchRuntimeDeployment, 3);
 
         logNodeNameOfAllInstances();
-
-        //throw new RuntimeException("Just kill the deploy to leave clean env...");
     }
 
 
@@ -193,24 +189,22 @@ public class ClusteredWorkbenchRuntimeSmartRouterTwoKieServersTwoDatabasesScenar
 
     private SmartRouterDeployment createSmartRouterDeployment(Project project) {
         SmartRouterDeploymentImpl smartRouterDeployment = new SmartRouterDeploymentImpl(project);
-        //smartRouterDeployment.setServiceName("rhpam-managed");
-        //smartRouterDeployment.setServiceName(OpenShiftConstants.getKieApplicationName());
 
         return smartRouterDeployment;
     }
 
-    private KieServerDeploymentImpl createKieServerDeployment(Project project, String kieServerSuffix) {
+    private KieServerDeploymentImpl createKieServerDeployment(Project project, String kieServerIndex) {
         KieServerDeploymentImpl kieServerDeployment = new KieServerDeploymentImpl(project);
         kieServerDeployment.setUsername(DeploymentConstants.getKieServerUser());
         kieServerDeployment.setPassword(DeploymentConstants.getKieServerPassword());
-        kieServerDeployment.setServiceSuffix("-" + kieServerSuffix);
+        kieServerDeployment.setServiceSuffix("-" + kieServerIndex);
 
         return kieServerDeployment;
     }
 
-    private DatabaseDeploymentImpl createDatabaseDeployment(Project project, String databaseSuffix) {
+    private DatabaseDeploymentImpl createDatabaseDeployment(Project project, String databaseIndex) {
         DatabaseDeploymentImpl databaseDeployment = new DatabaseDeploymentImpl(project);
-        databaseDeployment.setServiceSuffix("-" + databaseSuffix);
+        databaseDeployment.setServiceSuffix("-" + databaseIndex);
         return databaseDeployment;
     }
 

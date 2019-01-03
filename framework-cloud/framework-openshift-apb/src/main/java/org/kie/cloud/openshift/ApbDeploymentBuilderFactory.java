@@ -33,6 +33,7 @@ import org.kie.cloud.api.settings.builder.WorkbenchMonitoringSettingsBuilder;
 import org.kie.cloud.api.settings.builder.WorkbenchSettingsBuilder;
 import org.kie.cloud.openshift.scenario.builder.ClusteredWorkbenchRuntimeSmartRouterTwoKieServersTwoDatabasesScenarioBuilderApb;
 import org.kie.cloud.openshift.scenario.builder.GenericScenarioBuilderApb;
+import org.kie.cloud.openshift.scenario.builder.KieServerWithExternalDatabaseScenarioBuilderApb;
 import org.kie.cloud.openshift.scenario.builder.WorkbenchKieServerPersistentScenarioBuilderApb;
 import org.kie.cloud.openshift.scenario.builder.WorkbenchKieServerScenarioBuilderApb;
 import org.kie.cloud.openshift.settings.builder.KieServerS2ISettingsBuilderApb;
@@ -70,7 +71,7 @@ public class ApbDeploymentBuilderFactory implements DeploymentScenarioBuilderFac
 
     @Override
     public KieServerWithExternalDatabaseScenarioBuilder getKieServerWithExternalDatabaseScenarioBuilder() {
-        throw new UnsupportedOperationException("Not supported yet.");
+        return new KieServerWithExternalDatabaseScenarioBuilderApb();
     }
 
     @Override

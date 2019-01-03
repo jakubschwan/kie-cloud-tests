@@ -175,7 +175,6 @@
                     <file>${certificate.dir}/rhpam-test-ca.crt</file>
                     <trustcacerts>true</trustcacerts>
                     <noprompt>true</noprompt>
-                    <verbose>true</verbose>
                   </configuration>
                 </execution>
                 <execution>
@@ -190,7 +189,6 @@
                     <destkeystore>${certificate.dir}/test-keystore</destkeystore>
                     <deststorepass>changeit</deststorepass>
                     <noprompt>true</noprompt>
-                    <verbose>true</verbose>
                   </configuration>
                   <!-- ${java.home}/lib/security/cacerts -->
                 </execution>
