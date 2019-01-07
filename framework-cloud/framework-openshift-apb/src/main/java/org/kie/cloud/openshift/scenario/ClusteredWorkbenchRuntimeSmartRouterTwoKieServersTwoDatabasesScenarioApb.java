@@ -86,7 +86,7 @@ public class ClusteredWorkbenchRuntimeSmartRouterTwoKieServersTwoDatabasesScenar
         deployCustomTrustedSecret();
 
         logger.info("Processesin APB image plan: " + extraVars.get(OpenShiftApbConstants.APB_PLAN_ID));
-        //extraVars.put(OpenShiftApbConstants.IMAGE_STREAM_NAMESPACE, projectName);
+        extraVars.put(OpenShiftApbConstants.IMAGE_STREAM_NAMESPACE, projectName);
         extraVars.put("namespace", projectName);
         extraVars.put("cluster", "openshift");
         project.processApbRun("docker-registry.default.svc:5000/openshift/rhpam72-apb", extraVars);

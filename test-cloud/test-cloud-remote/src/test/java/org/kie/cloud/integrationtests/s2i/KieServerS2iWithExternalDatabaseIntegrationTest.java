@@ -23,6 +23,7 @@ import java.util.Collection;
 import java.util.List;
 
 import org.junit.After;
+import org.junit.Assume;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.experimental.categories.Category;
@@ -74,6 +75,7 @@ public class KieServerS2iWithExternalDatabaseIntegrationTest extends AbstractMet
             scenarios.add(new Object[] { "KIE Server HTTPS S2I", kieServerHttpsS2ISettings });
         } catch (UnsupportedOperationException ex) {
             logger.info("KIE Server HTTPS S2I is skipped.", ex);
+            Assume.assumeNoException(ex);
         }
 
         return scenarios;
@@ -106,7 +108,6 @@ public class KieServerS2iWithExternalDatabaseIntegrationTest extends AbstractMet
                 .build();
     }
 
-    @Before
     public void setUp() {
         kieServicesClient = KieServerClientProvider.getKieServerClient(deploymentScenario.getKieServerDeployments().get(0));
         processServicesClient = KieServerClientProvider.getProcessClient(deploymentScenario.getKieServerDeployments().get(0));
@@ -123,6 +124,7 @@ public class KieServerS2iWithExternalDatabaseIntegrationTest extends AbstractMet
     public void initializeDeployment() {
         assumeTrue(isExternalDatabaseAllocated());
         super.initializeDeployment();
+        setUp();
     }
 
     //TODO: only for APB?

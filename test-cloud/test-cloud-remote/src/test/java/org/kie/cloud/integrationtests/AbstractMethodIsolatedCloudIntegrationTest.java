@@ -36,7 +36,7 @@ public abstract class AbstractMethodIsolatedCloudIntegrationTest<T extends Deplo
         try {
         deploymentScenario = createDeploymentScenario(deploymentScenarioFactory);
         } catch (UnsupportedOperationException ex) {
-            Assume.assumeFalse(ex.getMessage().startsWith("Not supported"));
+            Assume.assumeNoException(ex);
         }
         deploymentScenario.setLogFolderName(testName.getMethodName());
 
