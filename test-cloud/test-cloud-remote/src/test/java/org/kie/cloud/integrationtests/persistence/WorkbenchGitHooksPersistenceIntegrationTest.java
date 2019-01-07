@@ -22,13 +22,13 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
 
 import org.guvnor.rest.client.ProjectResponse;
 import org.guvnor.rest.client.Space;
+import org.junit.Assume;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -38,6 +38,7 @@ import org.kie.cloud.api.DeploymentScenarioBuilderFactoryLoader;
 import org.kie.cloud.api.deployment.Deployment;
 import org.kie.cloud.api.deployment.Instance;
 import org.kie.cloud.api.deployment.WorkbenchDeployment;
+import org.kie.cloud.api.scenario.ClusteredWorkbenchKieServerDatabasePersistentScenario;
 import org.kie.cloud.api.scenario.DeploymentScenario;
 import org.kie.cloud.api.scenario.WorkbenchKieServerPersistentScenario;
 import org.kie.cloud.common.provider.WorkbenchClientProvider;
@@ -67,22 +68,29 @@ public class WorkbenchGitHooksPersistenceIntegrationTest extends AbstractMethodI
 
     @Parameterized.Parameters(name = "{0}")
     public static Collection<Object[]> data() {
+        List<Object[]> scenarios = new ArrayList<>();
         DeploymentScenarioBuilderFactory deploymentScenarioFactory = DeploymentScenarioBuilderFactoryLoader.getInstance();
 
-        WorkbenchKieServerPersistentScenario workbenchKieServerPersistentScenario = deploymentScenarioFactory.getWorkbenchKieServerPersistentScenarioBuilder()
+        try {
+            WorkbenchKieServerPersistentScenario workbenchKieServerPersistentScenario = deploymentScenarioFactory.getWorkbenchKieServerPersistentScenarioBuilder()
                 .withGitHooksDir(GIT_HOOKS_REMOTE_DIR)
                 .build();
+            scenarios.add(new Object[] { "Workbench + KIE Server - Persistent", workbenchKieServerPersistentScenario });
+        } catch (UnsupportedOperationException ex) {
+            logger.info("Workbench + KIE Server - Persistent is skipped.", ex);
+        }
 
-        //TODO: how to skip this?
-        /*
-        ClusteredWorkbenchKieServerDatabasePersistentScenario clusteredWorkbenchKieServerDatabasePersistentScenario = deploymentScenarioFactory.getClusteredWorkbenchKieServerDatabasePersistentScenarioBuilder()
+        try {
+            ClusteredWorkbenchKieServerDatabasePersistentScenario clusteredWorkbenchKieServerDatabasePersistentScenario = deploymentScenarioFactory.getClusteredWorkbenchKieServerDatabasePersistentScenarioBuilder()
                 .withGitHooksDir(GIT_HOOKS_REMOTE_DIR)
                 .build();
-        */
-        return Arrays.asList(new Object[][]{
-            {"Workbench + KIE Server - Persistent", workbenchKieServerPersistentScenario},
-        //    {"Clustered Workbench + KIE Server + Database - Persistent", clusteredWorkbenchKieServerDatabasePersistentScenario}
-        });
+            scenarios.add(new Object[]{"Clustered Workbench + KIE Server + Database - Persistent", clusteredWorkbenchKieServerDatabasePersistentScenario});
+        } catch (UnsupportedOperationException ex) {
+            logger.info("Clustered Workbench + KIE Server + Database - Persistent scenario is skipped.", ex);
+        }
+
+        Assume.assumeFalse(scenarios.isEmpty());
+        return scenarios;
     }
 
     @Override
