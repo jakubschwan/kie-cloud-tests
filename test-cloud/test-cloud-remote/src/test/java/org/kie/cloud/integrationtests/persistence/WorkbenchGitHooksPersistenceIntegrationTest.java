@@ -28,7 +28,6 @@ import java.util.stream.Collectors;
 
 import org.guvnor.rest.client.ProjectResponse;
 import org.guvnor.rest.client.Space;
-import org.junit.Assume;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -89,7 +88,6 @@ public class WorkbenchGitHooksPersistenceIntegrationTest extends AbstractMethodI
             logger.info("Clustered Workbench + KIE Server + Database - Persistent scenario is skipped.", ex);
         }
 
-        Assume.assumeFalse(scenarios.isEmpty());
         return scenarios;
     }
 

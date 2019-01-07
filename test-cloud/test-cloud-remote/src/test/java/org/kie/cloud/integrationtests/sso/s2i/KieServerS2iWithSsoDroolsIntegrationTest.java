@@ -25,7 +25,6 @@ import java.util.Set;
 import java.util.UUID;
 
 import org.junit.After;
-import org.junit.Assume;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -80,7 +79,6 @@ public class KieServerS2iWithSsoDroolsIntegrationTest extends AbstractMethodIsol
             logger.info("KIE Server HTTPS S2I is skipped.", ex);
         }
 
-        Assume.assumeFalse(scenarios.isEmpty());
         return scenarios;
     }
 

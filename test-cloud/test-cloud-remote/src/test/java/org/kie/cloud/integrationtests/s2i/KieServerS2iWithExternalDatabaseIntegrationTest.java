@@ -23,7 +23,6 @@ import java.util.Collection;
 import java.util.List;
 
 import org.junit.After;
-import org.junit.Assume;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.experimental.categories.Category;
@@ -77,7 +76,6 @@ public class KieServerS2iWithExternalDatabaseIntegrationTest extends AbstractMet
             logger.info("KIE Server HTTPS S2I is skipped.", ex);
         }
 
-        Assume.assumeFalse(scenarios.isEmpty());
         return scenarios;
     }
 

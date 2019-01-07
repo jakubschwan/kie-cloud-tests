@@ -98,7 +98,6 @@ public class KieServerS2iOptaplannerIntegrationTest extends AbstractMethodIsolat
             logger.info("KIE Server HTTPS S2I is skipped.", ex);
         }
 
-        Assume.assumeFalse(scenarios.isEmpty());
         return scenarios;
     }
 

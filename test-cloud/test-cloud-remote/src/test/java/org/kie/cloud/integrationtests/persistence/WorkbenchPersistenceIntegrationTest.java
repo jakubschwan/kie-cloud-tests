@@ -23,7 +23,6 @@ import java.util.List;
 import org.guvnor.rest.client.ProjectResponse;
 import org.guvnor.rest.client.Space;
 import org.junit.After;
-import org.junit.Assume;
 import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
@@ -98,7 +97,6 @@ public class WorkbenchPersistenceIntegrationTest extends AbstractMethodIsolatedC
             logger.info("Clustered Workbench + KIE Server + Database is skipped.", ex);
         }
 
-        Assume.assumeFalse(scenarios.isEmpty());
         return scenarios;
     }
 

@@ -23,7 +23,6 @@ import java.util.List;
 
 import org.assertj.core.api.SoftAssertions;
 import org.junit.After;
-import org.junit.Assume;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.experimental.categories.Category;
@@ -74,7 +73,6 @@ public class KieServerS2iHierarchicalIntegrationTest extends AbstractMethodIsola
             logger.info("KIE Server HTTPS S2I is skipped.", ex);
         }
 
-        Assume.assumeFalse(scenarios.isEmpty());
         return scenarios;
     }
 

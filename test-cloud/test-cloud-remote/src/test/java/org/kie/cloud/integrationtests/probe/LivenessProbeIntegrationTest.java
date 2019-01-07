@@ -22,7 +22,6 @@ import java.util.Collection;
 import java.util.List;
 
 import org.assertj.core.api.Assertions;
-import org.junit.Assume;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
@@ -73,7 +72,6 @@ public class LivenessProbeIntegrationTest extends AbstractMethodIsolatedCloudInt
             logger.info("Workbench + KIE Server - Persistent is skipped.", ex);
         }
 
-        Assume.assumeFalse(scenarios.isEmpty());
         return scenarios;
     }
 

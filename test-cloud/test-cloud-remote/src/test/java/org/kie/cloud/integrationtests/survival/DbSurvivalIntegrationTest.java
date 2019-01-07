@@ -24,7 +24,6 @@ import java.util.Collection;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
-import org.junit.Assume;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -82,7 +81,6 @@ public class DbSurvivalIntegrationTest extends AbstractMethodIsolatedCloudIntegr
             logger.info("KIE Server + PostgreSQL is skipped.", ex);
         } 
 
-        Assume.assumeFalse(scenarios.isEmpty());
         return scenarios;
     }
 

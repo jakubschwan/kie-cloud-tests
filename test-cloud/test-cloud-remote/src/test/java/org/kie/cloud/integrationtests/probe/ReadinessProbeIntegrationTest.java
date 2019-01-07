@@ -33,7 +33,6 @@ import org.assertj.core.api.Assertions;
 import org.guvnor.rest.client.Space;
 import org.jboss.resteasy.client.jaxrs.ResteasyClientBuilder;
 import org.junit.After;
-import org.junit.Assume;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -98,7 +97,6 @@ public class ReadinessProbeIntegrationTest extends AbstractMethodIsolatedCloudIn
             logger.info("Workbench + KIE Server - Persistent is skipped.", ex);
         }
 
-        Assume.assumeFalse(scenarios.isEmpty());
         return scenarios;
     }
 
