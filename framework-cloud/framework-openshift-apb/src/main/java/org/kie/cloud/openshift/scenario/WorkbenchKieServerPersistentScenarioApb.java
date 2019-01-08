@@ -35,6 +35,7 @@ import org.kie.cloud.openshift.constants.OpenShiftApbConstants;
 import org.kie.cloud.openshift.deployment.KieServerDeploymentImpl;
 import org.kie.cloud.openshift.deployment.WorkbenchDeploymentImpl;
 import org.kie.cloud.openshift.template.OpenShiftTemplate;
+import org.kie.cloud.openshift.util.ApbImageGetter;
 import org.kie.cloud.openshift.util.SsoDeployer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -80,8 +81,7 @@ public class WorkbenchKieServerPersistentScenarioApb extends OpenShiftScenario i
         extraVars.put(OpenShiftApbConstants.IMAGE_STREAM_NAMESPACE, projectName);
         extraVars.put("namespace", projectName);
         extraVars.put("cluster", "openshift");
-        // TODO: need to be hard pushed to OS before execution.
-        project.processApbRun("docker-registry.default.svc:5000/openshift/rhpam72-apb", extraVars);
+        project.processApbRun(ApbImageGetter.fromImageStream(), extraVars);
 
         workbenchDeployment = new WorkbenchDeploymentImpl(project);
         workbenchDeployment.setUsername(DeploymentConstants.getWorkbenchUser());

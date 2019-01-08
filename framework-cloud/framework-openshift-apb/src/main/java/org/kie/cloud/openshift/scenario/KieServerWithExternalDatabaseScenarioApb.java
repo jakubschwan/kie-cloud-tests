@@ -44,6 +44,7 @@ import org.kie.cloud.openshift.database.external.ApbExternalDatabaseProvider;
 import org.kie.cloud.openshift.database.external.ExternalDatabase;
 import org.kie.cloud.openshift.deployment.KieServerDeploymentImpl;
 import org.kie.cloud.openshift.template.OpenShiftTemplate;
+import org.kie.cloud.openshift.util.ApbImageGetter;
 import org.kie.cloud.openshift.util.DockerRegistryDeployer;
 import org.kie.cloud.openshift.util.OpenShiftTemplateProcessor;
 import org.kie.cloud.openshift.util.ProcessExecutor;
@@ -103,7 +104,7 @@ public class KieServerWithExternalDatabaseScenarioApb extends OpenShiftScenario 
         //extraVars.put(OpenShiftApbConstants.IMAGE_STREAM_NAMESPACE, projectName);
         extraVars.put("namespace", projectName);
         extraVars.put("cluster", "openshift");
-        project.processApbRun("docker-registry.default.svc:5000/openshift/rhpam72-apb", extraVars);
+        project.processApbRun(ApbImageGetter.fromImageStream(), extraVars);
 
         kieServerDeployment = new KieServerDeploymentImpl(project);
         kieServerDeployment.setUsername(DeploymentConstants.getKieServerUser());

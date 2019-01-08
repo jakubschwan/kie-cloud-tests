@@ -35,6 +35,7 @@ import org.kie.cloud.openshift.constants.OpenShiftApbConstants;
 import org.kie.cloud.openshift.deployment.KieServerDeploymentImpl;
 import org.kie.cloud.openshift.deployment.WorkbenchDeploymentImpl;
 import org.kie.cloud.openshift.template.OpenShiftTemplate;
+import org.kie.cloud.openshift.util.ApbImageGetter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -62,7 +63,7 @@ public class WorkbenchKieServerScenarioApb extends OpenShiftScenario implements 
         extraVars.put(OpenShiftApbConstants.IMAGE_STREAM_NAMESPACE, projectName);
         extraVars.put("namespace", projectName);
         extraVars.put("cluster", "openshift");
-        project.processApbRun("docker-registry.default.svc:5000/openshift/rhpam72-apb", extraVars);
+        project.processApbRun(ApbImageGetter.fromImageStream(), extraVars);
 
         workbenchDeployment = new WorkbenchDeploymentImpl(project);
         workbenchDeployment.setUsername(ApbConstants.DefaultUser.KIE_ADMIN);
