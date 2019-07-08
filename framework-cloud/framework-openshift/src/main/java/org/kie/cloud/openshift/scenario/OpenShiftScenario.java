@@ -20,7 +20,6 @@ import java.util.Collections;
 import java.util.List;
 import java.util.UUID;
 
-import io.fabric8.kubernetes.api.model.Pod;
 import org.kie.cloud.api.deployment.Deployment;
 import org.kie.cloud.api.scenario.DeploymentScenario;
 import org.kie.cloud.api.scenario.DeploymentScenarioListener;
@@ -32,6 +31,8 @@ import org.kie.cloud.openshift.resource.Project;
 import org.kie.cloud.openshift.template.OpenShiftTemplate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import io.fabric8.kubernetes.api.model.Pod;
 
 public abstract class OpenShiftScenario<T extends DeploymentScenario<T>> implements DeploymentScenario<T> {
 

@@ -19,9 +19,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.List;
-import java.util.Set;
 
 import org.junit.After;
 import org.junit.Before;
@@ -44,11 +42,10 @@ import org.kie.cloud.tests.common.AbstractMethodIsolatedCloudIntegrationTest;
 import org.kie.cloud.tests.common.client.util.Kjar;
 import org.kie.cloud.tests.common.time.Constants;
 import org.kie.server.api.model.KieContainerResource;
-import org.kie.server.api.model.ReleaseId;
 import org.kie.server.api.model.instance.ProcessInstance;
-import org.kie.server.api.model.instance.TaskSummary;
 import org.kie.server.client.KieServicesClient;
 import org.kie.server.client.ProcessServicesClient;
+import org.kie.server.client.QueryServicesClient;
 import org.kie.server.client.UserTaskServicesClient;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -67,10 +64,12 @@ public class KieServerS2iAmqJbpmIntegrationTest extends AbstractMethodIsolatedCl
     @Parameters(name = "{0}")
     public static Collection<Object[]> data() {
         List<Object[]> scenarios = new ArrayList<>();
-        DeploymentScenarioBuilderFactory deploymentScenarioFactory = DeploymentScenarioBuilderFactoryLoader.getInstance();
+        DeploymentScenarioBuilderFactory deploymentScenarioFactory = DeploymentScenarioBuilderFactoryLoader
+                .getInstance();
 
         try {
-            KieServerS2IAmqSettingsBuilder kieServerS2IAmqSettings = deploymentScenarioFactory.getKieServerS2IAmqSettingsBuilder();
+            KieServerS2IAmqSettingsBuilder kieServerS2IAmqSettings = deploymentScenarioFactory
+                    .getKieServerS2IAmqSettingsBuilder();
             scenarios.add(new Object[] { "KIE Server S2I AMQ", kieServerS2IAmqSettings });
         } catch (UnsupportedOperationException ex) {
             logger.info("KIE Server AMQ S2I is skipped.", ex);
@@ -82,6 +81,9 @@ public class KieServerS2iAmqJbpmIntegrationTest extends AbstractMethodIsolatedCl
     protected KieServicesClient kieServicesClient;
     protected ProcessServicesClient processServicesClient;
     protected UserTaskServicesClient taskServicesClient;
+    protected QueryServicesClient queryServicesClient;
+
+    private AmqDeployment amqDeployment;
 
     private static final String KIE_CONTAINER_DEPLOYMENT = CONTAINER_ID + "=" + Kjar.DEFINITION.toString();
 
@@ -92,36 +94,35 @@ public class KieServerS2iAmqJbpmIntegrationTest extends AbstractMethodIsolatedCl
 
     @Override
     protected GenericScenario createDeploymentScenario(DeploymentScenarioBuilderFactory deploymentScenarioFactory) {
-        repositoryName = Git.getProvider().createGitRepositoryWithPrefix("KieServerS2iAmqJbpmRepository", KieServerS2iAmqJbpmIntegrationTest.class.getResource(PROJECT_SOURCE_FOLDER).getFile());
+        repositoryName = Git.getProvider().createGitRepositoryWithPrefix("KieServerS2iAmqJbpmRepository",
+                KieServerS2iAmqJbpmIntegrationTest.class.getResource(PROJECT_SOURCE_FOLDER).getFile());
 
         DeploymentSettings kieServerS2Isettings = kieServerS2IAmqSettingsBuilder
                 .withContainerDeployment(KIE_CONTAINER_DEPLOYMENT)
-                .withSourceLocation(Git.getProvider().getRepositoryUrl(repositoryName), REPO_BRANCH, DEFINITION_PROJECT_NAME)
+                .withSourceLocation(Git.getProvider().getRepositoryUrl(repositoryName), REPO_BRANCH,
+                        DEFINITION_PROJECT_NAME)
                 .build();
 
-        return deploymentScenarioFactory.getGenericScenarioBuilder()
-                .withKieServer(kieServerS2Isettings)
-                .build();
+        return deploymentScenarioFactory.getGenericScenarioBuilder().withKieServer(kieServerS2Isettings).build();
     }
 
     @Before
     public void setUp() {
-        AmqDeployment amqDeployment = deploymentScenario.getDeployments().stream()
-                .filter(AmqDeployment.class::isInstance)
-                .map(AmqDeployment.class::cast)
-                .findFirst()
-                .orElseThrow(()->new RuntimeException("No AMQ deployment founded."));
+        amqDeployment = deploymentScenario.getDeployments().stream().filter(AmqDeployment.class::isInstance)
+                .map(AmqDeployment.class::cast).findFirst()
+                .orElseThrow(() -> new RuntimeException("No AMQ deployment founded."));
 
         kieServicesClient = KieServerClientProvider.getKieServerJmsClient(amqDeployment.getTcpUrl());
         processServicesClient = KieServerClientProvider.getProcessJmsClient(kieServicesClient);
         taskServicesClient = KieServerClientProvider.getTaskJmsClient(kieServicesClient);
+        queryServicesClient = KieServerClientProvider.getQueryJmsClient(kieServicesClient);
     }
 
     @After
     public void deleteRepo() {
         Git.getProvider().deleteGitRepository(repositoryName);
     }
-
+/*
     @Test
     @Category(JBPMOnly.class)
     public void testContainerAfterExecServerS2IStart() {
@@ -150,5 +151,50 @@ public class KieServerS2iAmqJbpmIntegrationTest extends AbstractMethodIsolatedCl
         assertThat(userTaskPi).isNotNull();
         assertThat(userTaskPi.getState()).isEqualTo(org.kie.api.runtime.process.ProcessInstance.STATE_COMPLETED);
     }
+    */
 
+    @Test
+    @Category(JBPMOnly.class)
+    public void testExecuteProcessWithSignal() {
+        List<KieContainerResource> containers = kieServicesClient.listContainers().getResult().getContainers();
+        assertThat(containers).isNotNull().hasSize(1);
+
+        Long signalTaskPid = processServicesClient.startProcess(CONTAINER_ID, Constants.ProcessId.EXTERNALSIGNAL);
+        assertThat(signalTaskPid).isNotNull();
+
+        //need to chatch an external signal "externalSignal"
+
+        logger.info("Waitng for JSM message to signal queue");
+        try {
+            KieServerClientProvider.catchJmsSignalMessageConsumer(amqDeployment.getTcpUrl());
+            /*
+            Message message = KieServerClientProvider.getJmsSignalMessageConsumer(amqDeployment.getTcpUrl())
+                    .receive(5000);
+
+            if (message == null) { 
+                System.out.println("A message was not received within given time.");
+                logger.info("A message was not received within given time.");
+            } else {
+                System.out.println("Received message: " + ((TextMessage) message).getText());
+                logger.info("Received message: " + ((TextMessage) message).getText());
+            }
+            */
+        } catch (Exception e) {
+            logger.error("Send signal to JSM failed.",e);
+            //throw new RuntimeException("Send signal to JSM failed.",e);
+        }
+/*
+        ProcessInstance stp = processServicesClient.getProcessInstance(CONTAINER_ID, signalTaskPid);
+        assertThat(stp).isNotNull();
+        logger.warn(stp.getState() + " should be " + org.kie.api.runtime.process.ProcessInstance.STATE_COMPLETED);
+        //assertThat(signalTaskPi.getState()).isEqualTo(org.kie.api.runtime.process.ProcessInstance.STATE_COMPLETED);
+        
+
+        processServicesClient.signal(CONTAINER_ID, Constants.Signal.SIGNAL_NAME, null);
+*/
+        ProcessInstance signalTaskPi = processServicesClient.getProcessInstance(CONTAINER_ID, signalTaskPid);
+        logger.warn(signalTaskPi.getState() + " should be " + org.kie.api.runtime.process.ProcessInstance.STATE_COMPLETED);
+        assertThat(signalTaskPi).isNotNull();
+        assertThat(signalTaskPi.getState()).isEqualTo(org.kie.api.runtime.process.ProcessInstance.STATE_COMPLETED);
+    }
 }

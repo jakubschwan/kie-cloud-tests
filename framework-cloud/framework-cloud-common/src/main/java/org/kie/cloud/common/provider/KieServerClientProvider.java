@@ -24,8 +24,11 @@ import java.util.List;
 import java.util.Set;
 
 import javax.jms.Connection;
+import javax.jms.Message;
+import javax.jms.MessageConsumer;
 import javax.jms.Queue;
 import javax.jms.Session;
+import javax.jms.TextMessage;
 
 import org.apache.activemq.ActiveMQSslConnectionFactory;
 import org.kie.cloud.api.deployment.KieServerDeployment;
@@ -42,8 +45,8 @@ import org.kie.server.client.KieServicesFactory;
 import org.kie.server.client.ProcessServicesClient;
 import org.kie.server.client.QueryServicesClient;
 import org.kie.server.client.RuleServicesClient;
-import org.kie.server.client.UserTaskServicesClient;
 import org.kie.server.client.SolverServicesClient;
+import org.kie.server.client.UserTaskServicesClient;
 
 public class KieServerClientProvider {
 
@@ -91,12 +94,7 @@ public class KieServerClientProvider {
     }
 
     public static KieServicesClient getKieServerJmsClient(URL amqHost, Set<Class<?>> extraClasses, long clientTimeout) throws Exception {
-        ActiveMQSslConnectionFactory connectionFactory = new ActiveMQSslConnectionFactory(
-                "failover://(ssl://"+amqHost.getHost()+":443)?initialReconnectDelay=2000&maxReconnectAttempts=5");
-        connectionFactory.setUserName(DeploymentConstants.getAmqUsername());
-        connectionFactory.setPassword(DeploymentConstants.getAmqPassword());
-        connectionFactory.setTrustStore(Paths.get(DeploymentConstants.getCertificateDir()+"/client.ts").toAbsolutePath().normalize().toString());
-        connectionFactory.setTrustStorePassword("changeit");
+        ActiveMQSslConnectionFactory connectionFactory = getJmsConnectionFactory(amqHost);
         Queue sendQueue = null, receiveQueue = null;
         Connection c = null;
         try {
@@ -119,6 +117,82 @@ public class KieServerClientProvider {
         return KieServicesFactory.newKieServicesClient(kieServicesConfiguration);
     }
 
+    private static ActiveMQSslConnectionFactory getJmsConnectionFactory(URL amqHost) throws Exception {
+        ActiveMQSslConnectionFactory connectionFactory = new ActiveMQSslConnectionFactory(
+                "failover://(ssl://"+amqHost.getHost()+":443)?initialReconnectDelay=2000&maxReconnectAttempts=5");
+        connectionFactory.setUserName(DeploymentConstants.getAmqUsername());
+        connectionFactory.setPassword(DeploymentConstants.getAmqPassword());
+        connectionFactory.setTrustStore(Paths.get(DeploymentConstants.getCertificateDir()+"/client.ts").toAbsolutePath().normalize().toString());
+        connectionFactory.setTrustStorePassword("changeit");
+
+        
+
+        return connectionFactory;
+    }
+
+    public static void catchJmsSignalMessageConsumer(URL amqHost) throws Exception {
+        ActiveMQSslConnectionFactory connectionFactory = getJmsConnectionFactory(amqHost);
+        Queue signalQueue = null;
+        Connection c = null;
+        try {
+            c = connectionFactory.createConnection();
+            c.start();
+            Session s = c.createSession(false, Session.AUTO_ACKNOWLEDGE);
+            signalQueue = s.createQueue("queue/KIE.SERVER.SIGNAL");
+
+            MessageConsumer messageConsumer = s.createConsumer(signalQueue);
+
+            //return messageConsumer; //TODO add throw exception
+
+            //Message message = messageConsumer.receive(5000);
+
+            
+                Message message = messageConsumer.receive(15000);
+                System.out.println("\n****************************\n\n\n");
+                if (message == null) { 
+                    System.out.println("A message was not received within given time.");
+                    //System.out.println("A message was not received within given time.");
+                } else {
+                    System.out.println("Received message: " + ((TextMessage) message).getText());
+                    //System.out.println("Received message: " + ((TextMessage) message).getText());
+                }
+                System.out.println("\n\n\n****************************\n");
+            
+
+        } finally {
+            if (c != null) {
+                c.close();
+            }
+        }
+    }
+
+ /*
+    private static TextMessage prepMessage(Session session, TextMessage message, String commandString,
+            String containerId) throws JMSException {
+        message = session.createTextMessage(commandString);
+        message.setJMSCorrelationID(UUID.randomUUID().toString());
+        message.setStringProperty(JMSConstants.USER_PROPERTY_NAME, wbUser);
+        message.setStringProperty(JMSConstants.PASSWRD_PROPERTY_NAME, wbPass);
+        message.setStringProperty(JMSConstants.TARGET_CAPABILITY_PROPERTY_NAME, "BPM");
+        message.setStringProperty(JMSConstants.CONTAINER_ID_PROPERTY_NAME, containerId);
+        message.setIntProperty(JMSConstants.SERIALIZATION_FORMAT_PROPERTY_NAME, MarshallingFormat.JAXB.getId());
+        message.setIntProperty(JMSConstants.INTERACTION_PATTERN_PROPERTY_NAME, JMSConstants.REQUEST_REPLY_PATTERN);
+        return message;
+    }*/
+ /*
+    private static String getCommandString(String containerId, Long processInstanceId, String signalName) {
+        Marshaller marshaller = MarshallerFactory.getMarshaller(Collections.<Class<?>>emptySet(),
+                MarshallingFormat.JAXB, Thread.currentThread().getContextClassLoader());
+ 
+        CommandScript script = new CommandScript();
+
+        script = new CommandScript( Collections.singletonList(
+                    (KieServerCommand) new DescriptorCommand( "ProcessService", "signal", marshaller.getFormat().getType(), new Object[]{containerId, signalName})));
+ 
+        System.out.println("\n\n"+marshaller.marshall(script)+"\n\n");
+        return marshaller.marshall(script);
+    }
+*/
     public static KieServicesClient getSmartRouterClient(SmartRouterDeployment smartRouterDeployment, String userName, String password) {
         return getSmartRouterClient(smartRouterDeployment, userName, password, KIE_SERVER_TIMEOUT);
     }
