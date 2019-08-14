@@ -88,7 +88,8 @@ public class WorkbenchDeploymentImpl extends OpenShiftDeployment implements Work
         return serviceName;
     }
 
-    @Override public void waitForScale() {
+    @Override
+    public void waitForScale() {
         super.waitForScale();
         if (getInstances().size() > 0) {
             RouterUtil.waitForRouter(getUrl());
