@@ -115,6 +115,7 @@
     <module>test-cloud-performance</module>
     <module>test-cloud-ha-cep</module>
     <module>test-cloud-workbench-ha</module>
+    <module>test-cloud-wb-rest-test</module>
   </modules>
 
   <build>
