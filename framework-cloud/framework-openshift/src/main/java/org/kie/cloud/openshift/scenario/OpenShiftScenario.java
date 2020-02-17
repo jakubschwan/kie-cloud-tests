@@ -106,6 +106,22 @@ public abstract class OpenShiftScenario<T extends DeploymentScenario<T>> impleme
         deploySecretConfig();
         deploySecretAppUser();
 
+        // TODO add secret for image pull from quay.
+
+        //$ oc create -f ns/jschwan-secret.yml
+        logger.info("Creating my quay pull secret with name '{}'", "quay-pull");
+        Map<String, String> data = new HashMap<>();
+        logger.info("Getting secret value from property io.quay.secret.pull value is '{}'", System.getProperty("io.quay.secret.pull"));
+        data.put(".dockerconfigjson", System.getProperty("io.quay.secret.pull"));
+
+        project.createSecret("quay-pull", data);
+
+        logger.info("Run command $ oc create serviceaccount myapp-rhpamsvc");
+        project.runOcCommandAsAdmin("create", "serviceaccount", "myapp-rhpamsvc");
+
+        logger.info("Run command $ oc secrets link myapp-rhpamsvc quay-pull --for=pull");
+        project.runOcCommandAsAdmin("secrets", "link", "myapp-rhpamsvc", "quay-pull", "--for=pull");
+
         if (createImageStreams) {
             logger.info("Creating image streams.");
             ImageStreamProvider.createImageStreamsInProject(project);

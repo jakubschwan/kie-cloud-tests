@@ -101,6 +101,8 @@
     <kie.image.tag.workbench.indexing/>
 
     <kie.image.registry.custom/>
+
+    <io.quay.secret.pull/>
   </properties>
 
   <modules>
@@ -313,6 +315,7 @@ $ keytool -import -alias client -keystore broker.ts -file client_cert -->
               <openshift.version>${openshift.version}</openshift.version>
               <kie.image.registry.custom>${kie.image.registry.custom}</kie.image.registry.custom>
               <certificate.dir>${certificate.dir}</certificate.dir>
+              <io.quay.secret.pull>${io.quay.secret.pull}</io.quay.secret.pull>
             </systemProperties>
           </configuration>
         </plugin>
