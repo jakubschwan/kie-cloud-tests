@@ -17,8 +17,6 @@ package org.kie.cloud.openshift.util;
 
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.util.HashMap;
-import java.util.Map;
 
 import cz.xtf.core.openshift.OpenShift;
 import io.fabric8.kubernetes.api.model.KubernetesList;
@@ -41,26 +39,6 @@ public class AmqImageStreamDeployer {
                         .delete();
             });
             project.runOcCommandAsAdmin("apply", "-f", OpenShiftConstants.getAmqImageStreams(), "-n", "openshift");
-            
-            // temp workaround to deploy 7.6 is as 7.5
-            Map<String, String> annotations = new HashMap<>();
-            annotations.put("description", "Red Hat AMQ Broker 7.5.0 image.");
-            annotations.put("iconClass", "icon-jboss");
-            annotations.put("tags", "messaging,amq,jboss,xpaas");
-            annotations.put("supports", "amq:7.5,messaging:7.5");
-            annotations.put("version", "7.5");
-            openShift.imageStreams().inNamespace("openshift").withName("amq-broker").edit()
-                            .editOrNewSpec()
-                                .addNewTag()
-                                    .withName("7.5")
-                                    .withNewFrom()
-                                        .withKind("DockerImage")
-                                        .withName("registry.redhat.io/amq7/amq-broker:7.6")
-                                        .endFrom()
-                                    .withAnnotations(annotations)
-                                .endTag()
-                            .endSpec()
-                            .done();
         } catch (MalformedURLException e) {
             throw new RuntimeException("Malformed resource URL", e);
         }
