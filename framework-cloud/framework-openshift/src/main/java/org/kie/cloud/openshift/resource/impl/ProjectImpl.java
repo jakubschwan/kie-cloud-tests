@@ -32,7 +32,6 @@ import java.util.stream.Collectors;
 import cz.xtf.builder.builders.ImageStreamBuilder;
 import cz.xtf.builder.builders.ImageStreamBuilder.TagReferencePolicyType;
 import cz.xtf.builder.builders.SecretBuilder;
-import cz.xtf.core.http.HttpsException;
 import cz.xtf.core.openshift.OpenShift;
 import cz.xtf.core.openshift.OpenShiftBinary;
 import cz.xtf.core.openshift.OpenShifts;
@@ -40,6 +39,7 @@ import io.fabric8.kubernetes.api.model.KubernetesList;
 import io.fabric8.kubernetes.api.model.Pod;
 import io.fabric8.openshift.api.model.ImageStream;
 import org.kie.cloud.api.deployment.Instance;
+import org.kie.cloud.common.util.AwaitilityUtils;
 import org.kie.cloud.openshift.OpenShiftController;
 import org.kie.cloud.openshift.constants.OpenShiftConstants;
 import org.kie.cloud.openshift.resource.Project;
@@ -217,15 +217,8 @@ public class ProjectImpl implements Project {
 
     private OpenShiftBinary getMasterBinary() {
         logger.debug("Try to get master binary few times as OpenShifts sometimes throws Socket exception for Connection reset");
-        for (int attempt = 0; attempt < 5; attempt++) {
-            try {
-                return OpenShifts.masterBinary(this.getName());
-            } catch (HttpsException ex) {
-                logger.warn("Was caught exception from OpenShifts on " + attempt +
-                            " attempt. Trying to get master binaries again.", ex);
-            }
-        }
-        throw new RuntimeException("Failed to get OpenShift binary client as admin");
+
+        return AwaitilityUtils.untilIsNotNull(()->OpenShifts.masterBinary(this.getName()));
     }
 
     @Override
