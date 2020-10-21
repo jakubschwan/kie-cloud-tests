@@ -82,7 +82,7 @@ public class ProjectImpl implements Project {
 
     @Override
     public void delete() {
-        openShift.deleteProject();
+        //openShift.deleteProject();
     }
 
     @Override
