@@ -31,6 +31,7 @@ import org.apache.activemq.ActiveMQSslConnectionFactory;
 import org.kie.cloud.api.deployment.KieServerDeployment;
 import org.kie.cloud.api.deployment.SmartRouterDeployment;
 import org.kie.cloud.api.deployment.constants.DeploymentConstants;
+import org.kie.cloud.common.util.AwaitilityUtils;
 import org.kie.server.api.KieServerConstants;
 import org.kie.server.api.marshalling.MarshallingFormat;
 import org.kie.server.api.model.KieContainerResource;
@@ -48,6 +49,8 @@ import org.kie.server.client.UserTaskServicesClient;
 import org.kie.server.common.rest.NoEndpointFoundException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import static org.junit.Assert.assertEquals;
 
 public class KieServerClientProvider {
 
@@ -202,23 +205,11 @@ public class KieServerClientProvider {
     }
 
     public static void waitForContainerStart(KieServerDeployment kieServerDeployment, String containerId) {
-        KieServicesClient kieServerClient = getKieServerClient(kieServerDeployment);
-
-        Instant timeoutTime = Instant.now().plusSeconds(300);
-        while (Instant.now().isBefore(timeoutTime)) {
-
-            ServiceResponse<KieContainerResource> containerInfo = kieServerClient.getContainerInfo(containerId);
-            boolean responseSuccess = containerInfo.getType().equals(KieServiceResponse.ResponseType.SUCCESS);
-            if(responseSuccess && containerInfo.getResult().getStatus().equals(KieContainerStatus.STARTED)) {
-                return;
-            }
-
-            try {
-                Thread.sleep(3000L);
-            } catch (InterruptedException e) {
-                Thread.currentThread().interrupt();
-                throw new RuntimeException("Interrupted while waiting for pod to be ready.", e);
-            }
-        }
+        AwaitilityUtils.untilAsserted(() -> {
+            KieServicesClient client = getKieServerClient(kieServerDeployment);
+            ServiceResponse<KieContainerResource> containerInfo = client.getContainerInfo(containerId);
+            assertEquals(KieServiceResponse.ResponseType.SUCCESS, containerInfo.getType());
+            assertEquals(KieContainerStatus.STARTED, containerInfo.getResult().getStatus());
+        });
     }
 }
