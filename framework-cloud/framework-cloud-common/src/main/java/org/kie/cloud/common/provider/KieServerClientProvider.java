@@ -35,6 +35,7 @@ import org.kie.server.api.KieServerConstants;
 import org.kie.server.api.marshalling.MarshallingFormat;
 import org.kie.server.api.model.KieContainerResource;
 import org.kie.server.api.model.KieContainerStatus;
+import org.kie.server.api.model.KieServiceResponse;
 import org.kie.server.api.model.ServiceResponse;
 import org.kie.server.client.KieServicesClient;
 import org.kie.server.client.KieServicesConfiguration;
@@ -44,10 +45,14 @@ import org.kie.server.client.QueryServicesClient;
 import org.kie.server.client.RuleServicesClient;
 import org.kie.server.client.SolverServicesClient;
 import org.kie.server.client.UserTaskServicesClient;
+import org.kie.server.common.rest.NoEndpointFoundException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class KieServerClientProvider {
 
     private static final long KIE_SERVER_TIMEOUT = 300_000L;
+    private static final Logger logger = LoggerFactory.getLogger(KieServerClientProvider.class);
 
     public static KieServicesClient getKieServerClient(KieServerDeployment kieServerDeployment) {
         return getKieServerClient(kieServerDeployment, KIE_SERVER_TIMEOUT);
@@ -62,12 +67,30 @@ public class KieServerClientProvider {
     }
 
     public static KieServicesClient getKieServerClient(KieServerDeployment kieServerDeployment, Set<Class<?>> extraClasses, long clientTimeout) {
+        // TODO try to add there check and waiter for deployment
+        
         KieServicesConfiguration configuration = KieServicesFactory.newRestConfiguration(
                 kieServerDeployment.getUrl().toString() + "/services/rest/server", kieServerDeployment.getUsername(),
                 kieServerDeployment.getPassword(), clientTimeout);
         configuration.addExtraClasses(extraClasses);
-        KieServicesClient kieServerClient = KieServicesFactory.newKieServicesClient(configuration);
-        return kieServerClient;
+        
+
+        Instant timeoutTime = Instant.now().plusSeconds(300);
+        while (Instant.now().isBefore(timeoutTime)) {
+            try {
+                KieServicesClient kieServerClient = KieServicesFactory.newKieServicesClient(configuration);
+                return kieServerClient;
+            } catch (NoEndpointFoundException ex) {
+                logger.warn("Caught NoEndpointFoundException when trying to get Kie Server user.", ex);
+                try {
+                    Thread.sleep(5000L);
+                } catch (InterruptedException e) {
+                    Thread.currentThread().interrupt();
+                    throw new RuntimeException("Interrupted while waiting for pod to be ready.", e);
+                }
+            }
+        }
+        throw new RuntimeException("Get Kie Server client for " + kieServerDeployment + "timeout after 300sec");
     }
 
     public static KieServicesClient getKieServerJmsClient(URL amqHost) {
@@ -181,17 +204,17 @@ public class KieServerClientProvider {
     public static void waitForContainerStart(KieServerDeployment kieServerDeployment, String containerId) {
         KieServicesClient kieServerClient = getKieServerClient(kieServerDeployment);
 
-        Instant timeoutTime = Instant.now().plusSeconds(30);
+        Instant timeoutTime = Instant.now().plusSeconds(300);
         while (Instant.now().isBefore(timeoutTime)) {
 
             ServiceResponse<KieContainerResource> containerInfo = kieServerClient.getContainerInfo(containerId);
-            boolean responseSuccess = containerInfo.getType().equals(ServiceResponse.ResponseType.SUCCESS);
+            boolean responseSuccess = containerInfo.getType().equals(KieServiceResponse.ResponseType.SUCCESS);
             if(responseSuccess && containerInfo.getResult().getStatus().equals(KieContainerStatus.STARTED)) {
                 return;
             }
 
             try {
-                Thread.sleep(200L);
+                Thread.sleep(3000L);
             } catch (InterruptedException e) {
                 Thread.currentThread().interrupt();
                 throw new RuntimeException("Interrupted while waiting for pod to be ready.", e);
