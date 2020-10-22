@@ -20,6 +20,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 public class Database {
 
     private String type;
+    private String size;
     private ExternalConfig externalConfig;
 
     public String getType() {
@@ -28,6 +29,14 @@ public class Database {
 
     public void setType(String type) {
         this.type = type;
+    }
+
+    public String getSize() {
+        return size;
+    }
+
+    public void setSize(String size) {
+        this.size = size;
     }
 
     public ExternalConfig getExternalConfig() {

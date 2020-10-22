@@ -32,6 +32,7 @@ import org.kie.cloud.openshift.operator.model.KieApp;
 import org.kie.cloud.openshift.operator.model.components.Auth;
 import org.kie.cloud.openshift.operator.model.components.CommonConfig;
 import org.kie.cloud.openshift.operator.model.components.Console;
+import org.kie.cloud.openshift.operator.model.components.Database;
 import org.kie.cloud.openshift.operator.model.components.Env;
 import org.kie.cloud.openshift.operator.model.components.ImageRegistry;
 import org.kie.cloud.openshift.operator.model.components.Ldap;
@@ -69,6 +70,10 @@ public class WorkbenchKieServerPersistentScenarioBuilderImpl extends AbstractOpe
 
         Server server = new Server();
         server.addEnvs(authenticationEnvVars);
+        Database serverDb = new Database();
+        serverDb.setType("postgresql");
+        serverDb.setSize("2Gi");
+        server.setDatabase(serverDb);
         kieApp.getSpec().getObjects().addServer(server);
 
         Console console = new Console();
