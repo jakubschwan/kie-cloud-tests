@@ -97,4 +97,12 @@ public interface KieServerWithDatabaseScenarioBuilder extends KieDeploymentScena
      * @return Builder with configured Kie container deployment
      */
     KieServerWithDatabaseScenarioBuilder withPermanentStorage();
+
+    /**
+     * Return setup builder with specifically set Kie Server management disabled value. If this value is not specified, Kie Server management is set by environment / template default.
+     * 
+     * @param disable boolean value for system parameter org.kie.server.mgmt.api.disabled
+     * @return
+     */
+    KieServerWithDatabaseScenarioBuilder withKieServerMgmtDisabled(boolean disabled);
 }

@@ -19,6 +19,7 @@ import java.util.UUID;
 
 import org.kie.cloud.api.DeploymentScenarioBuilderFactory;
 import org.kie.cloud.api.DeploymentScenarioBuilderFactoryLoader;
+import org.kie.cloud.tests.common.client.util.Kjar;
 
 public abstract class AbstractCloudIntegrationTest {
 
@@ -57,5 +58,36 @@ public abstract class AbstractCloudIntegrationTest {
 
     protected static String generateNameWithPrefix(String prefix) {
         return prefix + "-" + UUID.randomUUID().toString().substring(0, 4);
+    }
+
+
+    /**
+    * Get Rule project Kie Container in format containerId=groupId:artifactId:version 
+    */
+    protected static String getRuleProjectContainerDeployment() {
+        return new StringBuilder().append(RULE_PROJECT_NAME)
+                .append("=")
+                .append(Kjar.RULE_SNAPSHOT.toString())
+                .toString();
+    }
+
+    /**
+    * Get Definition project Kie Container in format containerId=groupId:artifactId:version 
+    */
+    protected static String getDefinitionProjectContainerDeployment() {
+        return new StringBuilder().append(DEFINITION_PROJECT_SNAPSHOT_NAME)
+                .append("=")
+                .append(Kjar.DEFINITION_SNAPSHOT.toString())
+                .toString();
+    }
+
+    /**
+    * Get Cloud Balance project Kie Container in format containerId=groupId:artifactId:version 
+    */
+    protected static String getCloudBalanceProjectContainerDeployment() {
+        return new StringBuilder().append(CLOUD_BALANCE_PROJECT_SNAPSHOT_NAME)
+                .append("=")
+                .append(Kjar.CLOUD_BALANCE_SNAPSHOT.toString())
+                .toString();
     }
 }

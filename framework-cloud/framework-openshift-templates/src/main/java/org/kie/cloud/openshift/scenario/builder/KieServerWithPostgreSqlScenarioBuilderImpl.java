@@ -109,4 +109,9 @@ public class KieServerWithPostgreSqlScenarioBuilderImpl extends KieScenarioBuild
         // already permanent
         return this;
     }
+
+    @Override
+    public KieServerWithDatabaseScenarioBuilder withKieServerMgmtDisabled(boolean disabled) {
+        throw new UnsupportedOperationException("Not supported.");
+    }
 }

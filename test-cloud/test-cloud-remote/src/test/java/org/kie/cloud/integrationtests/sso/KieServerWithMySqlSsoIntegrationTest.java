@@ -54,6 +54,7 @@ public class KieServerWithMySqlSsoIntegrationTest extends AbstractCloudIntegrati
                     .withInternalMavenRepo(false)
                     .withHttpKieServerHostname(RANDOM_URL_PREFIX + KIE_SERVER_HOSTNAME)
                     .withHttpsKieServerHostname(SECURED_URL_PREFIX + RANDOM_URL_PREFIX + KIE_SERVER_HOSTNAME)
+                    .withKieServerMgmtDisabled(false)
                     .build();
         } catch (UnsupportedOperationException ex) {
             Assume.assumeFalse(ex.getMessage().startsWith("Not supported"));

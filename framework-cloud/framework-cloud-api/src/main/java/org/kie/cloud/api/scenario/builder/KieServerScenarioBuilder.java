@@ -77,4 +77,19 @@ public interface KieServerScenarioBuilder extends KieDeploymentScenarioBuilder<K
      * @return Builder with configured internal ldap.
      */
     KieServerScenarioBuilder withLdap(LdapSettings ldapSettings);
+
+    /**
+     * Return setup builder with specifically set Kie Server management disabled value. If this value is not specified, Kie Server management is set by environment / template default.
+     * 
+     * @param disable boolean value for system parameter org.kie.server.mgmt.api.disabled
+     * @return Builder with set Kie Server management
+     */
+    KieServerScenarioBuilder withKieServerMgmtDisabled(boolean disabled);
+
+    /**
+     * Return setup builder with specified Kie Server replicas count. 
+     * @param replicas count of Kie Server pods to be started
+     * @return Builder with set Kie Server replicas count
+     */
+    KieServerScenarioBuilder withKieServerReplicas(int replicas);
 }

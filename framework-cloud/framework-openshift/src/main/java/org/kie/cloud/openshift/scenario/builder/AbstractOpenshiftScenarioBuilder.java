@@ -27,9 +27,6 @@ import org.kie.cloud.openshift.deployment.external.ExternalDeployment;
 import org.kie.cloud.openshift.deployment.external.ExternalDeploymentFactory;
 import org.kie.cloud.openshift.scenario.OpenShiftScenario;
 
-/**
- * 
- */
 public abstract class AbstractOpenshiftScenarioBuilder<T> implements DeploymentScenarioBuilder<T> {
 
     private Set<ExternalDeployment.ExternalDeploymentID> asyncExternalDeploymentIds = new HashSet<>();

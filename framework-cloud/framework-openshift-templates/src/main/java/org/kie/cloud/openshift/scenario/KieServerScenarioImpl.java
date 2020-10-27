@@ -29,7 +29,6 @@ import org.kie.cloud.api.deployment.SsoDeployment;
 import org.kie.cloud.api.deployment.WorkbenchDeployment;
 import org.kie.cloud.api.deployment.constants.DeploymentConstants;
 import org.kie.cloud.api.scenario.KieServerScenario;
-import org.kie.cloud.api.scenario.KieServerWithExternalDatabaseScenario;
 import org.kie.cloud.openshift.constants.OpenShiftTemplateConstants;
 import org.kie.cloud.openshift.deployment.KieServerDeploymentImpl;
 import org.kie.cloud.openshift.template.OpenShiftTemplate;
@@ -44,7 +43,7 @@ public class KieServerScenarioImpl extends KieCommonScenario<KieServerScenario> 
 
     private boolean deploySso;
 
-    private static final Logger logger = LoggerFactory.getLogger(KieServerWithExternalDatabaseScenario.class);
+    private static final Logger logger = LoggerFactory.getLogger(KieServerScenarioImpl.class);
 
     public KieServerScenarioImpl(Map<String, String> envVariables, boolean deploySso) {
         super(envVariables);

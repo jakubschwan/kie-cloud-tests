@@ -42,6 +42,7 @@ public class KieServerScenarioIntegrationTest extends AbstractCloudIntegrationTe
         try {
             deploymentScenario = deploymentScenarioFactory.getKieServerScenarioBuilder()
                                                       .withInternalMavenRepo(false)
+                                                      .withKieServerMgmtDisabled(false)
                                                       .build();
         } catch (UnsupportedOperationException ex) {
             Assume.assumeFalse(ex.getMessage().startsWith("Not supported"));

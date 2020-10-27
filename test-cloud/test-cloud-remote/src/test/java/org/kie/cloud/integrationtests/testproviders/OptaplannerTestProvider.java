@@ -94,10 +94,11 @@ public class OptaplannerTestProvider {
 
         try {
             testExecuteSolver(kieServerDeployment, containerId);
-        } catch (InterruptedException e) {
-            Thread.currentThread().interrupt();
-            throw new RuntimeException("Interrupted while waiting for solver.", e);
-        } catch (NoSuchMethodException | ClassNotFoundException | IllegalAccessException | InstantiationException | InvocationTargetException e) {
+        } catch (RuntimeException e) {
+            if (e.getCause() instanceof InterruptedException) {
+                Thread.currentThread().interrupt();
+                throw new RuntimeException("Interrupted while waiting for solver.", e);
+            }
             throw new RuntimeException("Interrupted while loading planning problem.", e);
         } finally {
             kieServerDeployment.resetRouterTimeout();
@@ -105,8 +106,7 @@ public class OptaplannerTestProvider {
         }
     }
 
-    public void testExecuteSolver(KieServerDeployment kieServerDeployment,
-                                  String containerId) throws NoSuchMethodException, ClassNotFoundException, IllegalAccessException, InstantiationException, InvocationTargetException, InterruptedException {
+    public void testExecuteSolver(KieServerDeployment kieServerDeployment, String containerId) {
         KieContainer kieContainer = KieServices.Factory.get().newKieContainer(CLOUD_BALANCE_RELEASE_ID);
         KieServicesClient kieServerClient = KieServerClientProvider.getKieServerClient(kieServerDeployment, extraClasses(kieContainer));
 

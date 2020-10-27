@@ -60,6 +60,7 @@ public class KieServerWithMySqlLdapIntegrationTest extends AbstractCloudIntegrat
             deploymentScenario = deploymentScenarioFactory.getKieServerWithMySqlScenarioBuilder()
                     .withLdap(ldapSettings)
                     .withInternalMavenRepo(false)
+                    .withKieServerMgmtDisabled(false)
                     .build();
         } catch (UnsupportedOperationException ex) {
             Assume.assumeFalse(ex.getMessage().startsWith("Not supported"));

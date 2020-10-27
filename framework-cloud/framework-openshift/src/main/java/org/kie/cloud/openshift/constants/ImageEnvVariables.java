@@ -25,6 +25,8 @@ public class ImageEnvVariables {
     public static final String KIE_SERVER_MODE = "KIE_SERVER_MODE";
     public static final String KIE_SERVER_MEMORY_LIMIT = "KIE_SERVER_MEMORY_LIMIT";
 
+    public static final String KIE_SERVER_MGMT_DISABLED = "KIE_SERVER_MGMT_DISABLED";
+
     public static final String KIE_SERVER_ROUTER_ID = "KIE_SERVER_ROUTER_ID";
 
     public static final String EXTERNAL_MAVEN_REPO_URL = "EXTERNAL_MAVEN_REPO_URL";

@@ -45,6 +45,7 @@ public class KieServerWithPostgreSqlScenarioIntegrationTest extends AbstractClou
         try {
             deploymentScenario = deploymentScenarioFactory.getKieServerWithPostgreSqlScenarioBuilder()
                     .withInternalMavenRepo(false)
+                    .withKieServerMgmtDisabled(false)
                     .build();
             deploymentScenario.setLogFolderName(KieServerWithPostgreSqlScenarioIntegrationTest.class.getSimpleName());
             ScenarioDeployer.deployScenario(deploymentScenario);

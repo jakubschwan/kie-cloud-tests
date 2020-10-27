@@ -89,4 +89,14 @@ public class KieServerScenarioBuilderImpl extends KieScenarioBuilderImpl<KieServ
         envVariables.putAll(ldapSettings.getEnvVariables());
         return this;
     }
+
+    @Override
+    public KieServerScenarioBuilder withKieServerMgmtDisabled(boolean disabled) {
+        throw new UnsupportedOperationException("Not supported.");
+    }
+
+    @Override
+    public KieServerScenarioBuilder withKieServerReplicas(int replicas) {
+        throw new UnsupportedOperationException("Not supported.");
+    }
 }

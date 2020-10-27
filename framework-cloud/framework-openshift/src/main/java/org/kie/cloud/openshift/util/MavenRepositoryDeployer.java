@@ -28,6 +28,8 @@ import org.slf4j.LoggerFactory;
  */
 public class MavenRepositoryDeployer {
 
+    private MavenRepositoryDeployer() {}
+
     private static final Logger logger = LoggerFactory.getLogger(MavenRepositoryDeployer.class);
 
     public static MavenRepositoryDeployment deploy(Project project, boolean shouldWait) {
