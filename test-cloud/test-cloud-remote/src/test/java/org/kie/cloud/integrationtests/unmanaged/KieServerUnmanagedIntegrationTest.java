@@ -45,7 +45,7 @@ public class KieServerUnmanagedIntegrationTest extends AbstractCloudIntegrationT
         try {
             deploymentScenario = deploymentScenarioFactory.getKieServerScenarioBuilder()
                     .withInternalMavenRepo(true)
-                    .withContainerDeployment(new StringBuilder().append(getRuleProjectContainerDeployment()).append("|")
+                    .withContainerDeployment(new StringBuilder().append(getHelloRulesProjectContainerDeployment()).append("|")
                             .append(getCloudBalanceProjectContainerDeployment()).append("|").append(getDefinitionProjectContainerDeployment()).toString())
                     .withKieServerMgmtDisabled(true)
                     .withKieServerReplicas(0) // Replicas are set to 0 to let the scenario deploy Nexus. As project are added to the registry later it's required to have set Kie Servers to 0 to let the Scenario deployer pass.
@@ -72,7 +72,7 @@ public class KieServerUnmanagedIntegrationTest extends AbstractCloudIntegrationT
 
     @Test
     public void testRulesFromMavenRepo() {
-        fireRulesTestProvider.testFireRules(deploymentScenario.getKieServerDeployment(), RULE_PROJECT_NAME);
+        fireRulesTestProvider.testFireRules(deploymentScenario.getKieServerDeployment(), HELLO_RULES_PROJECT_NAME);
     }
 
     @Test
