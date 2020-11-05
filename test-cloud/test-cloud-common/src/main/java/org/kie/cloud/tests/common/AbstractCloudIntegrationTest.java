@@ -64,10 +64,10 @@ public abstract class AbstractCloudIntegrationTest {
     /**
     * Get Rule project Kie Container in format containerId=groupId:artifactId:version 
     */
-    protected static String getRuleProjectContainerDeployment() {
-        return new StringBuilder().append(RULE_PROJECT_NAME)
+    protected static String getHelloRulesProjectContainerDeployment() {
+        return new StringBuilder().append(HELLO_RULES_PROJECT_NAME)
                 .append("=")
-                .append(Kjar.RULE_SNAPSHOT.toString())
+                .append(Kjar.HELLO_RULES_SNAPSHOT.toString())
                 .toString();
     }
 
