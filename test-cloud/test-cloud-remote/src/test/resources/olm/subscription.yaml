@@ -1,11 +1,12 @@
+---
 kind: Template
 apiVersion: v1
 metadata:
-  name: OperatorGroupTemplate
+  name: subscriptionTemplate
   annotations:
-    name: OperatorGroupTemplate
-    description: Application template for OperatorGroup object
-message: A new OperatorGroup was created
+    name: subscriptionTemplate
+    description: Application template for Subscription object
+message: A new Subscription was created
 
 parameters:
 - name: NAMESPACE
@@ -25,7 +26,6 @@ parameters:
   displayName: Operator Source namespace
   description: The namespace for the Operator Source. By default all Operator sources are in openshift-marketplace namespace.
   value: openshift-marketplace
-
 objects:
 - apiVersion: operators.coreos.com/v1alpha1
   kind: Subscription
