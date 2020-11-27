@@ -87,10 +87,20 @@ public class ProjectImpl implements Project {
 
     @Override
     public void processTemplateAndCreateResources(URL templateUrl, Map<String, String> envVariables) {
-        boolean templateIsFile = templateUrl.getProtocol().equals("file");
-
         // Used to log into OpenShift
         OpenShiftBinary oc = getOpenShiftBinary(getName());
+        processTemplateAndCreateResources(templateUrl, envVariables, oc);
+    }
+
+    @Override
+    public void processTemplateAndCreateResourcesAsAdmin(URL templateUrl, Map<String, String> envVariables) {
+        // Used to log into OpenShift
+        OpenShiftBinary oc = getAdminOpenShiftBinary(getName());
+        processTemplateAndCreateResources(templateUrl, envVariables, oc);
+    }
+
+    private void processTemplateAndCreateResources(URL templateUrl, Map<String, String> envVariables, OpenShiftBinary oc) {
+        boolean templateIsFile = templateUrl.getProtocol().equals("file");
 
         List<String> commandParameters = new ArrayList<>();
         commandParameters.add(getOpenShiftBinaryPath());
@@ -262,6 +272,10 @@ public class ProjectImpl implements Project {
 
     private static synchronized OpenShiftBinary getOpenShiftBinary(String namespace) {
         return OpenShifts.masterBinary(namespace);
+    }
+
+    private static synchronized OpenShiftBinary getAdminOpenShiftBinary(String namespace) {
+        return OpenShifts.adminBinary(namespace);
     }
 
     private static synchronized String getOpenShiftBinaryPath() {
