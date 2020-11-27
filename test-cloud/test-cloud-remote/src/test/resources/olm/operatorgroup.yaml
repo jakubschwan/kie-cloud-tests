@@ -1,9 +1,10 @@
+---
 kind: Template
 apiVersion: v1
 metadata:
-  name: OperatorGroupTemplate
+  name: operatorGroupTemplate
   annotations:
-    name: OperatorGroupTemplate
+    name: operatorGroupTemplate
     description: Application template for OperatorGroup object
 message: A new OperatorGroup was created
 
@@ -16,13 +17,12 @@ parameters:
   displayName: Operator Name
   description: The name for the Operator for witch shuold be Operator group created.
   required: true
-
 objects:
-  - apiVersion: operators.coreos.com/v1
-    kind: OperatorGroup
-    metadata:
-      name: ${OPERATOR_NAME}
-      namespace: ${NAMESPACE}
-    spec:
-      targetNamespaces:
-      - ${NAMESPACE}
+- apiVersion: operators.coreos.com/v1
+  kind: OperatorGroup
+  metadata:
+    name: ${OPERATOR_NAME}
+    namespace: ${NAMESPACE}
+  spec:
+    targetNamespaces:
+    - ${NAMESPACE}

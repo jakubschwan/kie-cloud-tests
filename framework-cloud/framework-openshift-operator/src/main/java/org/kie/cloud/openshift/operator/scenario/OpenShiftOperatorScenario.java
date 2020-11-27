@@ -104,7 +104,7 @@ public abstract class OpenShiftOperatorScenario<T extends DeploymentScenario<T>>
 
 
         logger.info("Creating Operator group.");
-        project.processTemplateAndCreateResources(getOperatorGroupTemplate(), map);
+        project.processTemplateAndCreateResourcesAsAdmin(getOperatorGroupTemplate(), map);
         logger.info("Creating Operator subscription.");
         project.processTemplateAndCreateResources(getSubscriptionTemplate(), map);
         // TODO add configuration of custom operator source (env variables for subscription template)
@@ -115,8 +115,8 @@ public abstract class OpenShiftOperatorScenario<T extends DeploymentScenario<T>>
         logger.info("Operator is ready");
     }
 
-    private static final String OPERATOR_GROUP_TEMPLATE = "operatorgroup.yaml";
-    private static final String SUBSCRIPTION_TEMPLATE = "subscription.yaml";
+    private static final String OPERATOR_GROUP_TEMPLATE = "/olm/operatorgroup.yaml";
+    private static final String SUBSCRIPTION_TEMPLATE = "/olm/subscription.yaml";
 
     private URL getOperatorGroupTemplate() {
         try {
