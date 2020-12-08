@@ -163,7 +163,7 @@ public class KieServerDeploymentImpl extends OpenShiftDeployment implements KieS
     private void waitForRolloutFinish(String rolloutInProgressConfigMapName) {
         if (getOpenShift().getConfigMap(rolloutInProgressConfigMapName) != null) {
             Supplier<ConfigMap> getConfigMap = () -> getOpenShift().getConfigMap(rolloutInProgressConfigMapName);
-            new SimpleWaiter(() -> OpenShiftCaller.repeatableCall(getConfigMap) == null).timeout(TimeUnit.MINUTES, 10)
+            new SimpleWaiter(() -> OpenShiftCaller.repeatableCall(getConfigMap) == null).timeout(TimeUnit.MINUTES, 5)
                                                                                         .reason("Temporary rollout config map found, waiting for rollout to finish.")
                                                                                         .waitFor();
         }
