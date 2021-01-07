@@ -15,11 +15,18 @@
  */
 package org.kie.cloud.openshift.util;
 
+import java.util.List;
+
+import cz.xtf.core.openshift.OpenShift;
 import cz.xtf.core.openshift.OpenShiftBinary;
 import cz.xtf.core.openshift.OpenShifts;
+import cz.xtf.core.waiting.WaiterException;
+import io.fabric8.kubernetes.api.model.Pod;
+import io.fabric8.kubernetes.api.model.PodSpec;
 import org.kie.cloud.api.deployment.MavenRepositoryDeployment;
 import org.kie.cloud.api.deployment.constants.DeploymentConstants;
 import org.kie.cloud.openshift.deployment.MavenNexusRepositoryDeploymentImpl;
+import org.kie.cloud.openshift.resource.OpenShiftResourceConstants;
 import org.kie.cloud.openshift.resource.Project;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -30,6 +37,10 @@ import org.slf4j.LoggerFactory;
 public class MavenRepositoryDeployer {
 
     private static final Logger logger = LoggerFactory.getLogger(MavenRepositoryDeployer.class);
+
+    private static final String NEXUS_LABEL_NAME = "deploymentConfig";
+    private static final String NEXUS_LABEL_VALUE = "maven-nexus";
+    private static final String NEXUS_LABEL = NEXUS_LABEL_NAME+"="+NEXUS_LABEL_VALUE;
 
     public static MavenRepositoryDeployment deploy(Project project, boolean shouldWait) {
         deployMavenRepository(project);
@@ -49,9 +60,40 @@ public class MavenRepositoryDeployer {
 
         // Login is part of binary retrieval
         OpenShiftBinary masterBinary = OpenShifts.masterBinary(project.getName());
-        masterBinary.execute("new-app", "sonatype/nexus", "-l", "deploymentConfig=maven-nexus");
+        masterBinary.execute("new-app", "sonatype/nexus", "-l", NEXUS_LABEL);
 
         // TODO add waiter
+
+        //OpenShiftCaller.repeatableCall(project.getOpenShift().getPods().stream());
+
+        OpenShift openShift = project.getOpenShift();
+
+
+        boolean pullFromMirror = waitForNexusPodRunning(openShift);
+
+
+
+    /*public List<Instance> getAllInstances() {
+        return openShift
+                .getPods()
+                .stream()
+                .filter(this::isScheduledPod)
+                .map(pod -> OpenshiftInstanceUtil.createInstance(openShift, getName(), pod))
+                .collect(toList());
+    } */
+
+
+    /*protected void logNodeNameOfAllInstances() {
+        for (Deployment deployment : getDeployments()) {
+            deployment.getInstances().forEach(instance -> {
+                Pod pod = project.getOpenShift().getPod(instance.getName());
+                String podName = pod.getMetadata().getName();
+                String instanceNodeName = pod.getSpec().getNodeName();
+                logger.info("Node name of the {}: {} ", podName, instanceNodeName);
+            });
+        }
+    } */
+
 
         // Nexus digest image is required when is set mirroring in OCP
         String nexusDigestImage = DeploymentConstants.getNexusDockerDigestImage();
@@ -62,15 +104,45 @@ public class MavenRepositoryDeployer {
 
         // if image is not pulled from docker hub, we need to change the image tag to sha.
         // Because image content policy cannot mirror images with tag (only with digest).
-        project.getOpenShiftAdmin().pods().withLabel("deploymentConfig", "maven-nexus").list().getItems().forEach(
+        if(pullFromMirror) {
+            openShift.pods()
+                      .withLabel(NEXUS_LABEL_NAME, NEXUS_LABEL_VALUE)
+                      .list()
+                      .getItems()
+                      .stream()
+                      .map(Pod::getSpec)
+                      .map(PodSpec::getContainers)
+                      .flatMap(List::stream)
+                      .forEach(c->c.setImage(nexusDigestImage));
+                      //.forEach(list -> list.forEach(c -> c.setImage(nexusDigestImage)));
+        /*project.getOpenShiftAdmin().pods().withLabel(NEXUS_LABEL_NAME, NEXUS_LABEL_VALUE).list().getItems().forEach(
                 pod -> {
                     pod.getSpec().getContainers().forEach(container -> {
                         container.setImage(nexusDigestImage);
                     });
-                });
-
+                });*/
+            
+        }
         // TODO add waiter
+        pullFromMirror = waitForNexusPodRunning(openShift);
+        if(pullFromMirror) {
+            throw new RuntimeException("Deployment of nexus pod failed. See latest warning.");
+        }
 
         masterBinary.execute("expose", "service", "nexus");
+    }
+
+    private static boolean waitForNexusPodRunning(OpenShift openShift) {
+        try {
+            OpenShiftCaller.repeatableCall(() -> openShift.waiters()
+                                                          .areExactlyNPodsRunning(1, NEXUS_LABEL_NAME, NEXUS_LABEL_VALUE)
+                                                          .timeout(OpenShiftResourceConstants.NEXUS_POD_START_TO_RUNNING)
+                                                          .reason("Waiting for " + 1 + " pods of deployment config " + NEXUS_LABEL_VALUE + " to become ready.")
+                                                          .waitFor());
+        } catch (AssertionError | WaiterException e) {
+            logger.warn("Nexus pod was not pulled from docker. Try to change image to digest and pull it from mirror.", e);
+            return true;
+        }
+        return false;
     }
 }
