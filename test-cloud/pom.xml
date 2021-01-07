@@ -96,6 +96,11 @@
     <kie.image.tag.workbench.indexing/>
 
     <kie.image.registry.custom/>
+
+    <!-- $ docker inspect -\-format='{{index .RepoDigests 0}}' sonatype/nexus:latest
+sonatype/nexus@sha256:ecfe1ee0b4b040d0e10ba40375f1b86ed0509a43ec430f0d480b550fcb6d2063
+ -->
+    <nexus.docker.digest.image>sonatype/nexus@sha256:ecfe1ee0b4b040d0e10ba40375f1b86ed0509a43ec430f0d480b550fcb6d2063</nexus.docker.digest.image>
   </properties>
 
   <modules>
@@ -373,6 +378,7 @@ $ keytool -import -trustcacerts -alias name -keypass pass -storepass pass -keyst
               <openshift.version>${openshift.version}</openshift.version>
               <kie.image.registry.custom>${kie.image.registry.custom}</kie.image.registry.custom>
               <certificate.dir>${certificate.dir}</certificate.dir>
+              <nexus.docker.digest.image>${nexus.docker.digest.image}</nexus.docker.digest.image>
             </systemProperties>
           </configuration>
         </plugin>

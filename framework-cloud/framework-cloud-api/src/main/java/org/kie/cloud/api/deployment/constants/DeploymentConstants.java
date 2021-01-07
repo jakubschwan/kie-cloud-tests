@@ -57,6 +57,8 @@ public class DeploymentConstants implements Constants {
     public static final String TRUSTED_KEYSTORE_PWD = "trusted.keystore.pwd";
     public static final String CERTIFICATE_DIR = "certificate.dir";
 
+    public static final String NEXUS_DOCKER_DIGEST_IMAGE = "nexus.docker.digest.image";
+
     public static String getAppUser() {
         return System.getProperty(APP_USER);
     }
@@ -150,6 +152,10 @@ public class DeploymentConstants implements Constants {
 
     public static String getCertificateDir() {
         return System.getProperty(CERTIFICATE_DIR);
+    }
+
+    public static String getNexusDockerDigestImage() {
+        return System.getProperty(NEXUS_DOCKER_DIGEST_IMAGE);
     }
 
     @Override

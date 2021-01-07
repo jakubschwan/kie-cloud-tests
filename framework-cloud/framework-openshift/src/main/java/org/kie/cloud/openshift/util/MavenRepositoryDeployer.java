@@ -18,6 +18,7 @@ package org.kie.cloud.openshift.util;
 import cz.xtf.core.openshift.OpenShiftBinary;
 import cz.xtf.core.openshift.OpenShifts;
 import org.kie.cloud.api.deployment.MavenRepositoryDeployment;
+import org.kie.cloud.api.deployment.constants.DeploymentConstants;
 import org.kie.cloud.openshift.deployment.MavenNexusRepositoryDeploymentImpl;
 import org.kie.cloud.openshift.resource.Project;
 import org.slf4j.Logger;
@@ -49,6 +50,27 @@ public class MavenRepositoryDeployer {
         // Login is part of binary retrieval
         OpenShiftBinary masterBinary = OpenShifts.masterBinary(project.getName());
         masterBinary.execute("new-app", "sonatype/nexus", "-l", "deploymentConfig=maven-nexus");
+
+        // TODO add waiter
+
+        // Nexus digest image is required when is set mirroring in OCP
+        String nexusDigestImage = DeploymentConstants.getNexusDockerDigestImage();
+        if (nexusDigestImage.isEmpty()) {
+            logger.error("Nexus digest image not set");
+            // TODO throw exception!
+        }
+
+        // if image is not pulled from docker hub, we need to change the image tag to sha.
+        // Because image content policy cannot mirror images with tag (only with digest).
+        project.getOpenShiftAdmin().pods().withLabel("deploymentConfig", "maven-nexus").list().getItems().forEach(
+                pod -> {
+                    pod.getSpec().getContainers().forEach(container -> {
+                        container.setImage(nexusDigestImage);
+                    });
+                });
+
+        // TODO add waiter
+
         masterBinary.execute("expose", "service", "nexus");
     }
 }
