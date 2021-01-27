@@ -21,6 +21,7 @@ import org.junit.AfterClass;
 import org.junit.Assume;
 import org.junit.Before;
 import org.junit.BeforeClass;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.experimental.categories.Category;
 import org.kie.cloud.api.scenario.WorkbenchRuntimeSmartRouterImmutableKieServerAmqWithDatabaseScenario;
@@ -129,11 +130,13 @@ public class KieServerS2iAmqJbpmIntegrationTest extends AbstractCloudIntegration
     }
 
     @Test
+    @Ignore
     public void testKieServerHttps() {
         httpsKieServerTestProvider.testKieServerInfo(deploymentScenario.getKieServerDeployment(), false);
     }
 
     @Test
+    @Ignore
     public void testWorkbenchHttps() {
         httpsWorkbenchTestProvider.testLoginScreen(deploymentScenario.getWorkbenchRuntimeDeployment(), false);
     }
