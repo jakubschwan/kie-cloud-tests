@@ -87,6 +87,11 @@ public class OpenShiftOperatorConstants implements Constants {
     public static final String KIE_OPERATOR_CONSOLE_CHECK_SKIP = "kie.operator.console.check.skip";
 
     /**
+     * Set to true if you want to deploy Kie Operator using OLM.
+     */
+    public static final String KIE_OPERATOR_OLM_ENABLED =  "kie.operator.olm.enabled";
+
+    /**
      * Set to true if you want to run Monitoring with enabled ConfigMap base file system. By default this property is set to false.
      */
     public static final String ORG_APPFORMER_SIMPLIFIED_MONITORING_ENABLED = "org.appformer.simplified.monitoring.enabled";
@@ -118,6 +123,11 @@ public class OpenShiftOperatorConstants implements Constants {
     public static boolean skipKieOperatorConsoleCheck() {
         String skipKieOperatorConsoleCheck = System.getProperty(KIE_OPERATOR_CONSOLE_CHECK_SKIP, "false");
         return Boolean.valueOf(skipKieOperatorConsoleCheck);
+    }
+
+    public static boolean getKieOperatorOlmEnabled() {
+        String getKieOperatorOlmEnabled = System.getProperty(KIE_OPERATOR_OLM_ENABLED, "false");
+        return Boolean.valueOf(getKieOperatorOlmEnabled);
     }
 
     public static boolean getOrgAppformerSimplifiedMonitoringEnabled() {

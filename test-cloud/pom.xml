@@ -96,6 +96,9 @@
     <kie.image.tag.workbench.indexing/>
 
     <kie.image.registry.custom/>
+
+    <!-- Kie Operator deploy configuration -->
+    <kie.operator.olm.enabled>false</kie.operator.olm.enabled> <!-- If enabled, then is used OLM to deploy Kie Operator, by default it's deployed from image stream. -->
   </properties>
 
   <modules>
@@ -385,6 +388,7 @@ $ keytool -import -trustcacerts -alias name -keypass pass -storepass pass -keyst
               <kie.image.tag.workbench.indexing>${kie.image.tag.workbench.indexing}</kie.image.tag.workbench.indexing>
               <openshift.version>${openshift.version}</openshift.version>
               <kie.image.registry.custom>${kie.image.registry.custom}</kie.image.registry.custom>
+              <kie.operator.olm.enabled>${kie.operator.olm.enabled}</kie.operator.olm.enabled>
               <certificate.dir>${certificate.dir}</certificate.dir>
             </systemProperties>
           </configuration>

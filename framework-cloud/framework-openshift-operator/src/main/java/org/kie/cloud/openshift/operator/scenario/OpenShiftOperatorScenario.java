@@ -15,6 +15,8 @@
 
 package org.kie.cloud.openshift.operator.scenario;
 
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
@@ -67,7 +69,11 @@ public abstract class OpenShiftOperatorScenario<T extends DeploymentScenario<T>>
 
     @Override
     protected void deployKieDeployments() {
-        deployOperator();
+        if (OpenShiftOperatorConstants.getKieOperatorOlmEnabled()) {
+            deployOperatorUsingOlm();
+        } else {
+            deployOperator();
+        }
         deployCustomResource();
     }
 
@@ -88,6 +94,42 @@ public abstract class OpenShiftOperatorScenario<T extends DeploymentScenario<T>>
         createClusterRoleInProject(project);
         createClusterRoleBindingsInProject(project);
         createOperatorInProject(project);
+    }
+
+    private void deployOperatorUsingOlm() {
+        Map<String, String> operatorParameters = new HashMap<>();
+        operatorParameters.put("NAMESPACE", projectName);
+        operatorParameters.put("OPERATOR_NAME", "businessautomation-operator");
+
+        logger.info("Creating Operator group.");
+        project.processTemplateAndCreateResourcesAsAdmin(getOperatorGroupTemplate(), operatorParameters);
+        logger.info("Creating Operator subscription.");
+        project.processTemplateAndCreateResources(getSubscriptionTemplate(), operatorParameters);
+        // TODO add configuration of custom operator source (env variables for subscription template)
+        // TODO add specific image tag for operator.
+
+        logger.debug("Waiting until Operator is ready.");
+        waitUntilOperatorIsReady();
+        logger.info("Operator is ready");
+    }
+
+    private static final String OPERATOR_GROUP_TEMPLATE = "/olm/operatorgroup.yaml";
+    private static final String SUBSCRIPTION_TEMPLATE = "/olm/subscription.yaml";
+
+    private URL getOperatorGroupTemplate() {
+        try {
+            return new URL("file://" + OpenShiftOperatorScenario.class.getResource(OPERATOR_GROUP_TEMPLATE).getFile());
+        } catch (MalformedURLException e) {
+            throw new RuntimeException("Wrong OperatorGroup template location", e);
+        }
+    }
+
+    private URL getSubscriptionTemplate() {
+        try {
+            return new URL("file://" + OpenShiftOperatorScenario.class.getResource(SUBSCRIPTION_TEMPLATE).getFile());
+        } catch (MalformedURLException e) {
+            throw new RuntimeException("Wrong Subscription template location", e);
+        }
     }
 
     private void createCustomResourceDefinitionsInOpenShift(OpenShiftBinary adminBinary) {
@@ -152,6 +194,10 @@ public abstract class OpenShiftOperatorScenario<T extends DeploymentScenario<T>>
         deployment.getSpec().getTemplate().getSpec().getContainers().get(0).setImage(operatorImage);
         project.getOpenShift().apps().deployments().create(deployment);
 
+        waitUntilOperatorIsReady();
+    }
+
+    private void waitUntilOperatorIsReady() {
         // wait until operator is ready
         project.getOpenShift().waiters().areExactlyNPodsRunning(1, "name", OPERATOR_DEPLOYMENT_NAME).waitFor();
 
