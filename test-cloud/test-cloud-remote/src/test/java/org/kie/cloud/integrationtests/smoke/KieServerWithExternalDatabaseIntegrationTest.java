@@ -48,7 +48,7 @@ public class KieServerWithExternalDatabaseIntegrationTest extends AbstractCloudI
         assumeTrue(isExternalDatabaseAllocated());
         try {
             deploymentScenario = deploymentScenarioFactory.getKieServerWithExternalDatabaseScenarioBuilder()
-                    .withInternalMavenRepo(false)
+                    .withInternalMavenRepo(true)
                     .build();
         } catch (UnsupportedOperationException ex) {
             assumeFalse(ex.getMessage().startsWith("Not supported"));

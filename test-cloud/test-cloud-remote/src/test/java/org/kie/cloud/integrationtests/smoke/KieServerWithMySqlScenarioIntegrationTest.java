@@ -44,7 +44,7 @@ public class KieServerWithMySqlScenarioIntegrationTest extends AbstractCloudInte
     public static void initializeDeployment() {
         try {
             deploymentScenario = deploymentScenarioFactory.getKieServerWithMySqlScenarioBuilder()
-                    .withInternalMavenRepo(false)
+                    .withInternalMavenRepo(true)
                     .build();
         } catch (UnsupportedOperationException ex) {
             Assume.assumeFalse(ex.getMessage().startsWith("Not supported"));
