@@ -44,6 +44,7 @@ import org.kie.cloud.git.GitUtils;
 import org.kie.cloud.integrationtests.category.Baseline;
 import org.kie.cloud.integrationtests.category.MonitoringK8sFs;
 import org.kie.cloud.integrationtests.category.Smoke;
+import org.kie.cloud.integrationtests.category.Source2Image;
 import org.kie.cloud.maven.MavenDeployer;
 import org.kie.cloud.tests.common.AbstractMethodIsolatedCloudIntegrationTest;
 import org.kie.cloud.tests.common.client.util.Kjar;
@@ -59,7 +60,7 @@ import org.slf4j.LoggerFactory;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @RunWith(Parameterized.class)
-@Category({Smoke.class, Baseline.class, MonitoringK8sFs.class})
+@Category({Smoke.class, Baseline.class, MonitoringK8sFs.class, Source2Image.class})
 public class KieServerS2iDroolsIntegrationTest extends AbstractMethodIsolatedCloudIntegrationTest<KieDeploymentScenario<?>> {
 
     private static final String REPOSITORY_NAME = generateNameWithPrefix("KieServerS2iDroolsRepository");

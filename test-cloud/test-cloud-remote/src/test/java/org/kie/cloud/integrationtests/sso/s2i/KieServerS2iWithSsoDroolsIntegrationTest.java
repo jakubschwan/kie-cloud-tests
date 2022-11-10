@@ -44,6 +44,7 @@ import org.kie.cloud.api.settings.GitSettings;
 import org.kie.cloud.common.provider.KieServerClientProvider;
 import org.kie.cloud.git.GitUtils;
 import org.kie.cloud.integrationtests.category.MonitoringK8sFs;
+import org.kie.cloud.integrationtests.category.Source2Image;
 import org.kie.cloud.maven.MavenDeployer;
 import org.kie.cloud.tests.common.AbstractMethodIsolatedCloudIntegrationTest;
 import org.kie.cloud.tests.common.client.util.Kjar;
@@ -59,7 +60,7 @@ import org.slf4j.LoggerFactory;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @RunWith(Parameterized.class)
-@Category({MonitoringK8sFs.class})
+@Category({MonitoringK8sFs.class, Source2Image.class})
 public class KieServerS2iWithSsoDroolsIntegrationTest extends AbstractMethodIsolatedCloudIntegrationTest<KieDeploymentScenario<?>> {
 
     private static final String REPOSITORY_NAME = generateNameWithPrefix("KieServerS2iDroolsRepository");
@@ -133,7 +134,6 @@ public class KieServerS2iWithSsoDroolsIntegrationTest extends AbstractMethodIsol
     private KieCommands commandsFactory = KieServices.Factory.get().getCommands();
     private Set<Class<?>> extraClasses;
 
-    private static final String SECURED_URL_PREFIX = "secured-";
     private static final String RANDOM_URL_PREFIX = UUID.randomUUID().toString().substring(0, 4) + "-";
     private static final String KIE_SERVER_NAME = "kieserver-sso-drools";
     private static final String KIE_SERVER_HOSTNAME = KIE_SERVER_NAME + DeploymentConstants.getDefaultDomainSuffix();
