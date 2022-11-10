@@ -26,6 +26,7 @@ import org.kie.cloud.git.GitUtils;
 import org.kie.cloud.integrationtests.category.JBPMOnly;
 import org.kie.cloud.integrationtests.category.MonitoringK8sFs;
 import org.kie.cloud.integrationtests.category.OperatorNotSupported;
+import org.kie.cloud.integrationtests.category.Source2Image;
 import org.kie.cloud.integrationtests.testproviders.HttpsKieServerTestProvider;
 import org.kie.cloud.integrationtests.testproviders.HttpsWorkbenchTestProvider;
 import org.kie.cloud.integrationtests.testproviders.ProcessTestProvider;
@@ -33,7 +34,7 @@ import org.kie.cloud.tests.common.AbstractCloudIntegrationTest;
 import org.kie.cloud.tests.common.ScenarioDeployer;
 import org.kie.cloud.tests.common.client.util.Kjar;
 
-@Category({JBPMOnly.class, MonitoringK8sFs.class})
+@Category({JBPMOnly.class, MonitoringK8sFs.class, Source2Image.class})
 public class KieServerS2iJbpmIntegrationTest extends AbstractCloudIntegrationTest {
 
     private static final String REPOSITORY_NAME = generateNameWithPrefix("KieServerS2iJbpmRepository");
