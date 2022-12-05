@@ -225,6 +225,7 @@ public abstract class OpenShiftScenario<T extends DeploymentScenario<T>> impleme
 
             @Override
             public void afterScenarioFinished(T deploymentScenario) {
+                externalDeployment.beforeProjectDelete(project);
                 removeConfigurationFromExternalDeployment(externalDeployment);
             }
 
@@ -253,6 +254,7 @@ public abstract class OpenShiftScenario<T extends DeploymentScenario<T>> impleme
 
             @Override
             public void afterScenarioFinished(T deploymentScenario) {
+                externalDeployment.beforeProjectDelete(project);
                 removeConfigurationFromExternalDeployment(externalDeployment);
             }
 

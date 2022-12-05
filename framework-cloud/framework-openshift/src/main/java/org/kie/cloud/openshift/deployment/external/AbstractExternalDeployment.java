@@ -20,8 +20,12 @@ import java.util.Objects;
 
 import org.kie.cloud.api.deployment.Deployment;
 import org.kie.cloud.openshift.resource.Project;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public abstract class AbstractExternalDeployment<T extends Deployment, U> implements ExternalDeployment<T, U> {
+
+    private static final Logger logger = LoggerFactory.getLogger(AbstractExternalDeployment.class);
 
     protected Map<String, String> deploymentConfig;
 
@@ -36,6 +40,11 @@ public abstract class AbstractExternalDeployment<T extends Deployment, U> implem
     public T deploy(Project project) {
         this.deployment = deployToProject(project);
         return this.deployment;
+    }
+
+    @Override
+    public void beforeProjectDelete(Project project) {
+        logger.debug("Nothing to do in AbstractExternalDeployment beforeProjectDelete");
     }
 
     protected abstract T deployToProject(Project project);

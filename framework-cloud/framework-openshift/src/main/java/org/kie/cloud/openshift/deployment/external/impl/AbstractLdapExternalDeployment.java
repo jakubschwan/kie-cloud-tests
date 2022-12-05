@@ -19,6 +19,9 @@ import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
 
+import io.fabric8.kubernetes.api.model.ServiceAccount;
+import io.fabric8.kubernetes.api.model.ServiceAccountBuilder;
+import io.fabric8.openshift.api.model.SecurityContextConstraintsBuilder;
 import org.kie.cloud.api.deployment.LdapDeployment;
 import org.kie.cloud.api.deployment.constants.DeploymentConstants;
 import org.kie.cloud.openshift.deployment.LdapDeploymentImpl;
@@ -33,6 +36,9 @@ public abstract class AbstractLdapExternalDeployment<U> extends AbstractExternal
     private static final Logger logger = LoggerFactory.getLogger(AbstractLdapExternalDeployment.class);
     private static final String LDAP_TEMPLATE = "/deployments/ldap.yaml";
 
+    private static final String LDAP_SERVICE_ACCOUNT = "ldap-sa";
+    private static final String SCC_USER_FORMAT = "system:serviceaccount:%s:%s";
+
     public AbstractLdapExternalDeployment(Map<String, String> deploymentConfig) {
         super(deploymentConfig);
     }
@@ -44,10 +50,29 @@ public abstract class AbstractLdapExternalDeployment<U> extends AbstractExternal
 
     @Override
     protected LdapDeployment deployToProject(Project project) {
+        logger.info("Creating LDAP Service account");
+        ServiceAccount ldapServiceAccount = new ServiceAccountBuilder().withNewMetadata().withName(LDAP_SERVICE_ACCOUNT)
+                .withNamespace(project.getName()).endMetadata().build();
+        project.getOpenShift().serviceAccounts().create(ldapServiceAccount);
+        logger.debug("Set LDAP Service account to the SecurityContextConstrain anyuid policy. oc-cli command: 'oc adm policy add-scc-to-user anyuid -z ldap-sa -n <project name>'");
+        project.getOpenShiftAdmin().securityContextConstraints().withName("anyuid")
+                .edit(scc -> new SecurityContextConstraintsBuilder(scc)
+                        .addToUsers(String.format(SCC_USER_FORMAT, project.getName(), LDAP_SERVICE_ACCOUNT))
+                        .build());
+
         logger.info("Creating internal LDAP instance.");
         project.processTemplateAndCreateResources(getLdapTemplate(), getLdapProperties(project));
 
         return new LdapDeploymentImpl(project);
+    }
+
+    @Override
+    public void beforeProjectDelete(Project project) {
+        logger.debug("Remove LDAP Service account from SecurityContextConstrain anyuid.");
+        project.getOpenShiftAdmin().securityContextConstraints().withName("anyuid")
+                .edit(scc -> new SecurityContextConstraintsBuilder(scc)
+                        .removeFromUsers(String.format(SCC_USER_FORMAT, project.getName(), LDAP_SERVICE_ACCOUNT))
+                        .build());
     }
 
     private URL getLdapTemplate() {
@@ -64,6 +89,7 @@ public abstract class AbstractLdapExternalDeployment<U> extends AbstractExternal
         properties.put("LDAP_DOCKER_IMAGE", CloudProperties.getInstance().getLdapDockerImage());
         properties.put("LDAP_USER_NAME", DeploymentConstants.getAppUser());
         properties.put("LDAP_USER_PWD", DeploymentConstants.getAppPassword());
+        properties.put("LDAP_SERVICE_ACCOUNT", LDAP_SERVICE_ACCOUNT);
         return properties;
     }
 

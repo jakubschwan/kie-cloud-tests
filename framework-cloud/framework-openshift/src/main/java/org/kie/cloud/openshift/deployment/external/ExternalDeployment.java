@@ -36,9 +36,18 @@ public interface ExternalDeployment<T extends Deployment, U> {
     /**
      * Launch deployment into the given project
      *
+     * @param project Project
      * @return Deployment entity
      */
     T deploy(Project project);
+
+    /**
+     * Before Project is delete in OCP this method is called. Can be used to remove
+     * any cluster wide configuration required for the external deployment.
+     * 
+     * @param project Project
+     */
+    void beforeProjectDelete(Project project);
 
     /**
      * @return Deployment entity of this external deployment
