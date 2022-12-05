@@ -23,6 +23,10 @@ parameters:
 - name: LDAP_USER_PWD
   displayName: LDAP User Password
   required: true
+- name: LDAP_SERVICE_ACCOUNT
+  displayName: LDAP Service Account
+  description: The LDAP SA with addition security context configuration. With default OCP restrictions LDAP pod is not started.
+  required: true
 objects:
 - kind: ImageStream
   apiVersion: v1
@@ -167,6 +171,7 @@ objects:
           application: "ldap"
           deploymentConfig: "ldap"
       spec:
+        serviceAccountName: ${LDAP_SERVICE_ACCOUNT}
         containers:
         - name: "ldap"
           image: "rhba-qe-ldap:latest"
