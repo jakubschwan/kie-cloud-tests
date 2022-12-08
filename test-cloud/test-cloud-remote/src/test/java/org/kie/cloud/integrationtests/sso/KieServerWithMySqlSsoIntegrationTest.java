@@ -53,7 +53,6 @@ public class KieServerWithMySqlSsoIntegrationTest extends AbstractCloudIntegrati
             deploymentScenario = deploymentScenarioFactory.getKieServerWithMySqlScenarioBuilder()
                     .deploySso()
                     .withInternalMavenRepo(false)
-                    .withHttpKieServerHostname(RANDOM_URL_PREFIX + KIE_SERVER_HOSTNAME)
                     .withHttpsKieServerHostname(SECURED_URL_PREFIX + RANDOM_URL_PREFIX + KIE_SERVER_HOSTNAME)
                     .build();
         } catch (UnsupportedOperationException ex) {
