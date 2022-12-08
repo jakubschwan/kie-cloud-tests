@@ -27,6 +27,11 @@ public class ProcessMigration {
     private String imageTag;
     private Database database;
     private Jvm jvm;
+    private String keystoreSecret;
+    private String password;
+    private Integer replicas;
+    private String username;
+    private Resources resources;
 
     public String getImage() {
         return image;
@@ -58,5 +63,45 @@ public class ProcessMigration {
 
     public void setJvm(Jvm jvm) {
         this.jvm = jvm;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public Integer getReplicas() {
+        return replicas;
+    }
+
+    public void setReplicas(Integer replicas) {
+        this.replicas = replicas;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public String getKeystoreSecret() {
+        return keystoreSecret;
+    }
+
+    public void setKeystoreSecret(String keystoreSecret) {
+        this.keystoreSecret = keystoreSecret;
+    }
+
+    public Resources getResources() {
+        return resources;
+    }
+
+    public void setResources(Resources resources) {
+        this.resources = resources;
     }
 }
