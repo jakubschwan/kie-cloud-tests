@@ -136,6 +136,9 @@ public class ProcessInstanceMigrationIntegrationTest extends AbstractMethodIsola
 
     @Before
     public void setUp() throws KeyManagementException, NoSuchAlgorithmException, KeyStoreException {
+        if(!deploymentScenario.getKieServerDeployment().isReady()) {
+            deploymentScenario.getKieServerDeployment().waitForScale();
+        }
         kieServicesClient = KieServerClientProvider.getKieServerClient(deploymentScenario.getKieServerDeployment());
         processServicesClient = KieServerClientProvider.getProcessClient(deploymentScenario.getKieServerDeployment());
 
