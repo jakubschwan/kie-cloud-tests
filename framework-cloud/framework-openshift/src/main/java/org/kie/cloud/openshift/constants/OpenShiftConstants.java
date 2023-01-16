@@ -154,6 +154,7 @@ public class OpenShiftConstants implements Constants {
     public static final String PROMETHEUS_VERSION = "prometheus.version";
 
     public static final String AMQ_IMAGE_STREAMS = "amq.image.streams";
+    public static final String AMQ_IMAGE_REFERENCE = "amq.image.reference";
 
     public static final String KIE_IMAGE_TAG_AMQ = "kie.image.tag.amq";
     public static final String KIE_IMAGE_TAG_CONSOLE = "kie.image.tag.console";
@@ -232,6 +233,10 @@ public class OpenShiftConstants implements Constants {
 
     public static String getAmqImageStreams() {
         return System.getProperty(AMQ_IMAGE_STREAMS);
+    }
+
+    public static String getAmqImageReference() {
+        return System.getProperty(AMQ_IMAGE_REFERENCE);
     }
 
     public static String getKieApplicationName() {
