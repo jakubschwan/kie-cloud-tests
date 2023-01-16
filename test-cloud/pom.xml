@@ -71,6 +71,7 @@
     <amq.image.streams>https://raw.githubusercontent.com/jboss-container-images/jboss-amq-7-broker-openshift-image/amq-broker-78-dev/amq-broker-7-image-streams.yaml</amq.image.streams>
     <amq.username>yoda</amq.username>
     <amq.password>usetheforce123@</amq.password>
+    <amq.image.reference>registry.redhat.io/amq7/amq-broker-rhel8:7.9</amq.image.reference>
 
     <!-- This property can be overridden to exclude specific test category according to specific needs. -->
     <failsafe.excluded.groups/>
@@ -364,6 +365,7 @@ $ keytool -import -trustcacerts -alias name -keypass pass -storepass pass -keyst
               <amq.image.streams>${amq.image.streams}</amq.image.streams>
               <amq.username>${amq.username}</amq.username>
               <amq.password>${amq.password}</amq.password>
+              <amq.image.reference>${amq.image.reference}</amq.image.reference>
               <kie.artifact.version>${kie.artifact.version}</kie.artifact.version>
               <kie.app.template.url>${kie.app.template.url}</kie.app.template.url>
               <sso.image.streams>${sso.image.streams}</sso.image.streams>
